@@ -1,23 +1,63 @@
-# Your Project's Name
+# Timesheet Helper
 
-One or two paragraphs providing an overview of your project.
+[![Build Status](https://travis-ci.com/Narshe1412/Code-Institute-Interactive-Frontend-Project.svg?branch=master)](https://travis-ci.com/Narshe1412/Code-Institute-Interactive-Frontend-Project)
 
-Essentially, this part is your sales pitch.
- 
+As per my daily job, we're required to track the time we invest in each assigned task and upload weekly to an Excel summary provided by management. It is very easy to forget when did you started each task, the exact amount of time invested, hard to manage when you're multitasking two or more tasks, etc...
+
+This causes, not only frustration to the employee but also to management, as they cannot trust the values they're gathering as they're not 100% accurate.
+
+This project attempts to solve this problem by also providing the end-user a better way to self-manage work and rest times by using the famous [Pomodoro technique](https://en.wikipedia.org/wiki/Pomodoro_Technique), if he or she wishes to abide to it.
+
 ## UX
- 
-Use this section to provide insight into your UX process, focusing on who this website is for, what it is that they want to achieve and how your project is the best way to help them achieve these things.
 
-In particular, as part of this section we recommend that you provide a list of User Stories, with the following general structure:
-- As a user type, I want to perform an action, so that I can achieve a goal.
+The intended audience of this website is a person who is going to be doing a job that can be separated into tasks and where time needs to be tracked, either for management request, or to ensure the user that enough breaks are taken for both content assimilation or avoiding interrumptions.
+
+An example of such tasks are:
+
+    - Software Development
+    - Studying
+    - Physical work
+    - Exercising
+    - House chores
+    - ...
+
+By adding a mobile-first design approach we allow the user to not have to rely in a computer to track the time and remaining tasks to do.
+
+### User Stories
+
+#### Must Haves
+
+- As a user, I want to be able to start and stop the timer, so that I can track the time spent on each task assigned.
+- As a user, I want to be able to record tasks in the app, so that I can better organize my time an plan ahead.
+- As a user, I want to be able to choose the type of timer between Pomodoro timer and regular timer so I can pick the best that suit my needs regarding the task at hand.
+- As a user, I want to be able to change the state of the tasks, so that I can mark those that I complete and tag those that were not completed with some useful information.
+
+#### Should haves
+
+- As a user, I want to be able to store the application data, so time and task completion is not lost after the web is closed.
+- As a user, I want to be able to visualize a summary of the time spent using a variaety of charts, so that I can have a better picture of the time spent for my own records or for manager reporting.
+
+#### Could haves
+
+- As a user, I want to be able to import multiple tasks from a file, or a structured string format, so I don't spend too much time adding new tasks to the system.
+- As a user, I want to be able to export the data of the application, so I can use it in different applications or send it as a report to my supervisors.
+
+#### Won't haves
+
+- At this point further API integration is out of scope. In the future, it would be great if this can be integrated with other task management tools like Trello, project management tools like JIRA or even software development tools like Github or Visual Studio.
+
+---
+
+### Mockups and Diagrams
 
 This section is also where you would share links to any wireframes, mockups, diagrams etc. that you created as part of the design process. These files should themselves either be included in the project itself (in an separate directory), or just hosted elsewhere online and can be in any format that is viewable inside the browser.
 
 ## Features
 
 In this section, you should go over the different parts of your project, and describe each in a sentence or so.
- 
+
 ### Existing Features
+
 - Feature 1 - allows users X to achieve Y, by having them fill out Z
 - ...
 
@@ -26,15 +66,25 @@ For some/all of your features, you may choose to reference the specific project 
 In addition, you may also use this section to discuss plans for additional features to be implemented in the future:
 
 ### Features Left to Implement
+
 - Another feature idea
 
 ## Technologies Used
 
 In this section, you should mention all of the languages, frameworks, libraries, and any other tools that you have used to construct this project. For each, provide its name, a link to its official site and a short sentence of why it was used.
 
-- [JQuery](https://jquery.com)
-    - The project uses **JQuery** to simplify DOM manipulation.
+- [Angular](https://angular.io/)
+  - The project structure was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.0.
+  - This includes several libraries adopted by the Angular framework to ease the programming experience, code quality and end to end deployment of the product such as Typescript, Karma for testing, SASS stylesheets, Webpack bundling and minifying, etc...
 
+- [Angular Material](https://material.angular.io/)
+  - The project uses Material design components from the Angular official repository, as well as the themes provided by this library. This ensures that the site follows a mobile first approach, with focus on the UX dictated by the **Material design** principles and guidelines from [Google](https://material.io/design/).
+
+- [Travis CI](https://travis-ci.com/)
+  - I'm using Travis to automate Continuous Integration in the project, making sure that all tests are properly executed before deploying and facilitating a future implementation of Continuous Deployment to either Heroku or Github Pages.
+
+- [Highcharts](https://www.highcharts.com/)
+  - I'm using this charting library as opposed to D3 as it will be benefitial to my day to day job to gain more exposure with it. Although Highcharts normally requires a license, it is free to use for non-comercial purposes. An option to disable charting feature will be given for those who want to use this project for their own company. Future releases will include a D3 version if time permits.
 
 ## Testing
 
@@ -56,58 +106,40 @@ You should also mention in this section any interesting bugs or problems you dis
 
 If this section grows too long, you may want to split it off into a separate file and link to it from here.
 
+### Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+### Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
 ## Deployment
 
 This section should describe the process you went through to deploy the project to a hosting platform (e.g. GitHub Pages or Heroku).
 
 In particular, you should provide all details of the differences between the deployed version and the development version, if any, including:
+
 - Different values for environment variables (Heroku Config Vars)?
 - Different configuration files?
 - Separate git branch?
 
 In addition, if it is not obvious, you should also describe how to run your code locally.
 
+### Build
+
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
 ## Credits
 
 ### Content
+
 - The text for section Y was copied from the [Wikipedia article Z](https://en.wikipedia.org/wiki/Z)
 
 ### Media
+
 - The photos used in this site were obtained from ...
 
 ### Acknowledgements
 
 - I received inspiration for this project from X
-
-
-
-
-
-# UserCentric
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.0.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
