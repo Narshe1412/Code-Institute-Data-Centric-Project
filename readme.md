@@ -34,12 +34,12 @@ By adding a mobile-first design approach we allow the user to not have to rely i
 
 #### Should haves
 
-- As a user, I want to be able to store the application data, so time and task completion is not lost after the web is closed.
-- As a user, I want to be able to visualize a summary of the time spent using a variaety of charts, so that I can have a better picture of the time spent for my own records or for manager reporting.
+- As a user, I want to be able to store the application data, so time and task completion are not lost after the web is closed.
+- As a user, I want to be able to visualize a summary of the time spent using a variety of charts, so that I can have a better picture of the time spent for my own records or for management reporting.
 
 #### Could haves
 
-- As a user, I want to be able to import multiple tasks from a file, or a structured string format, so I don't spend too much time adding new tasks to the system.
+- As a user, I want to be able to import multiple tasks from a file or a structured string format, so I don't spend too much time adding new tasks to the system.
 - As a user, I want to be able to export the data of the application, so I can use it in different applications or send it as a report to my supervisors.
 
 #### Won't haves
@@ -50,7 +50,17 @@ By adding a mobile-first design approach we allow the user to not have to rely i
 
 ### Mockups and Diagrams
 
-This section is also where you would share links to any wireframes, mockups, diagrams etc. that you created as part of the design process. These files should themselves either be included in the project itself (in an separate directory), or just hosted elsewhere online and can be in any format that is viewable inside the browser.
+Initial Paper Mockup:
+
+Inline-style:
+![Initial Mockup made on paper](docs/initial-mockup.png "Initial Mockup made on paper")
+
+Basic Wireframe Setup for Mobile view and Desktop View
+![Mobile first design](docs/mobile.png "Mobile first design")
+![Desktop design](docs/desktop.png "Desktop design")
+
+State Machine for Timer Functionality
+![State Machine for Timer](docs/sbm-timer.png "State Machine for Timer")
 
 ## Features
 

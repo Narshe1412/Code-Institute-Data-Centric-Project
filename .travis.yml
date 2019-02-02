@@ -11,6 +11,10 @@ addons:
       - google-chrome
     packages:
       - google-chrome-stable
+  # sonarcloud:
+  #   organization: "sonarcloud_organization_key" # the key of the org you chose at step #3
+  #   token:
+  #     secure: ********* # encrypted value of your token
 
 cache:
   directories:
@@ -21,3 +25,4 @@ install:
 
 script:
   - npm run test -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
+   # - sonar-scanner
