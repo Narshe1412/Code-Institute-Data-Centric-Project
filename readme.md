@@ -53,14 +53,14 @@ By adding a mobile-first design approach we allow the user to not have to rely i
 Initial Paper Mockup:
 
 Inline-style:
-![Initial Mockup made on paper](docs/initial-mockup.png "Initial Mockup made on paper")
+![Initial Mockup made on paper](docs/img/initial-mockup.png "Initial Mockup made on paper")
 
 Basic Wireframe Setup for Mobile view and Desktop View
-![Mobile first design](docs/mobile.png "Mobile first design")
-![Desktop design](docs/desktop.png "Desktop design")
+![Mobile first design](docs/img/mobile.png "Mobile first design")
+![Desktop design](docs/img/desktop.png "Desktop design")
 
 State Machine for Timer Functionality
-![State Machine for Timer](docs/sbm-timer.png "State Machine for Timer")
+![State Machine for Timer](docs/img/sbm-timer.png "State Machine for Timer")
 
 ## Features
 
