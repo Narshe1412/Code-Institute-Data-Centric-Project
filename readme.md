@@ -51,8 +51,6 @@ By adding a mobile-first design approach we allow the user to not have to rely i
 ### Mockups and Diagrams
 
 Initial Paper Mockup:
-
-Inline-style:
 ![Initial Mockup made on paper](docs/img/initial-mockup.jpg "Initial Mockup made on paper")
 
 Basic Wireframe Setup for Mobile view and Desktop View
