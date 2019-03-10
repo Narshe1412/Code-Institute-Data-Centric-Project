@@ -17,21 +17,13 @@ describe('TimerService', () => {
 
   describe('getSeconds', () => {
     it('should return 3 if the timer has 3000ms ', () => {
-      // SUT
       timer.currentTime = 3000;
-
-      // Expected
       const expected = 3;
-
-      // Actual
       const actual = timer.getSeconds();
-
-      // Asertion
       expect(actual).toBe(expected);
     });
 
     it('should return 0 if the timer has 0ms ', () => {
-      // SUT
       timer.currentTime = 0;
       const expected = 0;
       const actual = timer.getSeconds();
@@ -82,7 +74,6 @@ describe('TimerService', () => {
     });
 
     it('should return 0 if the timer has less than 60 secs ', () => {
-      // SUT
       timer.currentTime = 11;
       const expected = 0;
       const actual = timer.getMinutes();
@@ -106,7 +97,7 @@ describe('TimerService', () => {
     it('should return 125 if the timer has 125 minutes ', () => {
       timer.currentTime = 125 * 60 * 1000;
       const expected = 125;
-      const actual = timer.getSeconds();
+      const actual = timer.getMinutes();
       expect(actual).toBe(expected);
     });
   });
@@ -161,6 +152,7 @@ describe('TimerService', () => {
       expect(actual).toBe(expected);
     });
   });
+
   describe('getDisplaySeconds', () => {
     it('should return 00 if the timer has 0ms ', () => {
       timer.currentTime = 0;
@@ -214,9 +206,9 @@ describe('TimerService', () => {
       const actual = timer.getDisplaySeconds();
       expect(actual).toBe(expected);
     });
-    it('should return 30 if the timer has 2930000ms ', () => {
+    it('should return 50 if the timer has 2930000ms ', () => {
       timer.currentTime = 2930000;
-      const expected = '30';
+      const expected = '50';
       const actual = timer.getDisplaySeconds();
       expect(actual).toBe(expected);
     });
@@ -276,13 +268,12 @@ describe('TimerService', () => {
       expect(actual).toBe(expected);
     });
     it('should return 30 if the timer has a multiple of 30 minutes and several hours ', () => {
-      timer.currentTime = 3 * 60 * 30 * 60 * 1000;
+      timer.currentTime = (3 * 60 * 60 + 30 * 60) * 1000;
       const expected = '30';
       const actual = timer.getDisplayMinutes();
       expect(actual).toBe(expected);
     });
   });
-
   describe('getDisplayHours', () => {
     it('should return 00 if the timer has 0ms ', () => {
       timer.currentTime = 0;
