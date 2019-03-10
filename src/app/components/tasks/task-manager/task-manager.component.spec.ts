@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TaskManagerComponent } from './task-manager.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('TaskManagerComponent', () => {
   let component: TaskManagerComponent;
@@ -8,9 +9,9 @@ describe('TaskManagerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaskManagerComponent ]
-    })
-    .compileComponents();
+      declarations: [TaskManagerComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

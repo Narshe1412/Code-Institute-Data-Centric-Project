@@ -5,12 +5,21 @@ import { AppComponent } from './app.component';
 // import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TimerComponent } from './components/timer/timer.component';
 import { MatToolbarModule } from '@angular/material';
+import { TaskManagerComponent } from './components/tasks/task-manager/task-manager.component';
+import { TaskListComponent } from './components/tasks/task-list/task-list.component';
+import { TaskComponent } from './components/tasks/task/task.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, MatToolbarModule, FormsModule],
-      declarations: [AppComponent, TimerComponent]
+      declarations: [
+        AppComponent,
+        TimerComponent,
+        TaskManagerComponent,
+        TaskListComponent,
+        TaskComponent
+      ]
       // schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
