@@ -1,13 +1,43 @@
 <div>
   <h1>Timer Component</h1>
-  <button #start [disabled]="timerStatus === 'running'" [hidden]="timerStatus === 'running'">
-    {{ timerStatus === 'paused' ? 'Restart' : 'Start' }}
-  </button>
-  <button #pause [disabled]="timerStatus !== 'running'">Pause</button>
-  <button #resume [disabled]="timerStatus !== 'paused'">Resume</button>
-  <button #stop [disabled]="timerStatus !== 'running'" [hidden]="timerStatus === 'stopped'">
-    Stop
-  </button>
+  <div>
+    <div>
+      <select name="timertypeselector" id="timertypeselector" [(ngModel)]="timertypeselector">
+        <option value="pomodoro">Pomodoro</option>
+        <option value="standard">Standard 60min</option>
+        <option value="custom">Custom</option>
+      </select>
+    </div>
+    <div *ngIf="timertypeselector === 'custom'">
+      <input
+        type="text"
+        name="customtime"
+        id="customtime"
+        placeholder="Time in minutes"
+        [(ngModel)]="customtime"
+      />
+      <span> min.</span>
+    </div>
+    <div>
+      <button
+        disabled="true"
+        [disabled]="timerStatus === 'running' || isNaN(customtime) || customtime <= 0"
+        (click)="handleSelectTimerType()"
+      >
+        Change Timer Type
+      </button>
+    </div>
+  </div>
+  <div>
+    <button #start [disabled]="timerStatus === 'running'" [hidden]="timerStatus === 'running'">
+      {{ timerStatus === 'paused' ? 'Restart' : 'Start' }}
+    </button>
+    <button #stop [disabled]="timerStatus !== 'running'" [hidden]="timerStatus === 'stopped'">
+      Stop
+    </button>
+    <button #pause [disabled]="timerStatus !== 'running'">Pause</button>
+    <button #resume [disabled]="timerStatus !== 'paused'">Resume</button>
+  </div>
 </div>
 <div>
   <input
@@ -28,4 +58,5 @@
   />
   <label for="stopwatch">Stopwatch</label>
 </div>
+
 <h1 id="timerDisplay">{{ time }}</h1>

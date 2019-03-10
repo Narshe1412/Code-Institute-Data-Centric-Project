@@ -89,4 +89,8 @@ export class TimerService {
   public resetTimer() {
     this.currentTime = this.settings.timerStartAmount;
   }
+
+  public getDisplayTimeInHHMMSS(): string {
+    return `${this.getDisplayHours()}:${this.getDisplayMinutes()}:${this.getDisplaySeconds()}`;
+  }
 }
