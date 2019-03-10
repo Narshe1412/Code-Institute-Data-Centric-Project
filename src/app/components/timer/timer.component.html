@@ -1,10 +1,31 @@
-<p>
-  Timer Component
-  <button #pause>Pause</button>
-  <button #start>Start</button>
-  <button #resume>Resume</button>
-  <!-- <button id='pause'>Pause</button>
-  <button id='start'>Start</button>
-  <button id='resume'>Resume</button> -->
-</p>
+<div>
+  <h1>Timer Component</h1>
+  <button #start [disabled]="timerStatus === 'running'" [hidden]="timerStatus === 'running'">
+    {{ timerStatus === 'paused' ? 'Restart' : 'Start' }}
+  </button>
+  <button #pause [disabled]="timerStatus !== 'running'">Pause</button>
+  <button #resume [disabled]="timerStatus !== 'paused'">Resume</button>
+  <button #stop [disabled]="timerStatus !== 'running'" [hidden]="timerStatus === 'stopped'">
+    Stop
+  </button>
+</div>
+<div>
+  <input
+    type="radio"
+    name="timerselector"
+    id="countdown"
+    #countdown
+    checked="true"
+    (click)="changeCountdownType('countdown')"
+  />
+  <label for="countdown">Countdown</label>
+  <input
+    type="radio"
+    name="timerselector"
+    id="stopwatch"
+    #stopwatch
+    (click)="changeCountdownType('stopwatch')"
+  />
+  <label for="stopwatch">Stopwatch</label>
+</div>
 <h1 id="timerDisplay">{{ time }}</h1>

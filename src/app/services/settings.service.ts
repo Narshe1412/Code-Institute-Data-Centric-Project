@@ -1,6 +1,19 @@
 import { Injectable } from '@angular/core';
-const POMODORO_DEFAULT_START = 25 * 60 * 1000; // 25 min in ms
-const STANDARD_DEFAULT_START = 60 * 60 * 1000; // 60 min in ms
+const POMODORO_DEFAULT_START = 25 * 60;
+const STANDARD_DEFAULT_START = 60 * 60;
+
+export enum CountingType {
+  up = 'up',
+  stopwatch = 'stopwatch',
+  down = 'down',
+  countdown = 'countdown'
+}
+
+const defaults = {
+  countingType: CountingType.countdown,
+  startTime: POMODORO_DEFAULT_START
+};
+
 /**
  * Service that is used to centralize common settings for different pieces of the application
  *
@@ -11,7 +24,8 @@ const STANDARD_DEFAULT_START = 60 * 60 * 1000; // 60 min in ms
 })
 export class SettingsService {
   // Attributes
-  private _timerType: 'pomodoro' | 'standard';
+  private _timerType: 'pomodoro' | 'standard' | 'custom';
+  private _countingType: CountingType;
   private _timerStartAmount;
 
   // Setters/getters
@@ -33,7 +47,7 @@ export class SettingsService {
       case 'standard':
         return STANDARD_DEFAULT_START;
       default:
-        return 0;
+        return this._timerStartAmount || 0;
     }
   }
 
@@ -48,15 +62,53 @@ export class SettingsService {
   /**
    * Obtains type of timer for the application
    */
-  public get timerType(): 'pomodoro' | 'standard' {
+  public get timerType(): 'pomodoro' | 'standard' | 'custom' {
     return this._timerType;
   }
 
   /**
    * Sets the type of timer that would be used if the user does not want to mess with the settings
    */
-  public set timerType(value: 'pomodoro' | 'standard') {
+  public set timerType(value: 'pomodoro' | 'standard' | 'custom') {
     this._timerType = value;
   }
-  constructor() {}
+
+  /**
+   * Obtains the type of counting for the service (up or down).
+   */
+  public get countingType(): CountingType {
+    return this._countingType;
+  }
+
+  /**
+   *
+   * Sets the type of counting the service will be used by the application
+   * Choosing up or stopwatch will start the timer on 0 and count incrementally
+   * Choosing down or countdown will start the timer on the specified amount and stop at 0
+   * @memberof SettingsService
+   */
+  public set countingType(value: CountingType) {
+    this._countingType = value;
+  }
+
+  /**
+   * Returns the counting amount depending on the current setting defined in the application
+   */
+  public get countingAmount(): number {
+    switch (this.countingType) {
+      case CountingType.up:
+      case CountingType.stopwatch:
+        return 1;
+      case CountingType.down:
+      case CountingType.countdown:
+        return -1;
+      default:
+        return 0;
+    }
+  }
+
+  constructor() {
+    this.countingType = defaults.countingType;
+    this.timerStartAmount = defaults.startTime;
+  }
 }
