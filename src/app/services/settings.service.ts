@@ -29,7 +29,6 @@ export class SettingsService {
   private _timerStartAmount;
 
   // Setters/getters
-
   /**
    * Obtains the starting amount for a clock
    * @returns The default value for a pomodoro/standard clock, or if custom value is selected, return that one
@@ -39,16 +38,7 @@ export class SettingsService {
     if (this._timerStartAmount) {
       return this._timerStartAmount;
     }
-
-    // Return default otherwise
-    switch (this.timerType) {
-      case 'pomodoro':
-        return POMODORO_DEFAULT_START;
-      case 'standard':
-        return STANDARD_DEFAULT_START;
-      default:
-        return this._timerStartAmount || 0;
-    }
+    return this.getDefaultTimePerType(this.timerType);
   }
 
   /**
@@ -70,6 +60,7 @@ export class SettingsService {
    * Sets the type of timer that would be used if the user does not want to mess with the settings
    */
   public set timerType(value: 'pomodoro' | 'standard' | 'custom') {
+    this.timerStartAmount = this.getDefaultTimePerType(value);
     this._timerType = value;
   }
 
@@ -104,6 +95,21 @@ export class SettingsService {
         return -1;
       default:
         return 0;
+    }
+  }
+
+  /**
+   * Obtains the default time after a type has been passed to the function
+   */
+  private getDefaultTimePerType(timerType) {
+    // Return default otherwise
+    switch (timerType) {
+      case 'pomodoro':
+        return POMODORO_DEFAULT_START;
+      case 'standard':
+        return STANDARD_DEFAULT_START;
+      default:
+        return this.timerStartAmount || 0;
     }
   }
 
