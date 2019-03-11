@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 const mockTaskList = [
@@ -48,6 +49,14 @@ const mockTaskList = [
 })
 export class TasksService {
   private _taskList;
+  private _taskList$: BehaviorSubject<any[]>;
+
+  public get taskList$(): BehaviorSubject<any[]> {
+    return this._taskList$;
+  }
+  public set taskList$(value: BehaviorSubject<any[]>) {
+    this._taskList$ = value;
+  }
 
   public get taskList() {
     return this._taskList;
@@ -59,4 +68,17 @@ export class TasksService {
   constructor() {
     this.taskList = mockTaskList;
   }
+}
+
+export interface Task {
+  id: number;
+  title: string;
+  reference: string;
+  description: string;
+  timeWorked: TaskTime[];
+}
+
+export interface TaskTime {
+  amount: number;
+  timestamp: number;
 }
