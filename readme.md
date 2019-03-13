@@ -51,14 +51,14 @@ By adding a mobile-first design approach we allow the user to not have to rely i
 ### Mockups and Diagrams
 
 Initial Paper Mockup:
-![Initial Mockup made on paper](docs/img/initial-mockup.jpg "Initial Mockup made on paper")
+![Initial Mockup made on paper](docs/img/initial-mockup.jpg 'Initial Mockup made on paper')
 
 Basic Wireframe Setup for Mobile view and Desktop View
-![Mobile first design](docs/img/mobile.png "Mobile first design")
-![Desktop design](docs/img/desktop.png "Desktop design")
+![Mobile first design](docs/img/mobile.png 'Mobile first design')
+![Desktop design](docs/img/desktop.png 'Desktop design')
 
 State Machine for Timer Functionality
-![State Machine for Timer](docs/img/sbm-timer.png "State Machine for Timer")
+![State Machine for Timer](docs/img/sbm-timer.png 'State Machine for Timer')
 
 ## Features
 
@@ -82,13 +82,16 @@ In addition, you may also use this section to discuss plans for additional featu
 In this section, you should mention all of the languages, frameworks, libraries, and any other tools that you have used to construct this project. For each, provide its name, a link to its official site and a short sentence of why it was used.
 
 - [Angular](https://angular.io/)
+
   - The project structure was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.0.
   - This includes several libraries adopted by the Angular framework to ease the programming experience, code quality and end to end deployment of the product such as Typescript, Karma for testing, SASS stylesheets, Webpack bundling and minifying, etc...
 
 - [Angular Material](https://material.angular.io/)
+
   - The project uses Material design components from the Angular official repository, as well as the themes provided by this library. This ensures that the site follows a mobile first approach, with focus on the UX dictated by the **Material design** principles and guidelines from [Google](https://material.io/design/).
 
 - [Travis CI](https://travis-ci.com/)
+
   - I'm using Travis to automate Continuous Integration in the project, making sure that all tests are properly executed before deploying and facilitating a future implementation of Continuous Deployment to either Heroku or Github Pages.
 
 - [Highcharts](https://www.highcharts.com/)
@@ -103,10 +106,10 @@ Whenever it is feasible, prefer to automate your tests, and if you've done so, p
 For any scenarios that have not been automated, test the user stories manually and provide as much detail as is relevant. A particularly useful form for describing your testing process is via scenarios, such as:
 
 1. Contact form:
-    1. Go to the "Contact Us" page
-    2. Try to submit the empty form and verify that an error message about the required fields appears
-    3. Try to submit the form with an invalid email address and verify that a relevant error message appears
-    4. Try to submit the form with all inputs valid and verify that a success message appears.
+   1. Go to the "Contact Us" page
+   2. Try to submit the empty form and verify that an error message about the required fields appears
+   3. Try to submit the form with an invalid email address and verify that a relevant error message appears
+   4. Try to submit the form with all inputs valid and verify that a success message appears.
 
 In addition, you should mention in this section how your project looks and works on different browsers and screen sizes.
 
@@ -151,3 +154,4 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 ### Acknowledgements
 
 - I received inspiration for this project from X
+- Favicon provided by <a href="https://icons8.com/icon/25717/task">Icons8 - Task icon</a>

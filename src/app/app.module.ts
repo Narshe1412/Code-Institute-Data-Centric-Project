@@ -10,15 +10,23 @@ import { FormsModule } from '@angular/forms';
 import { TaskListComponent } from './components/tasks/task-list/task-list.component';
 import { TaskComponent } from './components/tasks/task/task.component';
 import { TaskManagerComponent } from './components/tasks/task-manager/task-manager.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
-  declarations: [AppComponent, TimerComponent, TaskListComponent, TaskComponent, TaskManagerComponent],
+  declarations: [
+    AppComponent,
+    TimerComponent,
+    TaskListComponent,
+    TaskComponent,
+    TaskManagerComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
-    FormsModule
+    FormsModule,
+    DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]

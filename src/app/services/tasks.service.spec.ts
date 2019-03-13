@@ -2,28 +2,87 @@ import { TestBed } from '@angular/core/testing';
 
 import { TasksService } from './tasks.service';
 
+let service: TasksService;
+const mockTaskList = [
+  {
+    id: 0,
+    title: 'This is a title',
+    reference: '1111',
+    description: 'This is a description',
+    timeWorked: [
+      { amount: 1312000, timestamp: 2321313131 },
+      { amount: 1312000, timestamp: 2321313131 },
+      { amount: 1312000, timestamp: 2321313131 }
+    ]
+  },
+  {
+    id: 1,
+    title: 'This is the second title',
+    reference: '22ND',
+    description: 'This is a new description',
+    timeWorked: []
+  },
+  {
+    id: 2,
+    title: 'This is the third title',
+    reference: '33AF',
+    description: 'This is a description',
+    timeWorked: [
+      { amount: 33, timestamp: 2321313131 },
+      { amount: 99, timestamp: 2321313131 },
+      { amount: 1113231312, timestamp: 2321313131 }
+    ]
+  },
+  {
+    id: 4,
+    title: 'This is a new task',
+    reference: '33AF',
+    description: 'This is a description',
+    timeWorked: [
+      { amount: 99999, timestamp: Date.now() },
+      { amount: 1312000, timestamp: Date.now() },
+      { amount: 1312000, timestamp: Date.now() }
+    ]
+  }
+];
+
 describe('TasksService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.get(TasksService);
+  });
 
   it('should be created', () => {
-    const service: TasksService = TestBed.get(TasksService);
     expect(service).toBeTruthy();
   });
 
   it('should start with an emtpy collection', () => {
-    expect(true).toBe(false);
+    expect(service.taskList).toEqual([]);
   });
 
   it('should start with an initialized emtpy observable', () => {
-    expect(true).toBe(false);
+    expect(service.taskList$.getValue()).toEqual([]);
   });
 
   describe('task creation', () => {
     it('should have 1 extra element if one task is added', () => {
-      expect(true).toBe(false);
+      const testTitle = 'Test title';
+      const testDesc = 'Test description';
+      const testRef = 'AFFG2333';
+      service.addTask(testTitle, testDesc, testRef);
+      expect(service.taskList.length).toBe(1);
+
+      service.addTask(testTitle, testDesc, testRef);
+      service.addTask(testTitle, testDesc, testRef);
+      expect(service.taskList.length).toBe(3);
     });
     it('should have one element if task is added and collection was empty', () => {
-      expect(true).toBe(false);
+      expect(service.taskList.length).toBe(0);
+      const testTitle = 'Test title';
+      const testDesc = 'Test description';
+      const testRef = 'AFFG2333';
+      service.addTask(testTitle, testDesc, testRef);
+      expect(service.taskList.length).toBe(1);
     });
     it('should contain the task, after the add process is completed', () => {
       expect(true).toBe(false);
@@ -38,7 +97,14 @@ describe('TasksService', () => {
       expect(true).toBe(false);
     });
     it('should allow duplicated tasks', () => {
-      expect(true).toBe(false);
+      expect(service.taskList.length).toBe(0);
+      const testTitle = 'Test title';
+      const testDesc = 'Test description';
+      const testRef = 'AFFG2333';
+      service.addTask(testTitle, testDesc, testRef);
+      expect(service.taskList.length).toBe(1);
+      service.addTask(testTitle, testDesc, testRef);
+      expect(service.taskList.length).toBe(2);
     });
     it('should trigger the observable after a new task is added', () => {
       expect(true).toBe(false);

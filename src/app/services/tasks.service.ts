@@ -49,12 +49,12 @@ const mockTaskList = [
 })
 export class TasksService {
   private _taskList;
-  private _taskList$: BehaviorSubject<any[]>;
+  private _taskList$: BehaviorSubject<Task[]>;
 
-  public get taskList$(): BehaviorSubject<any[]> {
+  public get taskList$(): BehaviorSubject<Task[]> {
     return this._taskList$;
   }
-  public set taskList$(value: BehaviorSubject<any[]>) {
+  public set taskList$(value: BehaviorSubject<Task[]>) {
     this._taskList$ = value;
   }
 
@@ -66,7 +66,26 @@ export class TasksService {
   }
 
   constructor() {
-    this.taskList = mockTaskList;
+    this.taskList$ = new BehaviorSubject<Task[]>([]);
+    this.taskList = [];
+  }
+
+  public getNextId() {
+    return 1;
+  }
+
+  public addTask(title, reference, description) {
+    const newTask: Task = {
+      id: this.getNextId(),
+      title,
+      reference,
+      description,
+      timeWorked: [],
+      status: 'todo',
+      visible: true
+    };
+    this.taskList.push(newTask);
+    this.taskList$.next(this.taskList);
   }
 }
 
@@ -76,6 +95,8 @@ export interface Task {
   reference: string;
   description: string;
   timeWorked: TaskTime[];
+  status: 'todo' | 'in progress' | 'done' | 'archived';
+  visible?: boolean;
 }
 
 export interface TaskTime {
