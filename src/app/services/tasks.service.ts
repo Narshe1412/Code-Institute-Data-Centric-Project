@@ -178,14 +178,43 @@ export class TasksService {
     const taskIndex = tasklist.findIndex(x => x.id === id);
     const taskstatus = tasklist[taskIndex].status;
     let newStatus = status.indexOf(taskstatus);
-    newStatus = newStatus >= status.length ? newStatus : newStatus++;
+    newStatus = newStatus >= status.length - 1 ? newStatus : ++newStatus;
     tasklist[taskIndex].status = status[newStatus];
     this.taskList$.next(tasklist);
   }
 
   public updateTaskStatus(id: number, newStatus: TaskStatus, tasklist = this.taskList) {
+    // Test if newStatus is a value from the TaskStatus enum.
+    if (Object.values(TaskStatus).includes(newStatus)) {
+      // Find the matching task using the id
+      const taskIndex = tasklist.findIndex(x => x.id === id);
+      if (taskIndex >= 0) {
+        // Only update if task exists
+        tasklist[taskIndex].status = newStatus;
+        // Force update the observable
+        this.taskList$.next(tasklist);
+      }
+    }
+  }
+
+  public addTimeToTask(id: number, time: number, tasklist = this.taskList) {
+    time = Math.abs(time);
     const taskIndex = tasklist.findIndex(x => x.id === id);
-    tasklist[taskIndex].status = newStatus;
-    this.taskList$.next(tasklist);
+    if (taskIndex >= 0) {
+      tasklist[taskIndex].timeWorked.push({ amount: time, timestamp: Date.now() });
+      this.taskList$.next(tasklist);
+    }
+  }
+
+  public getTotalTimeFromTask(id: number, tasklist = this.taskList): number {
+    let totalTime = -1;
+    const taskIndex = tasklist.findIndex(x => x.id === id);
+    if (taskIndex >= 0) {
+      totalTime = tasklist[taskIndex].timeWorked.reduce(
+        (total, current) => (total += current.amount),
+        0
+      );
+    }
+    return totalTime;
   }
 }

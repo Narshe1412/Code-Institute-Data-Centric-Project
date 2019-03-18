@@ -50,6 +50,11 @@ describe('TasksService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.get(TasksService);
+    jasmine.clock().install();
+  });
+
+  afterEach(() => {
+    jasmine.clock().uninstall();
   });
 
   it('should be created', () => {
@@ -402,80 +407,139 @@ describe('TasksService', () => {
 
   describe('advance task status', () => {
     it('should move task from todo to inprogress', () => {
-      expect(true).toBe(false);
+      service.addTask('test', 'test', 'test');
+      service.advanceTaskStatus(1);
+      expect(service.taskList[0].status).toBe(TaskStatus.InProgress);
     });
 
     it('should move task from inprogress to done', () => {
-      expect(true).toBe(false);
+      service.addTask('test', 'test', 'test');
+      service.advanceTaskStatus(1);
+      service.advanceTaskStatus(1);
+      expect(service.taskList[0].status).toBe(TaskStatus.Done);
     });
 
     it('should move task from done to archived', () => {
-      expect(true).toBe(false);
+      service.addTask('test', 'test', 'test');
+      service.advanceTaskStatus(1);
+      service.advanceTaskStatus(1);
+      service.advanceTaskStatus(1);
+      expect(service.taskList[0].status).toBe(TaskStatus.Archived);
     });
 
     it('should not move a task from archived to a bogus state', () => {
-      expect(true).toBe(false);
+      service.addTask('test', 'test', 'test');
+      service.advanceTaskStatus(1);
+      service.advanceTaskStatus(1);
+      service.advanceTaskStatus(1);
+      service.advanceTaskStatus(1);
+      expect(service.taskList[0].status).toBe(TaskStatus.Archived);
     });
   });
 
   describe('update task status', () => {
     it('should update a task status to the new status provided', () => {
-      expect(true).toBe(false);
+      service.addTask('test', 'test', 'test');
+      service.updateTaskStatus(1, TaskStatus.Archived);
+      expect(service.taskList[0].status).toBe(TaskStatus.Archived);
     });
 
     it('should only update the task passed by parameter, not others', () => {
-      expect(true).toBe(false);
+      service.addTask('test', 'test', 'test');
+      service.addTask('test', 'test', 'test');
+      service.addTask('test', 'test', 'test');
+      service.updateTaskStatus(2, TaskStatus.Archived);
+      expect(service.taskList[1].status).toBe(TaskStatus.Archived);
+      expect(service.taskList[0].status).toBe(TaskStatus.Todo);
+      expect(service.taskList[2].status).toBe(TaskStatus.Todo);
     });
 
     it('should not update a task to an incorrect state', () => {
-      expect(true).toBe(false);
+      service.addTask('test', 'test', 'test');
+      service.updateTaskStatus(1, null);
+      expect(service.taskList[0].status).toBe(TaskStatus.Todo);
     });
 
     it('should not update a non existent task', () => {
-      expect(true).toBe(false);
+      service.addTask('test', 'test', 'test');
+      service.updateTaskStatus(2, TaskStatus.Archived);
+      expect(service.taskList[0].status).toBe(TaskStatus.Todo);
+      expect(service.taskList.length).toBe(1);
     });
   });
 
-  describe('time record integration', () => {
+  describe('Record time invested in task functionality', () => {
     describe('add time to task', () => {
       it('should add the time to the task', () => {
-        expect(true).toBe(false);
+        service.addTask('test', 'test', 'test');
+        spyOn(Date, 'now').and.returnValue(111111);
+        service.addTimeToTask(1, 222);
+        expect(service.taskList[0].timeWorked[0]).toEqual({ amount: 222, timestamp: 111111 });
       });
 
       it('should not error when adding the time to a non-existent task', () => {
-        expect(true).toBe(false);
+        service.addTimeToTask(9, 3333);
+        expect(service.taskList.length).toBe(0);
       });
 
       it('should convert negative times to positive before adding them', () => {
-        expect(true).toBe(false);
+        service.addTask('test', 'test', 'test');
+        spyOn(Date, 'now').and.returnValue(111111);
+        service.addTimeToTask(1, -3333);
+        expect(service.taskList[0].timeWorked[0]).toEqual({ amount: 3333, timestamp: 111111 });
+      });
+
+      it('should allow to add multiple times to a task', () => {
+        service.addTask('test', 'test', 'test');
+        spyOn(Date, 'now').and.returnValue(111111);
+        service.addTimeToTask(1, -3333);
+        service.addTimeToTask(1, 3333);
+        service.addTimeToTask(1, 0);
+        expect(service.taskList[0].timeWorked.length).toEqual(3);
       });
     });
 
     describe('get total time from task', () => {
       it('should always display positive time or zero', () => {
-        expect(true).toBe(false);
+        service.addTask('test', 'test', 'test');
+        spyOn(Date, 'now').and.returnValue(111111);
+        service.addTimeToTask(1, -3333);
+        service.addTimeToTask(1, -333);
+
+        expect(service.getTotalTimeFromTask(1)).toBeGreaterThanOrEqual(0);
       });
 
       it('should return the sum of times recorded for a particular task', () => {
-        expect(true).toBe(false);
+        service.addTask('test', 'test', 'test');
+        spyOn(Date, 'now').and.returnValue(111111);
+        service.addTimeToTask(1, -3333);
+        service.addTimeToTask(1, -1111);
+        const total = Math.abs(-3333 - 1111);
+        expect(service.getTotalTimeFromTask(1)).toEqual(total);
       });
 
       it('should display zero for tasks that have no recorded time', () => {
-        expect(true).toBe(false);
-      });
-
-      it('should return time in milliseconds', () => {
-        expect(true).toBe(false);
+        service.addTask('test', 'test', 'test');
+        expect(service.getTotalTimeFromTask(1)).toEqual(0);
       });
     });
 
     describe('get list of recorded times and dates', () => {
       it('should return an array of times and timestamps', () => {
-        expect(true).toBe(false);
+        service.addTask('test', 'test', 'test');
+        spyOn(Date, 'now').and.returnValue(111111);
+        service.addTimeToTask(1, -3333);
+        service.addTimeToTask(1, -1111);
+
+        expect(service.taskList[0].timeWorked.length).toEqual(2);
+        expect(service.taskList[0].timeWorked[0]).toEqual({ amount: 3333, timestamp: 111111 });
+        expect(service.taskList[0].timeWorked[1]).toEqual({ amount: 1111, timestamp: 111111 });
       });
 
       it('should return an empty array if task has no recorded times', () => {
-        expect(true).toBe(false);
+        service.addTask('test', 'test', 'test');
+        expect(service.taskList[0].timeWorked.length).toEqual(0);
+        expect(service.taskList[0].timeWorked).toEqual([]);
       });
     });
   });
