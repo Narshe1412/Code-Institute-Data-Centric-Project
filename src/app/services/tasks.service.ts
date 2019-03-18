@@ -100,8 +100,8 @@ export class TasksService {
     return this.currentId++;
   }
 
-  public addTask(title: string, reference: any, description: string): Task {
-    if (title && reference && description) {
+  public addTask(title: string, reference: any, description = ''): Task {
+    if (title && reference) {
       const newTask: Task = {
         id: this.getNextId(),
         title,
