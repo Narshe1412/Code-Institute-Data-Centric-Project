@@ -7,8 +7,15 @@ export interface Task {
   reference: string;
   description: string;
   timeWorked: TaskTime[];
-  status: 'todo' | 'in progress' | 'done' | 'archived';
+  status: TaskStatus;
   visible?: boolean;
+}
+
+export enum TaskStatus {
+  Todo = 'todo',
+  InProgress = 'in progress',
+  Done = 'done',
+  Archived = 'archived'
 }
 
 // These properties are read only or can only be changed by calling their respective methods
@@ -67,7 +74,7 @@ const mockTaskList = [
 })
 export class TasksService {
   private currentId = 1;
-  private _taskList;
+  private _taskList: Task[];
   private _taskList$: BehaviorSubject<Task[]>;
 
   public get taskList$(): BehaviorSubject<Task[]> {
@@ -101,7 +108,7 @@ export class TasksService {
         reference,
         description,
         timeWorked: [],
-        status: 'todo',
+        status: TaskStatus.Todo,
         visible: true
       };
       this.taskList.push(newTask);
@@ -114,9 +121,17 @@ export class TasksService {
     if (this.taskList.length === 0) {
       return [];
     }
-    const foundtaskIndex = this.taskList.findIndex((t: Task) =>
-      id ? t.id === id : task.id === t.id
-    );
+    const foundtaskIndex = this.taskList.findIndex((t: Task) => {
+      if (id) {
+        return t.id === id;
+      } else if (task) {
+        return (
+          t.reference === task.reference &&
+          t.description === task.description &&
+          t.title === task.title
+        );
+      }
+    });
     if (foundtaskIndex >= 0) {
       this.taskList.splice(foundtaskIndex, 1);
       this.taskList$.next(this.taskList);
@@ -137,7 +152,7 @@ export class TasksService {
       reference: '',
       description: '',
       timeWorked: [],
-      status: 'todo',
+      status: TaskStatus.Todo,
       visible: true
     };
     Object.keys(contents).forEach(prop => {
@@ -151,5 +166,26 @@ export class TasksService {
       this.taskList$.next(this.taskList);
     }
     return this.taskList;
+  }
+
+  public advanceTaskStatus(id: number, tasklist = this.taskList) {
+    const status: TaskStatus[] = [
+      TaskStatus.Todo,
+      TaskStatus.InProgress,
+      TaskStatus.Done,
+      TaskStatus.Archived
+    ];
+    const taskIndex = tasklist.findIndex(x => x.id === id);
+    const taskstatus = tasklist[taskIndex].status;
+    let newStatus = status.indexOf(taskstatus);
+    newStatus = newStatus >= status.length ? newStatus : newStatus++;
+    tasklist[taskIndex].status = status[newStatus];
+    this.taskList$.next(tasklist);
+  }
+
+  public updateTaskStatus(id: number, newStatus: TaskStatus, tasklist = this.taskList) {
+    const taskIndex = tasklist.findIndex(x => x.id === id);
+    tasklist[taskIndex].status = newStatus;
+    this.taskList$.next(tasklist);
   }
 }

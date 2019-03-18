@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { skip } from 'rxjs/operators';
-import { TasksService, Task } from './tasks.service';
+import { TasksService, Task, TaskStatus } from './tasks.service';
 
 let service: TasksService;
 const mockTaskList = [
@@ -106,7 +106,7 @@ describe('TasksService', () => {
         reference: testRef,
         description: testDesc,
         timeWorked: [],
-        status: 'todo',
+        status: TaskStatus.Todo,
         visible: true
       };
       expect(expected).toEqual(service.taskList[0]);
@@ -128,7 +128,7 @@ describe('TasksService', () => {
         reference: testRef,
         description: testDesc,
         timeWorked: [],
-        status: 'todo',
+        status: TaskStatus.Todo,
         visible: true
       };
 
@@ -141,7 +141,7 @@ describe('TasksService', () => {
         reference: testRef2,
         description: testDesc2,
         timeWorked: [],
-        status: 'todo',
+        status: TaskStatus.Todo,
         visible: true
       };
 
@@ -176,7 +176,7 @@ describe('TasksService', () => {
         reference: testRef,
         description: testDesc,
         timeWorked: [],
-        status: 'todo',
+        status: TaskStatus.Todo,
         visible: true
       };
 
@@ -262,7 +262,8 @@ describe('TasksService', () => {
 
       service.updateTaskById(1, { strangeProp: 'NEWREF' });
 
-      expect(service.taskList[0]).not.toEqual(jasmine.objectContaining({ strangeProp: 'NEWREF' }));
+      // expect(service.taskList[0]).not.toEqual(jasmine.objectContaining({ strangeProp: 'NEWREF' }));
+      expect(service.taskList[0].hasOwnProperty('strangeProp')).toBeFalsy();
     });
   });
 
@@ -277,7 +278,7 @@ describe('TasksService', () => {
         reference: testRef,
         description: testDesc,
         timeWorked: [],
-        status: 'todo',
+        status: TaskStatus.Todo,
         visible: true
       };
       service.addTask(testTitle, testRef, testDesc);
@@ -314,27 +315,168 @@ describe('TasksService', () => {
     });
 
     it('should not cause an error if trying to delete an empty collection', () => {
-      expect(true).toBe(false);
+      expect(() => service.deleteTaskById(0)).not.toThrow();
     });
 
     it('should ONLY delete the task we pass by parameter, the other remains intact', () => {
-      expect(true).toBe(false);
+      service.addTask('test', 'ref', 'desc');
+      const testTitle = 'Test title';
+      const testDesc = 'Test description';
+      const testRef = 'AFFG2333';
+      const toDelete: Task = {
+        id: 1,
+        title: testTitle,
+        reference: testRef,
+        description: testDesc,
+        timeWorked: [],
+        status: TaskStatus.Todo,
+        visible: true
+      };
+      service.addTask(testTitle, testRef, testDesc);
+      service.addTask('test3', 'ref3', 'desc3');
+
+      service.deleteTask(toDelete);
+
+      const emptyResult = service.taskList.find((x: Task) => x.reference === testRef);
+      expect(emptyResult).toBeFalsy();
+      const anyResult = service.taskList.find((x: Task) => x.reference !== testRef);
+      expect(anyResult).toBeTruthy();
+      expect(service.taskList.length).toBe(2);
     });
 
     it('should ignore calls without the required parameters', () => {
-      expect(true).toBe(false);
+      service.addTask('test3', 'ref3', 'desc3');
+      service.addTask('test3', 'ref3', 'desc3');
+
+      service.deleteTask();
+
+      expect(service.taskList.length).toBe(2);
     });
 
     it('should not delete a task that does not exists', () => {
-      expect(true).toBe(false);
+      service.addTask('test', 'ref', 'desc');
+      const testTitle = 'Test title';
+      const testDesc = 'Test description';
+      const testRef = 'AFFG2333';
+      const toDelete: Task = {
+        id: 1,
+        title: testTitle,
+        reference: testRef,
+        description: testDesc,
+        timeWorked: [],
+        status: TaskStatus.Todo,
+        visible: true
+      };
+      service.addTask('test3', 'ref3', 'desc3');
+
+      expect(service.taskList.length).toBe(2);
+      service.deleteTask(toDelete);
+      expect(service.taskList.length).toBe(2);
     });
 
     it('should trigger the observable after the task is deleted', () => {
-      expect(true).toBe(false);
+      service.addTask('1', '2', '3');
+
+      service.taskList$
+        .pipe(skip(1))
+        .subscribe((res: Task[]) => expect(service.taskList.length).toEqual(0));
+
+      service.deleteTaskById(0);
     });
 
     it('should allow iteration over the collection after a task is deleted i.e. no "holes"', () => {
+      service.addTask('1', '1', '1');
+      service.addTask('2', '2', '2');
+      service.addTask('3', '3', '3');
+
+      service.deleteTaskById(1);
+
+      function arrayRunner(el) {
+        expect(el).toBeTruthy();
+      }
+      for (const task of service.taskList) {
+        arrayRunner(task);
+      }
+    });
+  });
+
+  describe('advance task status', () => {
+    it('should move task from todo to inprogress', () => {
       expect(true).toBe(false);
+    });
+
+    it('should move task from inprogress to done', () => {
+      expect(true).toBe(false);
+    });
+
+    it('should move task from done to archived', () => {
+      expect(true).toBe(false);
+    });
+
+    it('should not move a task from archived to a bogus state', () => {
+      expect(true).toBe(false);
+    });
+  });
+
+  describe('update task status', () => {
+    it('should update a task status to the new status provided', () => {
+      expect(true).toBe(false);
+    });
+
+    it('should only update the task passed by parameter, not others', () => {
+      expect(true).toBe(false);
+    });
+
+    it('should not update a task to an incorrect state', () => {
+      expect(true).toBe(false);
+    });
+
+    it('should not update a non existent task', () => {
+      expect(true).toBe(false);
+    });
+  });
+
+  describe('time record integration', () => {
+    describe('add time to task', () => {
+      it('should add the time to the task', () => {
+        expect(true).toBe(false);
+      });
+
+      it('should not error when adding the time to a non-existent task', () => {
+        expect(true).toBe(false);
+      });
+
+      it('should convert negative times to positive before adding them', () => {
+        expect(true).toBe(false);
+      });
+    });
+
+    describe('get total time from task', () => {
+      it('should always display positive time or zero', () => {
+        expect(true).toBe(false);
+      });
+
+      it('should return the sum of times recorded for a particular task', () => {
+        expect(true).toBe(false);
+      });
+
+      it('should display zero for tasks that have no recorded time', () => {
+        expect(true).toBe(false);
+      });
+
+      it('should return time in milliseconds', () => {
+        expect(true).toBe(false);
+      });
+    });
+
+    describe('get list of recorded times and dates', () => {
+      it('should return an array of times and timestamps', () => {
+        expect(true).toBe(false);
+      });
+
+      it('should return an empty array if task has no recorded times', () => {
+        expect(true).toBe(false);
+      });
     });
   });
 });
