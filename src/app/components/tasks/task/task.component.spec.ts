@@ -5,6 +5,7 @@ import { Task } from 'src/app/services/tasks.service';
 import { MatPaginatorModule, MatTableModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TimePipe } from 'src/app/pipes/time.pipe';
 
 const mock: Task = {
   id: 0,
@@ -25,7 +26,7 @@ describe('TaskComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TaskComponent],
+      declarations: [TaskComponent, TimePipe],
       imports: [BrowserAnimationsModule, MatTableModule, MatPaginatorModule, FormsModule]
     }).compileComponents();
   }));

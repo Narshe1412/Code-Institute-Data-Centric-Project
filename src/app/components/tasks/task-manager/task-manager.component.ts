@@ -24,9 +24,9 @@ export class TaskManagerComponent implements OnInit {
       reference: '1111',
       description: 'This is a description',
       timeWorked: [
-        { amount: 1000, timestamp: Date.now() },
-        { amount: 1000, timestamp: Date.now() },
-        { amount: 1000, timestamp: Date.now() }
+        { amount: 15000, timestamp: Date.now() - 19999990000 },
+        { amount: 111000, timestamp: Date.now() - 5000000000 },
+        { amount: 900000, timestamp: Date.now() }
       ]
     };
     this.taskService.taskList.push(mock);

@@ -20,8 +20,8 @@
         <!-- Time Column -->
         <ng-container matColumnDef="time">
           <th mat-header-cell *matHeaderCellDef>Total Time</th>
-          <td mat-cell *matCellDef="let element">{{ element.amount / 1000 }}s.</td>
-          <td mat-footer-cell *matFooterCellDef>{{ getTotalTime() / 1000 }}s.</td>
+          <td mat-cell *matCellDef="let element">{{ element.amount | time }}s.</td>
+          <td mat-footer-cell *matFooterCellDef>{{ getTotalTime() | time }}s.</td>
         </ng-container>
 
         <!-- Timestamp Column -->

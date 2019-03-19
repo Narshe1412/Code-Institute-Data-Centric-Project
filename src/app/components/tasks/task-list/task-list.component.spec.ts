@@ -5,6 +5,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TaskListComponent } from './task-list.component';
 import { Task } from 'src/app/services/tasks.service';
 import { MatPaginatorModule, MatTableModule } from '@angular/material';
+import { TimePipe } from 'src/app/pipes/time.pipe';
 
 const mock: Task = {
   id: 0,
@@ -25,7 +26,7 @@ describe('TaskListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TaskListComponent, TaskComponent],
+      declarations: [TaskListComponent, TaskComponent, TimePipe],
       imports: [MatTableModule, MatPaginatorModule, FormsModule]
     }).compileComponents();
   }));
