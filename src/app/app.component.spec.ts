@@ -9,6 +9,7 @@ import { TaskManagerComponent } from './components/tasks/task-manager/task-manag
 import { TaskListComponent } from './components/tasks/task-list/task-list.component';
 import { TaskComponent } from './components/tasks/task/task.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TimePipe } from './pipes/time.pipe';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -26,7 +27,8 @@ describe('AppComponent', () => {
         TimerComponent,
         TaskManagerComponent,
         TaskListComponent,
-        TaskComponent
+        TaskComponent,
+        TimePipe
       ]
       // schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();

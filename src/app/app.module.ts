@@ -32,6 +32,7 @@ import { TimePipe } from './pipes/time.pipe';
     MatTableModule,
     MatPaginatorModule
   ],
+  exports: [TimePipe],
   providers: [],
   bootstrap: [AppComponent]
 })
