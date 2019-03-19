@@ -1,6 +1,7 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 
 import { TimerService } from './timer.service';
+import { SettingsService } from './settings.service';
 
 describe('TimerService', () => {
   let timer;
@@ -321,6 +322,71 @@ describe('TimerService', () => {
       const expected = '300';
       const actual = timer.getDisplayHours();
       expect(actual).toBe(expected);
+    });
+  });
+
+  describe('reset timer', () => {
+    it('should make the time status the system default after the reset', inject(
+      [SettingsService],
+      (injectService: SettingsService) => {
+        timer.currentTime = 1900;
+        const expected = injectService.timerStartAmount;
+        timer.resetTimer();
+        expect(timer.currentTime).toEqual(expected);
+      }
+    ));
+  });
+  describe('getDisplayTimeInHHMMSS', () => {
+    it('should propery display seconds if time is less than 1 minute', () => {
+      const sut = 22 * 1000;
+      const expected = '00:00:22';
+      const actual = timer.getDisplayTimeInHHMMSS(sut);
+      expect(expected).toEqual(actual);
+    });
+    it('should propery display minutes if time is less than 1 hour', () => {
+      const sut = 29 * 60 * 1000;
+      const expected = '00:29:00';
+      const actual = timer.getDisplayTimeInHHMMSS(sut);
+      expect(expected).toEqual(actual);
+    });
+    it('should propery display hours if time is higher than 1 hour', () => {
+      const sut = 55 * 60 * 60 * 1000;
+      const expected = '55:00:00';
+      const actual = timer.getDisplayTimeInHHMMSS(sut);
+      expect(expected).toEqual(actual);
+    });
+    it('should propery display time', () => {
+      const sut = 99 * 60 * 60 * 1000 + 22 * 60 * 1000 + 11 * 1000;
+      const expected = '99:22:11';
+      const actual = timer.getDisplayTimeInHHMMSS(sut);
+      expect(expected).toEqual(actual);
+    });
+  });
+  describe('changeTimeByAmount', () => {
+    it('should decrease timer by 1 if we call the function with -1 increment', () => {
+      timer.currentTime = 19000;
+      timer.changeTimeByAmount(-1);
+      expect(timer.currentTime).toEqual(18000);
+    });
+    it('should increase timer by 1 if we call the function with 1 increment', () => {
+      timer.currentTime = 19000;
+      timer.changeTimeByAmount(1);
+      expect(timer.currentTime).toEqual(20000);
+    });
+    it('should decrease timer by 1 if we call the function default increment', inject(
+      [SettingsService],
+      (injectService: SettingsService) => {
+        timer.currentTime = 19000;
+        timer.changeTimeByAmount();
+        const expected = 19000 + injectService.countingAmount * 1000;
+        expect(timer.currentTime).toEqual(expected);
+      }
+    ));
+    it('should increase timer by custom amount if we call the function custom increment (65 for testing)', () => {
+      timer.currentTime = 19000;
+      timer.changeTimeByAmount(65);
+      const expected = 19000 + 65000;
+      expect(timer.currentTime).toEqual(expected);
     });
   });
 });

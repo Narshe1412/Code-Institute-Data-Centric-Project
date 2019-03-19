@@ -190,21 +190,23 @@ describe('TasksService', () => {
       service.addTask(testTitle, testRef, testDesc);
     });
 
-    it('getID should return 1 on initial load', () => {
-      const startid = service.getNextId();
+    describe('getID', () => {
+      it('should return 1 on initial load', () => {
+        const startid = service.getNextId();
 
-      expect(startid).toBe(1);
-    });
+        expect(startid).toBe(1);
+      });
 
-    it('getID should return an incremental value based on the amount of tasks created', () => {
-      const startid = service.getNextId();
-      expect(startid).toBe(1);
+      it('should return an incremental value based on the amount of tasks created', () => {
+        const startid = service.getNextId();
+        expect(startid).toBe(1);
 
-      service.addTask('test', 'test', 'test');
-      service.addTask('test', 'test', 'test');
-      const idafter3calls = service.getNextId();
+        service.addTask('test', 'test', 'test');
+        service.addTask('test', 'test', 'test');
+        const idafter3calls = service.getNextId();
 
-      expect(idafter3calls).toBe(4);
+        expect(idafter3calls).toBe(4);
+      });
     });
   });
 
