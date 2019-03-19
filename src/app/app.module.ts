@@ -11,6 +11,7 @@ import { TaskListComponent } from './components/tasks/task-list/task-list.compon
 import { TaskComponent } from './components/tasks/task/task.component';
 import { TaskManagerComponent } from './components/tasks/task-manager/task-manager.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TimePipe } from './pipes/time.pipe';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     TimerComponent,
     TaskListComponent,
     TaskComponent,
-    TaskManagerComponent
+    TaskManagerComponent,
+    TimePipe
   ],
   imports: [
     BrowserModule,
