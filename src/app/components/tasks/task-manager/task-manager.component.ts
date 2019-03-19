@@ -17,6 +17,19 @@ export class TaskManagerComponent implements OnInit {
     this.task = {};
     this.statusType = Object.values(TaskStatus);
     this.taskList = this.taskService.taskList;
+    const mock: Task = {
+      id: 0,
+      status: null,
+      title: 'This is a title',
+      reference: '1111',
+      description: 'This is a description',
+      timeWorked: [
+        { amount: 1000, timestamp: Date.now() },
+        { amount: 1000, timestamp: Date.now() },
+        { amount: 1000, timestamp: Date.now() }
+      ]
+    };
+    this.taskService.taskList.push(mock);
   }
 
   newTask() {
