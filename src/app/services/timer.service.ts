@@ -12,7 +12,7 @@ export enum TimerStatus {
 })
 export class TimerService {
   private _timer$;
-  private _timerStatus: TimerStatus;
+  // private _timerStatus: TimerStatus;
   private _timerStatus$: BehaviorSubject<TimerStatus>;
   private _currentTime: number;
 
@@ -24,11 +24,10 @@ export class TimerService {
   }
 
   public get timerStatus(): TimerStatus {
-    return this._timerStatus;
+    return this.timerStatus$.getValue();
   }
   public set timerStatus(value: TimerStatus) {
-    this._timerStatus = value;
-    this.timerStatus$.next(this.timerStatus);
+    this.timerStatus$.next(value);
   }
 
   public get timerStatus$(): BehaviorSubject<TimerStatus> {

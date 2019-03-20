@@ -74,7 +74,6 @@ const mockTaskList = [
 })
 export class TasksService {
   private currentId = 1;
-  private _taskList: Task[];
   private _taskList$: BehaviorSubject<Task[]>;
 
   public get taskList$(): BehaviorSubject<Task[]> {
@@ -85,15 +84,14 @@ export class TasksService {
   }
 
   public get taskList() {
-    return this._taskList;
+    return this.taskList$.getValue();
   }
   public set taskList(value) {
-    this._taskList = value;
+    this.taskList$.next(value);
   }
 
   constructor() {
     this.taskList$ = new BehaviorSubject<Task[]>([]);
-    this.taskList = [];
   }
 
   public getNextId() {
