@@ -13,8 +13,8 @@ addons:
       - google-chrome-stable
   sonarcloud:
     organization: 'narshe1412-github' # the key of the org you chose at step #3
-    token:
-      secure: SONAR_TOKEN # encrypted value of your token
+    # token:
+    #   secure: SONAR_TOKEN # encrypted value of your token
 
 cache:
   directories:
