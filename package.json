@@ -9,7 +9,7 @@
     "coverage": "ng test --no-watch --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "cibuild": "ng test --watch=false --code-coverage && ng build --prod --no-progress"
+    "cibuild": "ng test --no-watch --code-coverage --browsers=ChromeHeadless && ng build --prod --no-progress"
   },
   "private": true,
   "dependencies": {
