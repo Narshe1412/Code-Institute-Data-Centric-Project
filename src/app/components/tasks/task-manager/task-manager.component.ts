@@ -22,7 +22,8 @@ export class TaskManagerComponent implements OnInit {
       status: null,
       title: 'This is a title',
       reference: '1111',
-      description: 'This is a description',
+      description:
+        'This is a very long description so we dont have to display the whole thing and we can just ... at the end',
       timeWorked: [
         { amount: 15000, timestamp: Date.now() - 19999990000 },
         { amount: 111000, timestamp: Date.now() - 5000000000 },

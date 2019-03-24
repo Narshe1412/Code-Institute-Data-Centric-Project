@@ -11,6 +11,8 @@ export class TaskComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() task;
   public statusType: TaskStatus[];
+  public isAnimated;
+  public expanded: false;
   displayedColumns: string[] = ['time', 'timestamp'];
   dataSource = new MatTableDataSource<TaskTime[]>();
   constructor(private taskService: TasksService) {}
@@ -28,6 +30,14 @@ export class TaskComponent implements OnInit {
 
   public advanceStatus() {
     this.taskService.advanceTaskStatus(this.task.id);
+  }
+
+  public setTaskStatusTo(newStatus: string) {
+    this.taskService.advanceTaskStatus(this.task.id, undefined, newStatus);
+  }
+
+  public deleteTask() {
+    this.taskService.deleteTask(this.task);
   }
 
   public getTotalTime() {

@@ -12,10 +12,10 @@ export interface Task {
 }
 
 export enum TaskStatus {
-  Todo = 'todo',
-  InProgress = 'in progress',
-  Done = 'done',
-  Archived = 'archived'
+  Todo = 'Todo',
+  InProgress = 'InProgress',
+  Done = 'Done',
+  Archived = 'Archived'
 }
 
 // These properties are read only or can only be changed by calling their respective methods
@@ -166,18 +166,22 @@ export class TasksService {
     return this.taskList;
   }
 
-  public advanceTaskStatus(id: number, tasklist = this.taskList) {
-    const status: TaskStatus[] = [
+  public advanceTaskStatus(id: number, tasklist = this.taskList, status?: string) {
+    const statusList: TaskStatus[] = [
       TaskStatus.Todo,
       TaskStatus.InProgress,
       TaskStatus.Done,
       TaskStatus.Archived
     ];
-    const taskIndex = tasklist.findIndex(x => x.id === id);
-    const taskstatus = tasklist[taskIndex].status;
-    let newStatus = status.indexOf(taskstatus);
-    newStatus = newStatus >= status.length - 1 ? newStatus : ++newStatus;
-    tasklist[taskIndex].status = status[newStatus];
+    const taskIndex = tasklist.findIndex(task => task.id === id);
+    if (status && TaskStatus[status]) {
+      tasklist[taskIndex].status = status as TaskStatus;
+    } else if (!status) {
+      const taskstatus = tasklist[taskIndex].status;
+      let newStatus = statusList.indexOf(taskstatus);
+      newStatus = newStatus >= statusList.length - 1 ? newStatus : ++newStatus;
+      tasklist[taskIndex].status = statusList[newStatus];
+    }
     this.taskList$.next(tasklist);
   }
 

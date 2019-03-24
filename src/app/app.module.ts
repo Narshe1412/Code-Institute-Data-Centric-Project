@@ -15,19 +15,12 @@ import { TimerComponent } from './components/timer/timer.component';
 import { TimePipe } from './pipes/time.pipe';
 
 // FA Icons
+import { faLock, faHourglassHalf, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import {
   faCheckSquare,
-  faCoffee,
-  faHourglassHalf,
-  faLock,
-  faLockOpen,
   faSquare,
-  faTrashAlt
-} from '@fortawesome/free-solid-svg-icons';
-
-import {
-  faSquare as farSquare,
-  faTrashAlt as farTrashAlt
+  faTrashAlt,
+  faPlayCircle
 } from '@fortawesome/free-regular-svg-icons';
 
 @NgModule({
@@ -57,15 +50,13 @@ import {
 export class AppModule {
   constructor() {
     library.add(
-      faCoffee,
       faCheckSquare, // Task Done
       faSquare, // Task to do
-      farSquare,
       faHourglassHalf, // Task in progress
       faLock, // Archived
       faLockOpen, // Archive task
       faTrashAlt, // Delete task
-      farTrashAlt
+      faPlayCircle // Start task
     );
   }
 }

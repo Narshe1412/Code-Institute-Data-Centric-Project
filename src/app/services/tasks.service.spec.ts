@@ -437,6 +437,23 @@ describe('TasksService', () => {
       service.advanceTaskStatus(1);
       expect(service.taskList[0].status).toBe(TaskStatus.Archived);
     });
+
+    it('should allow to manually pass a task status to update', () => {
+      service.addTask('test', 'test', 'test');
+      service.advanceTaskStatus(1, undefined, TaskStatus.Done);
+      expect(service.taskList[0].status).toBe(TaskStatus.Done);
+    });
+
+    it('should allow to manually pass a string for a task status to update', () => {
+      service.addTask('test', 'test', 'test');
+      service.advanceTaskStatus(1, undefined, 'Done');
+      expect(service.taskList[0].status).toBe(TaskStatus.Done);
+    });
+    it('should not allow to manually pass a random string for a task status to update', () => {
+      service.addTask('test', 'test', 'test');
+      service.advanceTaskStatus(1, undefined, 'dummy');
+      expect(service.taskList[0].status).toBe(TaskStatus.Todo);
+    });
   });
 
   describe('update task status', () => {
