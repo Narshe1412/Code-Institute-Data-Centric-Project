@@ -60,6 +60,9 @@ Basic Wireframe Setup for Mobile view and Desktop View
 State Machine for Timer Functionality
 ![State Machine for Timer](docs/img/sbm-timer.png 'State Machine for Timer')
 
+State Machine for Task Status
+![State Machine for Task](docs/img/sbm-task.png 'State Machine for Task')
+
 ## Features
 
 In this section, you should go over the different parts of your project, and describe each in a sentence or so.

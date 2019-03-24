@@ -1,17 +1,34 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgModule } from '@angular/core';
-import { MatToolbarModule, MatTableModule, MatPaginatorModule } from '@angular/material';
-
+import { FormsModule } from '@angular/forms';
+import { MatPaginatorModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TimerComponent } from './components/timer/timer.component';
-import { FormsModule } from '@angular/forms';
 import { TaskListComponent } from './components/tasks/task-list/task-list.component';
-import { TaskComponent } from './components/tasks/task/task.component';
 import { TaskManagerComponent } from './components/tasks/task-manager/task-manager.component';
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TaskComponent } from './components/tasks/task/task.component';
+import { TimerComponent } from './components/timer/timer.component';
 import { TimePipe } from './pipes/time.pipe';
+
+// FA Icons
+import {
+  faCheckSquare,
+  faCoffee,
+  faHourglassHalf,
+  faLock,
+  faLockOpen,
+  faSquare,
+  faTrashAlt
+} from '@fortawesome/free-solid-svg-icons';
+
+import {
+  faSquare as farSquare,
+  faTrashAlt as farTrashAlt
+} from '@fortawesome/free-regular-svg-icons';
 
 @NgModule({
   declarations: [
@@ -23,6 +40,7 @@ import { TimePipe } from './pipes/time.pipe';
     TimePipe
   ],
   imports: [
+    FontAwesomeModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -36,4 +54,18 @@ import { TimePipe } from './pipes/time.pipe';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    library.add(
+      faCoffee,
+      faCheckSquare, // Task Done
+      faSquare, // Task to do
+      farSquare,
+      faHourglassHalf, // Task in progress
+      faLock, // Archived
+      faLockOpen, // Archive task
+      faTrashAlt, // Delete task
+      farTrashAlt
+    );
+  }
+}
