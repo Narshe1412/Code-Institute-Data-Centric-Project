@@ -4,8 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { MatPaginatorModule, MatTableModule, MatToolbarModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TaskListComponent } from './components/tasks/task-list/task-list.component';
@@ -14,6 +12,8 @@ import { TaskComponent } from './components/tasks/task/task.component';
 import { TimerComponent } from './components/timer/timer.component';
 import { TimePipe } from './pipes/time.pipe';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
 // FA Icons
 import { faLock, faHourglassHalf, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import {

@@ -10,6 +10,7 @@ import { TaskListComponent } from './components/tasks/task-list/task-list.compon
 import { TaskComponent } from './components/tasks/task/task.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TimePipe } from './pipes/time.pipe';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -20,7 +21,9 @@ describe('AppComponent', () => {
         MatToolbarModule,
         FormsModule,
         MatTableModule,
-        MatPaginatorModule
+        MatPaginatorModule,
+    FontAwesomeModule,
+
       ],
       declarations: [
         AppComponent,

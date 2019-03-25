@@ -6,6 +6,7 @@ import { TaskListComponent } from './task-list.component';
 import { Task } from 'src/app/services/tasks.service';
 import { MatPaginatorModule, MatTableModule } from '@angular/material';
 import { TimePipe } from 'src/app/pipes/time.pipe';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const mock: Task = {
   id: 0,
@@ -27,7 +28,7 @@ describe('TaskListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TaskListComponent, TaskComponent, TimePipe],
-      imports: [MatTableModule, MatPaginatorModule, FormsModule]
+      imports: [MatTableModule, MatPaginatorModule, FormsModule, FontAwesomeModule]
     }).compileComponents();
   }));
 
