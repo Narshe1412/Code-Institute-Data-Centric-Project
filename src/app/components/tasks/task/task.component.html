@@ -1,47 +1,55 @@
 <div>
-  {{ task | json }}
-  <div id="task-bar-{{ task.id }}">
-    <div id="status-icons">
-      <div id="task-actual-status">
-        <fa-icon
-          *ngIf="task.status === 'Todo'"
-          [icon]="['far', 'play-circle']"
-          (click)="setTaskStatusTo('InProgress')"
-        ></fa-icon>
-        <fa-icon
-          *ngIf="task.status === 'InProgress'"
-          [icon]="['far', 'square']"
-          (click)="setTaskStatusTo('Done')"
-        ></fa-icon>
-        <fa-icon *ngIf="task.status === 'Done'" [icon]="['far', 'check-square']"></fa-icon>
-        <fa-icon *ngIf="task.status === 'Archived'" [icon]="['fas', 'lock']"></fa-icon>
-      </div>
-      <div id="task-delete-archive">
-        <fa-icon
-          *ngIf="task.status === 'Done'"
-          [icon]="['fas', 'lock-open']"
-          (click)="setTaskStatusTo('Archived')"
-        ></fa-icon>
-        <fa-icon
-          *ngIf="task.status !== 'Done' && task.status !== 'Archived'"
-          [icon]="['far', 'trash-alt']"
-          (click)="deleteTask()"
-        ></fa-icon>
+  <div class="task-bar">
+    <div id="task-bar-{{ task.id }}">
+      <div id="status-icons">
+        <div id="task-actual-status">
+          <fa-icon
+            *ngIf="task.status === 'Todo'"
+            [icon]="['far', 'play-circle']"
+            (click)="setTaskStatusTo('InProgress')"
+          ></fa-icon>
+          <fa-icon
+            *ngIf="task.status === 'InProgress'"
+            [icon]="['far', 'square']"
+            (click)="setTaskStatusTo('Done')"
+          ></fa-icon>
+          <fa-icon *ngIf="task.status === 'Done'" [icon]="['far', 'check-square']"></fa-icon>
+          <fa-icon *ngIf="task.status === 'Archived'" [icon]="['fas', 'lock']"></fa-icon>
+        </div>
+        <div id="task-delete-archive">
+          <fa-icon
+            *ngIf="task.status === 'Done'"
+            [icon]="['fas', 'lock-open']"
+            (click)="setTaskStatusTo('Archived')"
+          ></fa-icon>
+          <fa-icon
+            *ngIf="task.status !== 'Done' && task.status !== 'Archived'"
+            [icon]="['far', 'trash-alt']"
+            (click)="deleteTask()"
+          ></fa-icon>
+        </div>
       </div>
     </div>
-  </div>
-  <div id="title-bar">
-    <div class="task-ref fixed-sized-font">{{ task.reference }}</div>
-    <div class="task-title bold">{{ task.title }}</div>
-    <div class="task-description-hover">
-      This will be a hover msg
-      {{
-        task.description.length >= 50 ? task.description.substring(0, 50) + '...' : task.description
-      }}
+    <div id="title-bar">
+      <div class="task-ref fixed-sized-font">{{ task.reference }}</div>
+      <div class="task-title bold">{{ task.title }}</div>
+      <div class="task-description-hover">
+        This will be a hover msg
+        {{
+          task.description.length >= 50
+            ? task.description.substring(0, 50) + '...'
+            : task.description
+        }}
+      </div>
+      <div class="task-expand-details-btn">
+        <button class="form-control" id="show-time-details" (click)="expanded = !expanded">
+          ...
+        </button>
+      </div>
     </div>
   </div>
   <div>
-    <div class="form-group">
+    <div class="form-group" *ngIf="expanded">
       <label for="status">Task Status</label>
       <select class="form-control" id="status" required (change)="onSelectStatus($event)">
         <option
@@ -52,9 +60,6 @@
         >
       </select>
       <button class="form-control" id="adv-status" (click)="advanceStatus()">> > ></button>
-      <button class="form-control" id="show-time-details" (click)="expanded = !expanded">
-        ...
-      </button>
     </div>
   </div>
   <div class="time-list" *ngIf="expanded">

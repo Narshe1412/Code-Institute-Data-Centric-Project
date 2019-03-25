@@ -1,3 +1,4 @@
+import { AppModule } from './../../../app.module';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TaskComponent } from './task.component';
@@ -27,14 +28,10 @@ describe('TaskComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TaskComponent, TimePipe],
-      imports: [
-        BrowserAnimationsModule,
-        MatTableModule,
-        MatPaginatorModule,
-        FormsModule,
-        FontAwesomeModule
-      ]
+      declarations: [
+        // TaskComponent, TimePipe
+      ],
+      imports: [BrowserAnimationsModule, MatTableModule, MatPaginatorModule, FormsModule, AppModule]
     }).compileComponents();
   }));
 

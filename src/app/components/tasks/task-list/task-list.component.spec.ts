@@ -1,3 +1,4 @@
+import { AppModule } from './../../../app.module';
 import { FormsModule } from '@angular/forms';
 import { TaskComponent } from './../task/task.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -27,8 +28,12 @@ describe('TaskListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TaskListComponent, TaskComponent, TimePipe],
-      imports: [MatTableModule, MatPaginatorModule, FormsModule, FontAwesomeModule]
+      declarations: [
+        // TaskListComponent,
+        // TaskComponent,
+        // TimePipe
+      ],
+      imports: [MatTableModule, MatPaginatorModule, FormsModule, AppModule]
     }).compileComponents();
   }));
 

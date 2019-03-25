@@ -1,3 +1,4 @@
+import { AppModule } from './app.module';
 import { FormsModule } from '@angular/forms';
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -22,16 +23,15 @@ describe('AppComponent', () => {
         FormsModule,
         MatTableModule,
         MatPaginatorModule,
-    FontAwesomeModule,
-
+        AppModule
       ],
       declarations: [
-        AppComponent,
-        TimerComponent,
-        TaskManagerComponent,
-        TaskListComponent,
-        TaskComponent,
-        TimePipe
+        // AppComponent,
+        // TimerComponent,
+        // TaskManagerComponent,
+        // TaskListComponent,
+        // TaskComponent,
+        // TimePipe
       ]
       // schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();

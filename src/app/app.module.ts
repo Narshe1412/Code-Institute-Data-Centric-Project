@@ -43,7 +43,7 @@ import {
     MatTableModule,
     MatPaginatorModule
   ],
-  exports: [TimePipe],
+  exports: [TimePipe, FontAwesomeModule],
   providers: [],
   bootstrap: [AppComponent]
 })

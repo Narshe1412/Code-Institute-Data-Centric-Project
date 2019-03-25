@@ -2,12 +2,27 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { TaskStatus, TasksService, Task, TaskTime } from 'src/app/services/tasks.service';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 
+import { faLock, faHourglassHalf, faLockOpen } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheckSquare,
+  faSquare,
+  faTrashAlt,
+  faPlayCircle
+} from '@fortawesome/free-regular-svg-icons';
+
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.scss']
 })
 export class TaskComponent implements OnInit {
+  faLock = faLock;
+  faHourglassHalf = faHourglassHalf;
+  faLockOpen = faLockOpen;
+  faCheckSquare = faCheckSquare;
+  faSquare = faSquare;
+  faTrashAlt = faTrashAlt;
+  faPlayCircle = faPlayCircle;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() task;
   public statusType: TaskStatus[];
