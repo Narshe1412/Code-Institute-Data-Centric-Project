@@ -65,8 +65,15 @@ describe('TasksService', () => {
     expect(service.taskList).toEqual([]);
   });
 
-  it('should start with an initialized emtpy observable', () => {
+  it('should start with an empty active task', () => {
+    expect(service.activeTask).toEqual(null);
+  });
+
+  it('should start with an initialized emtpy collection observable', () => {
     expect(service.taskList$.getValue()).toEqual([]);
+  });
+  it('should start with an initialized emtpy active task observable', () => {
+    expect(service.activeTask$.getValue()).toEqual(null);
   });
 
   describe('task creation', () => {
@@ -484,6 +491,36 @@ describe('TasksService', () => {
       service.updateTaskStatus(2, TaskStatus.Archived);
       expect(service.taskList[0].status).toBe(TaskStatus.Todo);
       expect(service.taskList.length).toBe(1);
+    });
+  });
+
+  describe('active task status', () => {
+    it('should record an active task when called', () => {
+      const newTask = service.addTask('new', 'newref', 'newdesc');
+      service.activeTask = newTask;
+      expect(service.activeTask).toEqual(newTask);
+    });
+
+    it('should update the observable when task is updated', () => {
+      const newTask = service.addTask('new', 'newref', 'newdesc');
+      service.activeTask = newTask;
+      service.activeTask$.pipe(skip(1)).subscribe((res: Task) => expect(newTask).toEqual(res));
+    });
+  });
+
+  describe('setActiveTaskById', () => {
+    it('should update the active task when a valid id is passed', () => {
+      const newTask = service.addTask('new', 'newref', 'newdesc');
+      const result = service.setActiveTaskById(1);
+      expect(result).toBeTruthy();
+      expect(service.activeTask).toEqual(newTask);
+    });
+
+    it('should return false when the id does not exists', () => {
+      const newTask = service.addTask('new', 'newref', 'newdesc');
+      const result = service.setActiveTaskById(3);
+      expect(result).toBeFalsy();
+      expect(service.activeTask).toEqual(null);
     });
   });
 

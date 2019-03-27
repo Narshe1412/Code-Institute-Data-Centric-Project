@@ -75,6 +75,21 @@ const mockTaskList = [
 export class TasksService {
   private currentId = 1;
   private _taskList$: BehaviorSubject<Task[]>;
+  private _activeTask$: BehaviorSubject<Task>;
+
+  public get activeTask(): Task {
+    return this.activeTask$.getValue();
+  }
+  public set activeTask(value: Task) {
+    this.activeTask$.next(value);
+  }
+
+  public get activeTask$(): BehaviorSubject<Task> {
+    return this._activeTask$;
+  }
+  public set activeTask$(value: BehaviorSubject<Task>) {
+    this._activeTask$ = value;
+  }
 
   public get taskList$(): BehaviorSubject<Task[]> {
     return this._taskList$;
@@ -92,6 +107,7 @@ export class TasksService {
 
   constructor() {
     this.taskList$ = new BehaviorSubject<Task[]>([]);
+    this.activeTask$ = new BehaviorSubject<Task>(null);
   }
 
   public getNextId() {
@@ -113,6 +129,10 @@ export class TasksService {
       this.taskList$.next(this.taskList);
       return newTask;
     }
+  }
+
+  public getTaskById(id: number) {
+    return this.taskList.find((task: Task) => task.id === id);
   }
 
   public deleteTask(task?: Task, id?: number) {
@@ -218,5 +238,15 @@ export class TasksService {
       );
     }
     return totalTime;
+  }
+
+  public setActiveTaskById(id: number, tasklist = this.taskList) {
+    let success = false;
+    const foundTask = tasklist.find((task: Task) => task.id === id);
+    if (foundTask) {
+      this.activeTask = foundTask;
+      success = true;
+    }
+    return success;
   }
 }

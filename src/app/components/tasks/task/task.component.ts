@@ -27,7 +27,7 @@ export class TaskComponent implements OnInit {
   @Input() task;
   public statusType: TaskStatus[];
   public isAnimated;
-  public expanded: false;
+  public expanded = false;
   displayedColumns: string[] = ['time', 'timestamp'];
   dataSource = new MatTableDataSource<TaskTime[]>();
   constructor(private taskService: TasksService) {}
