@@ -65,8 +65,15 @@ describe('TasksService', () => {
     expect(service.taskList).toEqual([]);
   });
 
-  it('should start with an initialized emtpy observable', () => {
+  it('should start with an empty active task', () => {
+    expect(service.activeTask).toEqual(null);
+  });
+
+  it('should start with an initialized emtpy collection observable', () => {
     expect(service.taskList$.getValue()).toEqual([]);
+  });
+  it('should start with an initialized emtpy active task observable', () => {
+    expect(service.activeTask$.getValue()).toEqual(null);
   });
 
   describe('task creation', () => {
@@ -190,21 +197,23 @@ describe('TasksService', () => {
       service.addTask(testTitle, testRef, testDesc);
     });
 
-    it('getID should return 1 on initial load', () => {
-      const startid = service.getNextId();
+    describe('getID', () => {
+      it('should return 1 on initial load', () => {
+        const startid = service.getNextId();
 
-      expect(startid).toBe(1);
-    });
+        expect(startid).toBe(1);
+      });
 
-    it('getID should return an incremental value based on the amount of tasks created', () => {
-      const startid = service.getNextId();
-      expect(startid).toBe(1);
+      it('should return an incremental value based on the amount of tasks created', () => {
+        const startid = service.getNextId();
+        expect(startid).toBe(1);
 
-      service.addTask('test', 'test', 'test');
-      service.addTask('test', 'test', 'test');
-      const idafter3calls = service.getNextId();
+        service.addTask('test', 'test', 'test');
+        service.addTask('test', 'test', 'test');
+        const idafter3calls = service.getNextId();
 
-      expect(idafter3calls).toBe(4);
+        expect(idafter3calls).toBe(4);
+      });
     });
   });
 
@@ -435,6 +444,23 @@ describe('TasksService', () => {
       service.advanceTaskStatus(1);
       expect(service.taskList[0].status).toBe(TaskStatus.Archived);
     });
+
+    it('should allow to manually pass a task status to update', () => {
+      service.addTask('test', 'test', 'test');
+      service.advanceTaskStatus(1, undefined, TaskStatus.Done);
+      expect(service.taskList[0].status).toBe(TaskStatus.Done);
+    });
+
+    it('should allow to manually pass a string for a task status to update', () => {
+      service.addTask('test', 'test', 'test');
+      service.advanceTaskStatus(1, undefined, 'Done');
+      expect(service.taskList[0].status).toBe(TaskStatus.Done);
+    });
+    it('should not allow to manually pass a random string for a task status to update', () => {
+      service.addTask('test', 'test', 'test');
+      service.advanceTaskStatus(1, undefined, 'dummy');
+      expect(service.taskList[0].status).toBe(TaskStatus.Todo);
+    });
   });
 
   describe('update task status', () => {
@@ -465,6 +491,60 @@ describe('TasksService', () => {
       service.updateTaskStatus(2, TaskStatus.Archived);
       expect(service.taskList[0].status).toBe(TaskStatus.Todo);
       expect(service.taskList.length).toBe(1);
+    });
+  });
+
+  describe('active task status', () => {
+    it('should record an active task when called', () => {
+      const newTask = service.addTask('new', 'newref', 'newdesc');
+      service.activeTask = newTask;
+      expect(service.activeTask).toEqual(newTask);
+    });
+
+    it('should update the observable when task is updated', () => {
+      const newTask = service.addTask('new', 'newref', 'newdesc');
+      service.activeTask = newTask;
+      service.activeTask$.pipe(skip(1)).subscribe((res: Task) => expect(newTask).toEqual(res));
+    });
+  });
+
+  describe('setActiveTaskById', () => {
+    it('should update the active task when a valid id is passed', () => {
+      const newTask = service.addTask('new', 'newref', 'newdesc');
+      const result = service.setActiveTaskById(1);
+      expect(result).toBeTruthy();
+      expect(service.activeTask).toEqual(newTask);
+    });
+
+    it('should return false when the id does not exists', () => {
+      const newTask = service.addTask('new', 'newref', 'newdesc');
+      const result = service.setActiveTaskById(3);
+      expect(result).toBeFalsy();
+      expect(service.activeTask).toEqual(null);
+    });
+  });
+
+  describe('clear active task', () => {
+    it('should remove the active task when called', () => {
+      service.addTask('new', 'ref', 'desc');
+      service.setActiveTaskById(1);
+
+      expect(service.activeTask).toBeTruthy();
+      service.removeActiveTask();
+      expect(service.activeTask).toBeNull();
+    });
+    it('should return true if the active task was removed', () => {
+      service.addTask('new', 'ref', 'desc');
+      service.setActiveTaskById(1);
+
+      expect(service.activeTask).toBeTruthy();
+      const result = service.removeActiveTask();
+      expect(result).toBe(true);
+    });
+    it('should return false if the active task was not removed', () => {
+      service.addTask('new', 'ref', 'desc');
+      const result = service.removeActiveTask();
+      expect(result).toBe(false);
     });
   });
 

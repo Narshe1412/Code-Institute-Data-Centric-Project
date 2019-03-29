@@ -1,66 +1,74 @@
-<h1>Task Manager</h1>
+<h3>Task Manager [ph]</h3>
+<div id="launch-add-task-btn">
+  <button type="button" class="btn btn-default" (click)="formVisible = !formVisible">
+    <fa-icon [icon]="formVisible ? faMinus : faPlus"></fa-icon>
+  </button>
+</div>
 <div class="container">
   <h1>New Task</h1>
   <form #taskForm="ngForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="title">Title</label>
-      <input
-        type="text"
-        class="form-control"
-        id="title"
-        required
-        #title="ngModel"
-        [(ngModel)]="task.title"
-        name="title"
-      />
+    <div class="add-task-form-group">
+      <button
+        mat-button
+        id="btn-add-mat"
+        type="button"
+        color="primary"
+        (click)="newTask(); taskForm.reset()"
+        [disabled]="!taskForm.form.valid"
+      >
+        ADD
+      </button>
+    </div>
+    <div class="add-task-form-group">
+      <mat-form-field class="" id="form-title-mat">
+        <input
+          matInput
+          type="text"
+          class="form-control"
+          id="title"
+          required
+          #title="ngModel"
+          [(ngModel)]="task.title"
+          name="title"
+          placeholder="Title"
+        />
+      </mat-form-field>
     </div>
     <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
       Title is required
     </div>
 
-    <div class="form-group">
-      <label for="desc">Description</label>
-      <input
-        type="text"
-        class="form-control"
-        id="desc"
-        [(ngModel)]="task.description"
-        #description="ngModel"
-        name="description"
-      />
-    </div>
-
-    <div class="form-group">
-      <label for="reference">Reference</label>
-      <input
-        type="text"
-        class="form-control"
-        id="reference"
-        #reference="ngModel"
-        [(ngModel)]="task.reference"
-        name="reference"
-        required
-      />
+    <div class="add-task-form-group">
+      <mat-form-field class="add-task-form-element" id="form-ref-mat">
+        <input
+          matInput
+          type="text"
+          class="form-control"
+          id="reference"
+          #reference="ngModel"
+          [(ngModel)]="task.reference"
+          name="reference"
+          required
+          placeholder="Reference"
+        />
+      </mat-form-field>
     </div>
     <div [hidden]="reference.valid || reference.pristine" class="alert alert-danger">
       Reference is required
     </div>
-
-    <!-- <div class="form-group">
-      <label for="status">Task Status</label>
-      <select class="form-control" id="status" required>
-        <option *ngFor="let status of statusType" [value]="status">{{ status }}</option>
-      </select>
-    </div> -->
-
-    <button
-      type="button"
-      class="btn btn-default"
-      (click)="newTask(); taskForm.reset()"
-      [disabled]="!taskForm.form.valid"
-    >
-      Add Task
-    </button>
+    <div class="add-task-form-group">
+      <mat-form-field class="example-full-width" id="form-desc-mat">
+        <input
+          matInput
+          type="text"
+          class="form-control"
+          id="desc"
+          [(ngModel)]="task.description"
+          #description="ngModel"
+          name="description"
+          placeholder="Description"
+        />
+      </mat-form-field>
+    </div>
   </form>
 </div>
-<app-task-list></app-task-list>

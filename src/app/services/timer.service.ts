@@ -12,7 +12,7 @@ export enum TimerStatus {
 })
 export class TimerService {
   private _timer$;
-  private _timerStatus: TimerStatus;
+  // private _timerStatus: TimerStatus;
   private _timerStatus$: BehaviorSubject<TimerStatus>;
   private _currentTime: number;
 
@@ -24,11 +24,10 @@ export class TimerService {
   }
 
   public get timerStatus(): TimerStatus {
-    return this._timerStatus;
+    return this.timerStatus$.getValue();
   }
   public set timerStatus(value: TimerStatus) {
-    this._timerStatus = value;
-    this.timerStatus$.next(this.timerStatus);
+    this.timerStatus$.next(value);
   }
 
   public get timerStatus$(): BehaviorSubject<TimerStatus> {
@@ -45,35 +44,35 @@ export class TimerService {
     this._currentTime = value;
   }
 
-  public getSeconds(): number {
-    if (this.currentTime < 0) {
+  public getSeconds(time = this.currentTime): number {
+    if (time < 0) {
       return 0;
     }
-    return Math.floor(this.currentTime / 1000);
+    return Math.floor(time / 1000);
   }
 
-  public getMinutes(): number {
-    return Math.floor(this.getSeconds() / 60);
+  public getMinutes(time = this.currentTime): number {
+    return Math.floor(this.getSeconds(time) / 60);
   }
 
-  public getHours(): number {
-    return Math.floor(this.getMinutes() / 60);
+  public getHours(time = this.currentTime): number {
+    return Math.floor(this.getMinutes(time) / 60);
   }
 
-  public getDisplaySeconds(): string {
-    const totalSeconds = this.getSeconds() % 60;
+  public getDisplaySeconds(time = this.currentTime): string {
+    const totalSeconds = this.getSeconds(time) % 60;
     const totalWithLeadingZeroes = ('0' + totalSeconds).slice(-2);
     return totalWithLeadingZeroes;
   }
 
-  public getDisplayMinutes(): string {
-    const totalMinutes = this.getMinutes() % 60;
+  public getDisplayMinutes(time = this.currentTime): string {
+    const totalMinutes = this.getMinutes(time) % 60;
     const totalWithLeadingZeroes = ('0' + totalMinutes).slice(-2);
     return totalWithLeadingZeroes;
   }
 
-  public getDisplayHours(): string {
-    return this.getHours() < 10 ? '0' + this.getHours() : this.getHours().toString();
+  public getDisplayHours(time = this.currentTime): string {
+    return this.getHours(time) < 10 ? `0${this.getHours(time)}` : this.getHours(time).toString();
   }
 
   constructor(private settings: SettingsService) {
@@ -81,16 +80,18 @@ export class TimerService {
     this.timerStatus$ = new BehaviorSubject<TimerStatus>(TimerStatus.stopped);
   }
 
-  public changeTimeByAmount(amount = -1): number {
-    amount = this.settings.countingAmount * 1000;
-    return this.currentTime + amount;
+  public changeTimeByAmount(amount = this.settings.countingAmount): number {
+    amount *= 1000;
+    return (this.currentTime += amount);
   }
 
   public resetTimer() {
     this.currentTime = this.settings.timerStartAmount;
   }
 
-  public getDisplayTimeInHHMMSS(): string {
-    return `${this.getDisplayHours()}:${this.getDisplayMinutes()}:${this.getDisplaySeconds()}`;
+  public getDisplayTimeInHHMMSS(time = this.currentTime): string {
+    return `${this.getDisplayHours(time)}:${this.getDisplayMinutes(time)}:${this.getDisplaySeconds(
+      time
+    )}`;
   }
 }

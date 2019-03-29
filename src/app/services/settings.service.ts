@@ -26,7 +26,7 @@ export class SettingsService {
   // Attributes
   private _timerType: 'pomodoro' | 'standard' | 'custom';
   private _countingType: CountingType;
-  private _timerStartAmount;
+  private _timerStartAmount: number;
 
   // Setters/getters
   /**

@@ -1,4 +1,99 @@
 <div>
-  <h3>{{ task.title }}</h3>
-  {{ task | json }}
+  <div class="task-bar">
+    <div id="task-bar-{{ task.id }}">
+      <div id="status-icons">
+        <div id="task-action-icons">
+          <fa-icon
+            *ngIf="!isCurrentActiveTask()"
+            [icon]="faClock"
+            (click)="setAsActiveTask()"
+          ></fa-icon>
+        </div>
+        <div id="task-actual-status">
+          <fa-icon
+            *ngIf="task.status === 'Todo'"
+            [icon]="faPlayCircle"
+            (click)="setTaskStatusTo('InProgress')"
+          ></fa-icon>
+          <fa-icon
+            *ngIf="task.status === 'InProgress'"
+            [icon]="faSquare"
+            (click)="setTaskStatusTo('Done')"
+          ></fa-icon>
+          <fa-icon *ngIf="task.status === 'Done'" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="task.status === 'Archived'" [icon]="faLock"></fa-icon>
+        </div>
+        <div id="task-delete-archive">
+          <fa-icon
+            *ngIf="task.status === 'Done'"
+            [icon]="faLockOpen"
+            (click)="setTaskStatusTo('Archived')"
+          ></fa-icon>
+          <fa-icon
+            *ngIf="task.status !== 'Done' && task.status !== 'Archived'"
+            [icon]="faTrashAlt"
+            (click)="deleteTask()"
+          ></fa-icon>
+        </div>
+      </div>
+    </div>
+    <div id="title-bar">
+      <div class="task-ref fixed-sized-font">{{ task.reference }}</div>
+      <div class="task-title bold">{{ task.title }}</div>
+      <div class="task-description-hover">
+        This will be a hover msg
+        {{
+          task.description.length >= 50
+            ? task.description.substring(0, 50) + '...'
+            : task.description
+        }}
+      </div>
+      <div class="task-expand-details-btn">
+        <button class="form-control" id="show-time-details" (click)="expanded = !expanded">
+          ...
+        </button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="form-group" *ngIf="expanded">
+      <label for="status">Task Status</label>
+      <select class="form-control" id="status" required (change)="onSelectStatus($event)">
+        <option
+          *ngFor="let status of statusType"
+          [ngValue]="status"
+          [selected]="task.status === status"
+          >{{ status }}</option
+        >
+      </select>
+      <button class="form-control" id="adv-status" (click)="advanceStatus()">> > ></button>
+    </div>
+  </div>
+  <div class="time-list" *ngIf="expanded">
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource">
+        <!-- Time Column -->
+        <ng-container matColumnDef="time">
+          <th mat-header-cell *matHeaderCellDef>Total Time</th>
+          <td mat-cell *matCellDef="let element">{{ element.amount | time }}s.</td>
+          <td mat-footer-cell *matFooterCellDef>{{ getTotalTime() | time }}s.</td>
+        </ng-container>
+
+        <!-- Timestamp Column -->
+        <ng-container matColumnDef="timestamp">
+          <th mat-header-cell *matHeaderCellDef>Date Recorded</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.timestamp | date: 'dd-MMM-yyyy  HH:mm' }}h.
+          </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
 </div>

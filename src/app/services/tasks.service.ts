@@ -12,10 +12,10 @@ export interface Task {
 }
 
 export enum TaskStatus {
-  Todo = 'todo',
-  InProgress = 'in progress',
-  Done = 'done',
-  Archived = 'archived'
+  Todo = 'Todo',
+  InProgress = 'InProgress',
+  Done = 'Done',
+  Archived = 'Archived'
 }
 
 // These properties are read only or can only be changed by calling their respective methods
@@ -74,8 +74,22 @@ const mockTaskList = [
 })
 export class TasksService {
   private currentId = 1;
-  private _taskList: Task[];
   private _taskList$: BehaviorSubject<Task[]>;
+  private _activeTask$: BehaviorSubject<Task>;
+
+  public get activeTask(): Task {
+    return this.activeTask$.getValue();
+  }
+  public set activeTask(value: Task) {
+    this.activeTask$.next(value);
+  }
+
+  public get activeTask$(): BehaviorSubject<Task> {
+    return this._activeTask$;
+  }
+  public set activeTask$(value: BehaviorSubject<Task>) {
+    this._activeTask$ = value;
+  }
 
   public get taskList$(): BehaviorSubject<Task[]> {
     return this._taskList$;
@@ -85,15 +99,15 @@ export class TasksService {
   }
 
   public get taskList() {
-    return this._taskList;
+    return this.taskList$.getValue();
   }
   public set taskList(value) {
-    this._taskList = value;
+    this.taskList$.next(value);
   }
 
   constructor() {
     this.taskList$ = new BehaviorSubject<Task[]>([]);
-    this.taskList = [];
+    this.activeTask$ = new BehaviorSubject<Task>(null);
   }
 
   public getNextId() {
@@ -115,6 +129,10 @@ export class TasksService {
       this.taskList$.next(this.taskList);
       return newTask;
     }
+  }
+
+  public getTaskById(id: number) {
+    return this.taskList.find((task: Task) => task.id === id);
   }
 
   public deleteTask(task?: Task, id?: number) {
@@ -168,18 +186,22 @@ export class TasksService {
     return this.taskList;
   }
 
-  public advanceTaskStatus(id: number, tasklist = this.taskList) {
-    const status: TaskStatus[] = [
+  public advanceTaskStatus(id: number, tasklist = this.taskList, status?: string) {
+    const statusList: TaskStatus[] = [
       TaskStatus.Todo,
       TaskStatus.InProgress,
       TaskStatus.Done,
       TaskStatus.Archived
     ];
-    const taskIndex = tasklist.findIndex(x => x.id === id);
-    const taskstatus = tasklist[taskIndex].status;
-    let newStatus = status.indexOf(taskstatus);
-    newStatus = newStatus >= status.length - 1 ? newStatus : ++newStatus;
-    tasklist[taskIndex].status = status[newStatus];
+    const taskIndex = tasklist.findIndex(task => task.id === id);
+    if (status && TaskStatus[status]) {
+      tasklist[taskIndex].status = status as TaskStatus;
+    } else if (!status) {
+      const taskstatus = tasklist[taskIndex].status;
+      let newStatus = statusList.indexOf(taskstatus);
+      newStatus = newStatus >= statusList.length - 1 ? newStatus : newStatus + 1;
+      tasklist[taskIndex].status = statusList[newStatus];
+    }
     this.taskList$.next(tasklist);
   }
 
@@ -216,5 +238,24 @@ export class TasksService {
       );
     }
     return totalTime;
+  }
+
+  public setActiveTaskById(id: number, tasklist = this.taskList) {
+    let success = false;
+    const foundTask = tasklist.find((task: Task) => task.id === id);
+    if (foundTask) {
+      this.activeTask = foundTask;
+      success = true;
+    }
+    return success;
+  }
+
+  public removeActiveTask() {
+    let success = false;
+    if (this.activeTask) {
+      this.activeTask = null;
+      success = true;
+    }
+    return success;
   }
 }

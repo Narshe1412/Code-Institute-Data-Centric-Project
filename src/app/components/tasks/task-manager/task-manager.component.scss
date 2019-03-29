@@ -1,8 +1,28 @@
-.ng-valid[required],
-.ng-valid.required {
-  border-left: 5px solid #42a948; /* green */
+// .ng-valid[required],
+// .ng-valid.required {
+//   border-left: 5px solid #42a948; /* green */
+// }
+
+// .ng-invalid:not(form) {
+//   border-left: 5px solid #a94442; /* red */
+// }
+.add-task-form-group {
+  padding: 2px;
+  display: inline;
 }
 
-.ng-invalid:not(form) {
-  border-left: 5px solid #a94442; /* red */
+#btn-add-mat {
+  width: 5%;
+}
+
+#form-desc-mat {
+  width: 40%;
+}
+
+#form-ref-mat {
+  width: 12%;
+}
+
+#form-title-mat {
+  width: 30%;
 }
