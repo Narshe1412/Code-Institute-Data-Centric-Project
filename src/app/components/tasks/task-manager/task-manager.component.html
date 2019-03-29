@@ -5,7 +5,6 @@
   </button>
 </div>
 <div class="container">
-  <!-- <div class="container" *ngIf="formVisible"> -->
   <h1>New Task</h1>
   <form #taskForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="add-task-form-group">
@@ -22,7 +21,6 @@
     </div>
     <div class="add-task-form-group">
       <mat-form-field class="" id="form-title-mat">
-        <!-- <label for="title">Title</label> -->
         <input
           matInput
           type="text"
@@ -41,7 +39,6 @@
     </div>
 
     <div class="add-task-form-group">
-      <!-- <label for="reference">Reference</label> -->
       <mat-form-field class="add-task-form-element" id="form-ref-mat">
         <input
           matInput
@@ -61,8 +58,6 @@
     </div>
     <div class="add-task-form-group">
       <mat-form-field class="example-full-width" id="form-desc-mat">
-        <!-- <label for="desc">Description</label>
-         -->
         <input
           matInput
           type="text"

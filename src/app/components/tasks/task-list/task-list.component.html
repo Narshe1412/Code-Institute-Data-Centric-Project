@@ -1,6 +1,5 @@
 <h2>Task List:</h2>
 <app-task-manager></app-task-manager>
-<!-- <app-task *ngFor="let task of taskCollection" [task]="task"></app-task> -->
 
 <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
   <div class="example-box" *ngFor="let task of taskCollection" cdkDrag>

@@ -199,7 +199,7 @@ export class TasksService {
     } else if (!status) {
       const taskstatus = tasklist[taskIndex].status;
       let newStatus = statusList.indexOf(taskstatus);
-      newStatus = newStatus >= statusList.length - 1 ? newStatus : ++newStatus;
+      newStatus = newStatus >= statusList.length - 1 ? newStatus : newStatus + 1;
       tasklist[taskIndex].status = statusList[newStatus];
     }
     this.taskList$.next(tasklist);
