@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TasksService, Task, TaskStatus } from 'src/app/services/tasks.service';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-task-manager',
@@ -7,10 +8,13 @@ import { TasksService, Task, TaskStatus } from 'src/app/services/tasks.service';
   styleUrls: ['./task-manager.component.scss']
 })
 export class TaskManagerComponent implements OnInit {
+  faPlus = faPlus;
+  faMinus = faMinus;
   public taskList: Task[];
   public task;
   public submitted = false;
   public statusType: TaskStatus[];
+  public formVisible = false;
   constructor(private taskService: TasksService) {}
 
   ngOnInit() {

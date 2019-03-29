@@ -25,14 +25,7 @@ describe('AppComponent', () => {
         MatPaginatorModule,
         AppModule
       ],
-      declarations: [
-        // AppComponent,
-        // TimerComponent,
-        // TaskManagerComponent,
-        // TaskListComponent,
-        // TaskComponent,
-        // TimePipe
-      ]
+      declarations: []
       // schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
@@ -49,5 +42,12 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('app-timer')).not.toBe(null);
+  }));
+
+  it('should have the task-list component', async(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('app-task-list')).not.toBe(null);
   }));
 });

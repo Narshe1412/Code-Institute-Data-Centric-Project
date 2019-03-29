@@ -1,9 +1,22 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatPaginatorModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatPaginatorModule,
+  MatSidenavModule,
+  MatTableModule,
+  MatToolbarModule
+} from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TaskListComponent } from './components/tasks/task-list/task-list.component';
@@ -11,17 +24,7 @@ import { TaskManagerComponent } from './components/tasks/task-manager/task-manag
 import { TaskComponent } from './components/tasks/task/task.component';
 import { TimerComponent } from './components/timer/timer.component';
 import { TimePipe } from './pipes/time.pipe';
-
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-// FA Icons
-import { faLock, faHourglassHalf, faLockOpen } from '@fortawesome/free-solid-svg-icons';
-import {
-  faCheckSquare,
-  faSquare,
-  faTrashAlt,
-  faPlayCircle
-} from '@fortawesome/free-regular-svg-icons';
+import { ActiveTaskBannerComponent } from './components/active-task-banner/active-task-banner.component';
 
 @NgModule({
   declarations: [
@@ -30,33 +33,33 @@ import {
     TaskListComponent,
     TaskComponent,
     TaskManagerComponent,
-    TimePipe
+    TimePipe,
+    ActiveTaskBannerComponent
   ],
   imports: [
     FontAwesomeModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatToolbarModule,
     FormsModule,
     DragDropModule,
+    // Angular MAterial
+    MatToolbarModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatListModule
   ],
   exports: [TimePipe, FontAwesomeModule],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  constructor() {
-    library.add(
-      faCheckSquare, // Task Done
-      faSquare, // Task to do
-      faHourglassHalf, // Task in progress
-      faLock, // Archived
-      faLockOpen, // Archive task
-      faTrashAlt, // Delete task
-      faPlayCircle // Start task
-    );
-  }
-}
+export class AppModule {}

@@ -2,29 +2,36 @@
   <div class="task-bar">
     <div id="task-bar-{{ task.id }}">
       <div id="status-icons">
+        <div id="task-action-icons">
+          <fa-icon
+            *ngIf="!isCurrentActiveTask()"
+            [icon]="faClock"
+            (click)="setAsActiveTask()"
+          ></fa-icon>
+        </div>
         <div id="task-actual-status">
           <fa-icon
             *ngIf="task.status === 'Todo'"
-            [icon]="['far', 'play-circle']"
+            [icon]="faPlayCircle"
             (click)="setTaskStatusTo('InProgress')"
           ></fa-icon>
           <fa-icon
             *ngIf="task.status === 'InProgress'"
-            [icon]="['far', 'square']"
+            [icon]="faSquare"
             (click)="setTaskStatusTo('Done')"
           ></fa-icon>
-          <fa-icon *ngIf="task.status === 'Done'" [icon]="['far', 'check-square']"></fa-icon>
-          <fa-icon *ngIf="task.status === 'Archived'" [icon]="['fas', 'lock']"></fa-icon>
+          <fa-icon *ngIf="task.status === 'Done'" [icon]="faCheckSquare"></fa-icon>
+          <fa-icon *ngIf="task.status === 'Archived'" [icon]="faLock"></fa-icon>
         </div>
         <div id="task-delete-archive">
           <fa-icon
             *ngIf="task.status === 'Done'"
-            [icon]="['fas', 'lock-open']"
+            [icon]="faLockOpen"
             (click)="setTaskStatusTo('Archived')"
           ></fa-icon>
           <fa-icon
             *ngIf="task.status !== 'Done' && task.status !== 'Archived'"
-            [icon]="['far', 'trash-alt']"
+            [icon]="faTrashAlt"
             (click)="deleteTask()"
           ></fa-icon>
         </div>
