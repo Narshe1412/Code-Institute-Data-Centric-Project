@@ -524,6 +524,30 @@ describe('TasksService', () => {
     });
   });
 
+  describe('clear active task', () => {
+    it('should remove the active task when called', () => {
+      service.addTask('new', 'ref', 'desc');
+      service.setActiveTaskById(1);
+
+      expect(service.activeTask).toBeTruthy();
+      service.removeActiveTask();
+      expect(service.activeTask).toBeNull();
+    });
+    it('should return true if the active task was removed', () => {
+      service.addTask('new', 'ref', 'desc');
+      service.setActiveTaskById(1);
+
+      expect(service.activeTask).toBeTruthy();
+      const result = service.removeActiveTask();
+      expect(result).toBe(true);
+    });
+    it('should return false if the active task was not removed', () => {
+      service.addTask('new', 'ref', 'desc');
+      const result = service.removeActiveTask();
+      expect(result).toBe(false);
+    });
+  });
+
   describe('Record time invested in task functionality', () => {
     describe('add time to task', () => {
       it('should add the time to the task', () => {

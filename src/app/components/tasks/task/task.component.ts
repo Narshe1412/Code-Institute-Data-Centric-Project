@@ -7,7 +7,8 @@ import {
   faCheckSquare,
   faSquare,
   faTrashAlt,
-  faPlayCircle
+  faPlayCircle,
+  faClock
 } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
@@ -16,6 +17,7 @@ import {
   styleUrls: ['./task.component.scss']
 })
 export class TaskComponent implements OnInit {
+  faClock = faClock;
   faLock = faLock;
   faHourglassHalf = faHourglassHalf;
   faLockOpen = faLockOpen;
@@ -57,5 +59,13 @@ export class TaskComponent implements OnInit {
 
   public getTotalTime() {
     return this.taskService.getTotalTimeFromTask(this.task.id);
+  }
+
+  public isCurrentActiveTask(): boolean {
+    return this.task.id === (this.taskService.activeTask && this.taskService.activeTask.id);
+  }
+
+  public setAsActiveTask() {
+    this.taskService.setActiveTaskById(this.task.id);
   }
 }

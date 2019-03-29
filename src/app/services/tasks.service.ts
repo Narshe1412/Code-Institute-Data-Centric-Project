@@ -249,4 +249,13 @@ export class TasksService {
     }
     return success;
   }
+
+  public removeActiveTask() {
+    let success = false;
+    if (this.activeTask) {
+      this.activeTask = null;
+      success = true;
+    }
+    return success;
+  }
 }
