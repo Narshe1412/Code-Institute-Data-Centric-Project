@@ -1,3 +1,5 @@
+import { ReportsComponent } from './../reports/reports.component';
+import { ActiveTaskBannerComponent } from './../active-task-banner/active-task-banner.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,9 +9,18 @@ import {
   MatListModule,
   MatSidenavModule,
   MatToolbarModule,
+  MatMenuModule
 } from '@angular/material';
 
 import { NavComponent } from './nav.component';
+import { TimerComponent } from '../timer/timer.component';
+import { TaskListComponent } from '../tasks/task-list/task-list.component';
+import { SettingsComponent } from '../settings/settings.component';
+import { TaskManagerComponent } from '../tasks/task-manager/task-manager.component';
+import { TaskComponent } from '../tasks/task/task.component';
+import { GridComponent } from '../reports/grid/grid.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 describe('NavComponent', () => {
   let component: NavComponent;
@@ -17,8 +28,20 @@ describe('NavComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [NavComponent],
+      declarations: [
+        NavComponent,
+        ActiveTaskBannerComponent,
+        TimerComponent,
+        TaskListComponent,
+        ReportsComponent,
+        SettingsComponent,
+        TaskManagerComponent,
+        TaskComponent,
+        GridComponent
+      ],
       imports: [
+        FormsModule,
+        ReactiveFormsModule,
         NoopAnimationsModule,
         LayoutModule,
         MatButtonModule,
@@ -26,7 +49,9 @@ describe('NavComponent', () => {
         MatListModule,
         MatSidenavModule,
         MatToolbarModule,
-      ]
+        MatMenuModule
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
 

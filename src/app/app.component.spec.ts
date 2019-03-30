@@ -3,15 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-// import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TimerComponent } from './components/timer/timer.component';
 import { MatToolbarModule, MatPaginatorModule, MatTableModule } from '@angular/material';
-import { TaskManagerComponent } from './components/tasks/task-manager/task-manager.component';
-import { TaskListComponent } from './components/tasks/task-list/task-list.component';
-import { TaskComponent } from './components/tasks/task/task.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TimePipe } from './pipes/time.pipe';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {

@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportsComponent } from './reports.component';
+import { GridComponent } from './grid/grid.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { MatButtonModule, MatMenuModule } from '@angular/material';
 
 describe('ReportsComponent', () => {
   let component: ReportsComponent;
@@ -8,9 +11,10 @@ describe('ReportsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReportsComponent ]
-    })
-    .compileComponents();
+      declarations: [ReportsComponent, GridComponent],
+      imports: [MatButtonModule, MatMenuModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

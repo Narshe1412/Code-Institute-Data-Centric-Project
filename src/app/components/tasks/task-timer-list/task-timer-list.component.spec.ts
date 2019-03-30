@@ -3,6 +3,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorModule, MatSortModule, MatTableModule } from '@angular/material';
 
 import { TaskTimerListComponent } from './task-timer-list.component';
+import { TimePipe } from 'src/app/pipes/time.pipe';
 
 describe('TaskTimerListComponent', () => {
   let component: TaskTimerListComponent;
@@ -10,13 +11,8 @@ describe('TaskTimerListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaskTimerListComponent ],
-      imports: [
-        NoopAnimationsModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatTableModule,
-      ]
+      declarations: [TaskTimerListComponent, TimePipe],
+      imports: [NoopAnimationsModule, MatPaginatorModule, MatSortModule, MatTableModule]
     }).compileComponents();
   }));
 
