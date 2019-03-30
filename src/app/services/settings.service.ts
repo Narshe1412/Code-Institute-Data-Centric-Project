@@ -8,10 +8,16 @@ export enum CountingType {
   down = 'down',
   countdown = 'countdown'
 }
+export enum TimerType {
+  Pomodoro = 'pomodoro',
+  Standard = 'standard',
+  Custom = 'custom'
+}
 
 const defaults = {
-  countingType: CountingType.countdown,
-  startTime: POMODORO_DEFAULT_START
+  countingType: CountingType.stopwatch,
+  startTime: 0,
+  timerType: TimerType.Custom
 };
 
 /**
@@ -24,7 +30,7 @@ const defaults = {
 })
 export class SettingsService {
   // Attributes
-  private _timerType: 'pomodoro' | 'standard' | 'custom';
+  private _timerType: TimerType;
   private _countingType: CountingType;
   private _timerStartAmount: number;
 
@@ -52,14 +58,14 @@ export class SettingsService {
   /**
    * Obtains type of timer for the application
    */
-  public get timerType(): 'pomodoro' | 'standard' | 'custom' {
+  public get timerType(): TimerType {
     return this._timerType;
   }
 
   /**
    * Sets the type of timer that would be used if the user does not want to mess with the settings
    */
-  public set timerType(value: 'pomodoro' | 'standard' | 'custom') {
+  public set timerType(value: TimerType) {
     this.timerStartAmount = this.getDefaultTimePerType(value);
     this._timerType = value;
   }
@@ -109,12 +115,13 @@ export class SettingsService {
       case 'standard':
         return STANDARD_DEFAULT_START;
       default:
-        return this.timerStartAmount || 0;
+        return 0;
     }
   }
 
   constructor() {
     this.countingType = defaults.countingType;
     this.timerStartAmount = defaults.startTime;
+    this.timerType = defaults.timerType;
   }
 }
