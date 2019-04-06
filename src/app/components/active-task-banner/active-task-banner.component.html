@@ -4,11 +4,11 @@
   </h1>
   <h4>{{ activeTask?.title }}</h4>
   <h4>
-    <pre>{{ activeTask?.reference }}</pre>
+    <p>{{ activeTask?.reference }}</p>
   </h4>
   <button matButton (click)="deactivateTask()">Close Task</button>
 </div>
 <div *ngIf="!activeTask">
   <h3>You're done for today!</h3>
-  <pre>Please select any remaining task to start working on them.</pre>
+  <p>Please select any remaining task to start working on them.</p>
 </div>
