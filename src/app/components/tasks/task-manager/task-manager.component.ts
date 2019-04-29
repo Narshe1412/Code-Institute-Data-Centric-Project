@@ -35,6 +35,8 @@ export class TaskManagerComponent implements OnInit {
       ]
     };
     this.taskService.taskList.push(mock);
+    this.taskService.taskList.push({ ...mock, id: 1 });
+    this.taskService.taskList.push({ ...mock, id: 2 });
   }
 
   newTask() {

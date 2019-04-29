@@ -1,13 +1,43 @@
 <div>
   <h1 id="timerDisplay">{{ time }}</h1>
   <div>
-    <button #start [disabled]="timerStatus === 'running'" [hidden]="timerStatus === 'running'">
+    <button
+      class="timer-btn"
+      mat-raised-button
+      color="primary"
+      #start
+      [disabled]="timerStatus === 'running'"
+      [hidden]="timerStatus === 'running'"
+    >
       {{ timerStatus === 'paused' ? 'Restart' : 'Start' }}
     </button>
-    <button #stop [disabled]="timerStatus !== 'running'" [hidden]="timerStatus === 'stopped'">
+    <button
+      class="timer-btn"
+      mat-raised-button
+      color="warn"
+      #stop
+      [disabled]="timerStatus !== 'running' && timerStatus !== 'paused'"
+      [hidden]="timerStatus === 'stopped'"
+    >
       Stop
     </button>
-    <button #pause [disabled]="timerStatus !== 'running'">Pause</button>
-    <button #resume [disabled]="timerStatus !== 'paused'">Resume</button>
+    <button
+      class="timer-btn"
+      mat-raised-button
+      color="secondary"
+      #pause
+      [disabled]="timerStatus !== 'running'"
+    >
+      Pause
+    </button>
+    <button
+      class="timer-btn"
+      mat-raised-button
+      color="secondary"
+      #resume
+      [disabled]="timerStatus !== 'paused'"
+    >
+      Resume
+    </button>
   </div>
 </div>

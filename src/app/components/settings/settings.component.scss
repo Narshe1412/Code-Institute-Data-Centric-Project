@@ -31,6 +31,7 @@
   min-width: calc(45% - 10px);
   margin: 5px;
   text-align: left;
+  padding: 12px;
 
   mat-card-content {
     padding-left: 20px;
@@ -38,5 +39,10 @@
 }
 
 #clear-data-btn {
+  width: 100%;
   text-align: center;
+
+  button {
+    margin: 2px;
+  }
 }

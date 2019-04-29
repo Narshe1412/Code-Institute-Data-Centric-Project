@@ -11,10 +11,11 @@ import { SettingsService, CountingType } from 'src/app/services/settings.service
 })
 export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
   // HTML element references
-  @ViewChild('pause') pauseBtn: ElementRef;
-  @ViewChild('start') startBtn: ElementRef;
-  @ViewChild('resume') resumeBtn: ElementRef;
-  @ViewChild('stop') stopBtn: ElementRef;
+  @ViewChild('pause', { read: ElementRef }) pauseBtn: ElementRef;
+  // read: ElementRef makes sure we can read the element reference after applying the mat-icon directive
+  @ViewChild('start', { read: ElementRef }) startBtn: ElementRef;
+  @ViewChild('resume', { read: ElementRef }) resumeBtn: ElementRef;
+  @ViewChild('stop', { read: ElementRef }) stopBtn: ElementRef;
   @ViewChild('countdown') countdownRd: ElementRef;
   @ViewChild('stopwatch') stopwatchRd: ElementRef;
 
