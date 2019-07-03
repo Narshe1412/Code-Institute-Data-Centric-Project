@@ -9,7 +9,9 @@
     "coverage": "ng test --no-watch --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "cibuild": "ng test --no-watch --code-coverage --browsers=ChromeHeadless && ng build --prod --no-progress"
+    "cibuild": "ng test --no-watch --code-coverage --browsers=ChromeHeadless && ng build --prod --no-progress",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "private": true,
   "dependencies": {
@@ -33,7 +35,8 @@
     "highcharts": "^7.0.2",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
-    "zone.js": "~0.8.26"
+    "zone.js": "~0.8.26",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.13.6",
@@ -55,5 +58,6 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
     "typescript": "~3.2.2"
-  }
+  },
+  "snyk": true
 }
