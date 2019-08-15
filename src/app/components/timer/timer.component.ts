@@ -11,12 +11,12 @@ import { SettingsService, CountingType } from 'src/app/services/settings.service
 })
 export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
   // HTML element references
-  @ViewChild('pause') pauseBtn: ElementRef;
-  @ViewChild('start') startBtn: ElementRef;
-  @ViewChild('resume') resumeBtn: ElementRef;
-  @ViewChild('stop') stopBtn: ElementRef;
-  @ViewChild('countdown') countdownRd: ElementRef;
-  @ViewChild('stopwatch') stopwatchRd: ElementRef;
+  @ViewChild('pause', { static: true }) pauseBtn: ElementRef;
+  @ViewChild('start', { static: true }) startBtn: ElementRef;
+  @ViewChild('resume', { static: true }) resumeBtn: ElementRef;
+  @ViewChild('stop', { static: true }) stopBtn: ElementRef;
+  @ViewChild('countdown', { static: true }) countdownRd: ElementRef;
+  @ViewChild('stopwatch', { static: true }) stopwatchRd: ElementRef;
 
   // Class variables
   // Observables

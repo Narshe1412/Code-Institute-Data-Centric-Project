@@ -1,6 +1,7 @@
 # Timesheet Helper
 
-[![Build Status](https://travis-ci.com/Narshe1412/Code-Institute-Interactive-Frontend-Project.svg?branch=master)](https://travis-ci.com/Narshe1412/Code-Institute-Interactive-Frontend-Project)
+[![Build Status](https://travis-ci.com/Narshe1412/Code-Institute-Data-Centric-Project.svg?branch=master)](https://travis-ci.com/Narshe1412/Code-Institute-Data-Centric-Project) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Narshe1412_Code-Institute-Data-Centric-Project&metric=alert_status)](https://sonarcloud.io/dashboard?id=Narshe1412_Code-Institute-Data-Centric-Project) [![Project Version](https://img.shields.io/github/package-json/v/Narshe1412/Code-Institute-Data-Centric-Project?color=gree)](https://github.com/Narshe1412/Code-Institute-Data-Centric-Project)
+[![License](https://img.shields.io/github/license/Narshe1412/Code-Institute-Data-Centric-Project?color=g)](https://github.com/Narshe1412/Code-Institute-Interactive-Frontend-Algorithms/blob/master/LICENSE)
 
 As per my daily job, we're required to track the time we invest in each assigned task and upload weekly to an Excel summary provided by management. It is very easy to forget when did you started each task, the exact amount of time invested, hard to manage when you're multitasking two or more tasks, etc...
 

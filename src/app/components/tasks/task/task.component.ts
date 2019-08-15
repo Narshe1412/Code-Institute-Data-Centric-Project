@@ -25,7 +25,7 @@ export class TaskComponent implements OnInit {
   faSquare = faSquare;
   faTrashAlt = faTrashAlt;
   faPlayCircle = faPlayCircle;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @Input() task;
   public statusType: TaskStatus[];
   public isAnimated;
