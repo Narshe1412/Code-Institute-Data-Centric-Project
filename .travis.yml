@@ -27,3 +27,4 @@ script:
   # - npm run test -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
   - npm run cibuild
   - sonar-scanner
+  - ng deploy --repo="https://github.com/Narshe1412/Code-Institute-Data-Centric-Project" --name="Narshe1412" --email=manuel1412@gmail.com --base-href=/Code-Institute-Data-Centric-Project/
