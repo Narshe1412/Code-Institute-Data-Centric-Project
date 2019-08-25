@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { TaskStatus, TasksService, Task, TaskTime } from 'src/app/services/tasks.service';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { faLock, faHourglassHalf, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -25,7 +26,7 @@ export class TaskComponent implements OnInit {
   faSquare = faSquare;
   faTrashAlt = faTrashAlt;
   faPlayCircle = faPlayCircle;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @Input() task;
   public statusType: TaskStatus[];
   public isAnimated;

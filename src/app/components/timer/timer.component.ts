@@ -1,7 +1,7 @@
 import { TimerService, TimerStatus } from './../../services/timer.service';
 import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
-import { fromEvent, merge, empty, timer, EMPTY, of } from 'rxjs';
-import { mapTo, tap, startWith, switchMap } from 'rxjs/operators';
+import { fromEvent, merge, empty, timer, EMPTY, of, Subject } from 'rxjs';
+import { mapTo, tap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { SettingsService, CountingType } from 'src/app/services/settings.service';
 
 @Component({
@@ -11,18 +11,19 @@ import { SettingsService, CountingType } from 'src/app/services/settings.service
 })
 export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
   // HTML element references
-  @ViewChild('pause', { read: ElementRef }) pauseBtn: ElementRef;
+  @ViewChild('pause', { read: ElementRef, static: true }) pauseBtn: ElementRef;
   // read: ElementRef makes sure we can read the element reference after applying the mat-icon directive
-  @ViewChild('start', { read: ElementRef }) startBtn: ElementRef;
-  @ViewChild('resume', { read: ElementRef }) resumeBtn: ElementRef;
-  @ViewChild('stop', { read: ElementRef }) stopBtn: ElementRef;
-  @ViewChild('countdown') countdownRd: ElementRef;
-  @ViewChild('stopwatch') stopwatchRd: ElementRef;
+  @ViewChild('start', { read: ElementRef, static: true }) startBtn: ElementRef;
+  @ViewChild('resume', { read: ElementRef, static: true }) resumeBtn: ElementRef;
+  @ViewChild('stop', { read: ElementRef, static: true }) stopBtn: ElementRef;
+  @ViewChild('countdown', { static: false }) countdownRd: ElementRef;
+  @ViewChild('stopwatch', { static: false }) stopwatchRd: ElementRef;
 
   // Class variables
   // Observables
   private timer$: any;
   private isInterested$: any;
+  private onDestroy$: Subject<any> = new Subject();
   // Flag variables used from the HTML
   public customtime;
   public timertypeselector;
@@ -34,7 +35,7 @@ export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
   public isNaN = (x: any) => isNaN(x);
 
   constructor(private timerService: TimerService, private settings: SettingsService) {
-    this.timerService.timerStatus$.subscribe(status => {
+    this.timerService.timerStatus$.pipe(takeUntil(this.onDestroy$)).subscribe(status => {
       this.timerStatus = status;
     });
   }
@@ -52,8 +53,8 @@ export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.timer$.unsubscribe();
-    this.timerService.timerStatus$.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 
   ngAfterViewInit() {
@@ -82,11 +83,10 @@ export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
       mapTo(false)
     );
 
-    this.isInterested$ = merge(startBtnClick$, pauseBtnClick$, resumeBtnClick$, stopBtnClick$).pipe(
-      startWith(false)
-    );
+    this.isInterested$ = merge(startBtnClick$, pauseBtnClick$, resumeBtnClick$, stopBtnClick$).pipe(startWith(false));
 
     const myTimer$ = this.isInterested$.pipe(
+      takeUntil(this.onDestroy$),
       switchMap(isInterested => (isInterested ? this.timer$ : EMPTY))
     );
 

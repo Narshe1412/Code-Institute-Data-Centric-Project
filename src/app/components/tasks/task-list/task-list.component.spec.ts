@@ -5,7 +5,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TaskListComponent } from './task-list.component';
 import { Task } from 'src/app/services/tasks.service';
-import { MatPaginatorModule, MatTableModule } from '@angular/material';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 import { TimePipe } from 'src/app/pipes/time.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 

@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, tick, ComponentFixture, fakeAsync } from '@angular/core/testing';
 import { skip } from 'rxjs/operators';
 import { TasksService, Task, TaskStatus } from './tasks.service';
 
@@ -178,7 +178,7 @@ describe('TasksService', () => {
       expect(service.taskList.length).toBe(2);
     });
 
-    it('should trigger the observable after a new task is added', () => {
+    it('should trigger the observable after a new task is added', fakeAsync(() => {
       const testTitle = 'Test title';
       const testDesc = 'Test description';
       const testRef = 'AFFG2333';
@@ -191,11 +191,14 @@ describe('TasksService', () => {
         status: TaskStatus.Todo,
         visible: true
       };
+      let result;
 
-      service.taskList$.pipe(skip(1)).subscribe((res: Task[]) => expect(expected).toEqual(res[0]));
+      service.taskList$.pipe(skip(1)).subscribe((res: Task[]) => (result = res));
 
       service.addTask(testTitle, testRef, testDesc);
-    });
+      tick();
+      expect(expected).toEqual(result[0]);
+    }));
 
     describe('getID', () => {
       it('should return 1 on initial load', () => {
@@ -388,15 +391,17 @@ describe('TasksService', () => {
       expect(service.taskList.length).toBe(2);
     });
 
-    it('should trigger the observable after the task is deleted', () => {
-      service.addTask('1', '2', '3');
+    it('should trigger the observable after the task is deleted', fakeAsync(() => {
+      const { id } = service.addTask('1', '2', '3');
+      let result;
+      service.taskList$.pipe().subscribe((res: Task[]) => {
+        result = res;
+      });
 
-      service.taskList$
-        .pipe(skip(1))
-        .subscribe((res: Task[]) => expect(service.taskList.length).toEqual(0));
-
-      service.deleteTaskById(0);
-    });
+      service.deleteTaskById(id);
+      tick();
+      expect(result.length).toEqual(0);
+    }));
 
     it('should allow iteration over the collection after a task is deleted i.e. no "holes"', () => {
       service.addTask('1', '1', '1');
@@ -501,11 +506,15 @@ describe('TasksService', () => {
       expect(service.activeTask).toEqual(newTask);
     });
 
-    it('should update the observable when task is updated', () => {
+    it('should update the observable when task is updated', fakeAsync(() => {
       const newTask = service.addTask('new', 'newref', 'newdesc');
+      let result;
+
+      service.activeTask$.subscribe((res: Task) => (result = res));
       service.activeTask = newTask;
-      service.activeTask$.pipe(skip(1)).subscribe((res: Task) => expect(newTask).toEqual(res));
-    });
+      tick();
+      expect(newTask).toEqual(result);
+    }));
   });
 
   describe('setActiveTaskById', () => {
