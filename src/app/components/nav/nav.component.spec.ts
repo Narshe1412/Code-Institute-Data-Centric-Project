@@ -3,12 +3,6 @@ import { ActiveTaskBannerComponent } from './../active-task-banner/active-task-b
 import { LayoutModule } from '@angular/cdk/layout';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { NavComponent } from './nav.component';
 import { TimerComponent } from '../timer/timer.component';
@@ -19,6 +13,8 @@ import { TaskComponent } from '../tasks/task/task.component';
 import { GridComponent } from '../reports/grid/grid.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from 'src/app/material.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('NavComponent', () => {
   let component: NavComponent;
@@ -42,12 +38,8 @@ describe('NavComponent', () => {
         ReactiveFormsModule,
         NoopAnimationsModule,
         LayoutModule,
-        MatButtonModule,
-        MatIconModule,
-        MatListModule,
-        MatSidenavModule,
-        MatToolbarModule,
-        MatMenuModule
+        MaterialModule,
+        HttpClientTestingModule
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
