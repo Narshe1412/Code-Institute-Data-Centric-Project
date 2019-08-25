@@ -13,7 +13,7 @@ export class TaskListComponent implements OnInit {
   constructor(private tasksService: TasksService) {}
 
   ngOnInit() {
-    this.taskCollection = this.tasksService.taskList;
+    this.taskCollection = this.tasksService.taskList$;
   }
 
   drop(event: CdkDragDrop<string[]>) {

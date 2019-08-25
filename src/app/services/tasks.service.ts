@@ -1,5 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { DataLayerService } from './data-layer.service';
 
 export interface Task {
   id: number;
@@ -105,7 +107,7 @@ export class TasksService {
     this.taskList$.next(value);
   }
 
-  constructor() {
+  constructor(private dal: DataLayerService) {
     this.taskList$ = new BehaviorSubject<Task[]>([]);
     this.activeTask$ = new BehaviorSubject<Task>(null);
   }
@@ -143,11 +145,7 @@ export class TasksService {
       if (id) {
         return t.id === id;
       } else if (task) {
-        return (
-          t.reference === task.reference &&
-          t.description === task.description &&
-          t.title === task.title
-        );
+        return t.reference === task.reference && t.description === task.description && t.title === task.title;
       }
     });
     if (foundtaskIndex >= 0) {
@@ -187,12 +185,7 @@ export class TasksService {
   }
 
   public advanceTaskStatus(id: number, tasklist = this.taskList, status?: string) {
-    const statusList: TaskStatus[] = [
-      TaskStatus.Todo,
-      TaskStatus.InProgress,
-      TaskStatus.Done,
-      TaskStatus.Archived
-    ];
+    const statusList: TaskStatus[] = [TaskStatus.Todo, TaskStatus.InProgress, TaskStatus.Done, TaskStatus.Archived];
     const taskIndex = tasklist.findIndex(task => task.id === id);
     if (status && TaskStatus[status]) {
       tasklist[taskIndex].status = status as TaskStatus;
@@ -232,10 +225,7 @@ export class TasksService {
     let totalTime = -1;
     const taskIndex = tasklist.findIndex(x => x.id === id);
     if (taskIndex >= 0) {
-      totalTime = tasklist[taskIndex].timeWorked.reduce(
-        (total, current) => (total += current.amount),
-        0
-      );
+      totalTime = tasklist[taskIndex].timeWorked.reduce((total, current) => (total += current.amount), 0);
     }
     return totalTime;
   }

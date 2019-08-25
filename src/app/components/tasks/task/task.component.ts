@@ -4,13 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { faLock, faHourglassHalf, faLockOpen } from '@fortawesome/free-solid-svg-icons';
-import {
-  faCheckSquare,
-  faSquare,
-  faTrashAlt,
-  faPlayCircle,
-  faClock
-} from '@fortawesome/free-regular-svg-icons';
+import { faCheckSquare, faSquare, faTrashAlt, faPlayCircle, faClock } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-task',

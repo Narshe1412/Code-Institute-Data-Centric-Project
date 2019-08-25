@@ -3,11 +3,7 @@
     <div id="task-bar-{{ task.id }}">
       <div id="status-icons">
         <div id="task-action-icons">
-          <fa-icon
-            *ngIf="!isCurrentActiveTask()"
-            [icon]="faClock"
-            (click)="setAsActiveTask()"
-          ></fa-icon>
+          <fa-icon *ngIf="!isCurrentActiveTask()" [icon]="faClock" (click)="setAsActiveTask()"></fa-icon>
         </div>
         <div id="task-actual-status">
           <fa-icon
@@ -15,20 +11,12 @@
             [icon]="faPlayCircle"
             (click)="setTaskStatusTo('InProgress')"
           ></fa-icon>
-          <fa-icon
-            *ngIf="task.status === 'InProgress'"
-            [icon]="faSquare"
-            (click)="setTaskStatusTo('Done')"
-          ></fa-icon>
+          <fa-icon *ngIf="task.status === 'InProgress'" [icon]="faSquare" (click)="setTaskStatusTo('Done')"></fa-icon>
           <fa-icon *ngIf="task.status === 'Done'" [icon]="faCheckSquare"></fa-icon>
           <fa-icon *ngIf="task.status === 'Archived'" [icon]="faLock"></fa-icon>
         </div>
         <div id="task-delete-archive">
-          <fa-icon
-            *ngIf="task.status === 'Done'"
-            [icon]="faLockOpen"
-            (click)="setTaskStatusTo('Archived')"
-          ></fa-icon>
+          <fa-icon *ngIf="task.status === 'Done'" [icon]="faLockOpen" (click)="setTaskStatusTo('Archived')"></fa-icon>
           <fa-icon
             *ngIf="task.status !== 'Done' && task.status !== 'Archived'"
             [icon]="faTrashAlt"
@@ -37,17 +25,12 @@
         </div>
       </div>
     </div>
-    <div id="title-bar">
+    <div
+      id="title-bar"
+      matTooltip="{{ task.description?.length >= 50 ? task.description.substring(0, 50) + '...' : task.description }}"
+    >
       <div class="task-ref fixed-sized-font">{{ task.reference }}</div>
       <div class="task-title bold">{{ task.title }}</div>
-      <div class="task-description-hover">
-        This will be a hover msg
-        {{
-          task.description.length >= 50
-            ? task.description.substring(0, 50) + '...'
-            : task.description
-        }}
-      </div>
       <div class="task-expand-details-btn">
         <button class="form-control" id="show-time-details" (click)="expanded = !expanded">
           ...
@@ -59,12 +42,9 @@
     <div class="form-group" *ngIf="expanded">
       <label for="status">Task Status</label>
       <select class="form-control" id="status" required (change)="onSelectStatus($event)">
-        <option
-          *ngFor="let status of statusType"
-          [ngValue]="status"
-          [selected]="task.status === status"
-          >{{ status }}</option
-        >
+        <option *ngFor="let status of statusType" [ngValue]="status" [selected]="task.status === status">{{
+          status
+        }}</option>
       </select>
       <button class="form-control" id="adv-status" (click)="advanceStatus()">> > ></button>
     </div>

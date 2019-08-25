@@ -2,7 +2,7 @@
 <app-task-manager></app-task-manager>
 
 <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-  <div class="example-box" *ngFor="let task of taskCollection" cdkDrag>
+  <div class="example-box" *ngFor="let task of taskCollection | async" cdkDrag>
     <div class="example-handle" cdkDragHandle>
       <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
         <path
