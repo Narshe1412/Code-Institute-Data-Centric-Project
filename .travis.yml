@@ -21,6 +21,7 @@ cache:
     - ./node_modules
 
 install:
+  - npm install -g snyk
   - npm install
 
 script:
