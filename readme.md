@@ -9,6 +9,15 @@ This causes, not only frustration to the employee but also to management, as the
 
 This project attempts to solve this problem by also providing the end-user a better way to self-manage work and rest times by using the famous [Pomodoro technique](https://en.wikipedia.org/wiki/Pomodoro_Technique), if he or she wishes to abide to it.
 
+## Update August 2019
+
+This project was initially designed to be my User Centric project however as I started developing I realized that it was getting too much out of scope so I decided to leave it on the shelf as my project to be for the data centric project. I didn't know at that time that the project example that Code Institute will provide is also a task manager application.
+
+However, after discussing this with my mentor, we've considered this to be complex enough as follows:
+
+- The original project was server side rendered with Flask as render engine. This project uses Flask as the data access layer piece providing RESTful APIs that will be consumed by a frontend app.
+- The original app is not a Single Page Application and needs to re-render on each user action. This application use ReactiveX module to handle state changes and provide a seemless experience to the user without navigating away.
+
 ## UX
 
 The intended audience of this website is a person who is going to be doing a job that can be separated into tasks and where time needs to be tracked, either for management request, or to ensure the user that enough breaks are taken for both content assimilation or avoiding interrumptions.
@@ -52,17 +61,17 @@ By adding a mobile-first design approach we allow the user to not have to rely i
 ### Mockups and Diagrams
 
 Initial Paper Mockup:
-![Initial Mockup made on paper](docs/img/initial-mockup.jpg 'Initial Mockup made on paper')
+![Initial Mockup made on paper](docs/img/initial-mockup.jpg "Initial Mockup made on paper")
 
 Basic Wireframe Setup for Mobile view and Desktop View
-![Mobile first design](docs/img/mobile.png 'Mobile first design')
-![Desktop design](docs/img/desktop.png 'Desktop design')
+![Mobile first design](docs/img/mobile.png "Mobile first design")
+![Desktop design](docs/img/desktop.png "Desktop design")
 
 State Machine for Timer Functionality
-![State Machine for Timer](docs/img/sbm-timer.png 'State Machine for Timer')
+![State Machine for Timer](docs/img/sbm-timer.png "State Machine for Timer")
 
 State Machine for Task Status
-![State Machine for Task](docs/img/sbm-task.png 'State Machine for Task')
+![State Machine for Task](docs/img/sbm-task.png "State Machine for Task")
 
 ## Features
 
