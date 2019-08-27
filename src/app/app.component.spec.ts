@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AppModule } from './app.module';
 import { FormsModule } from '@angular/forms';
 import { TestBed, async } from '@angular/core/testing';
@@ -13,6 +14,7 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
+        HttpClientTestingModule,
         RouterTestingModule,
         MatToolbarModule,
         FormsModule,
