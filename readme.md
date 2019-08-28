@@ -17,6 +17,9 @@ However, after discussing this with my mentor, we've considered this to be compl
 
 - The original project was server side rendered with Flask as render engine. This project uses Flask as the data access layer piece providing RESTful APIs that will be consumed by a frontend app.
 - The original app is not a Single Page Application and needs to re-render on each user action. This application use ReactiveX module to handle state changes and provide a seemless experience to the user without navigating away.
+- This application implements unit testing in both frontend and backend, using standard libraries for both system so the final product is more resilient to code changes.
+
+I've noted sections that belong to the old project and are no longer relevant, to keep track of them so the reviewer can check the improvements upon the spec, if he or she wishes to do so.
 
 ## UX
 
@@ -37,6 +40,7 @@ By adding a mobile-first design approach we allow the user to not have to rely i
 
 #### Must Haves
 
+- As a user, I want to be able to store the application data, so time and task completion are not lost after the web is closed. (**\*New\*** This used to be a should have requirement and has been moved to an important part of the features)
 - As a user, I want to be able to start and stop the timer, so that I can track the time spent on each task assigned.
 - As a user, I want to be able to record tasks in the app, so that I can better organize my time an plan ahead.
 - As a user, I want to be able to choose the type of timer between Pomodoro timer and regular timer so I can pick the best that suit my needs regarding the task at hand.
@@ -44,7 +48,6 @@ By adding a mobile-first design approach we allow the user to not have to rely i
 
 #### Should haves
 
-- As a user, I want to be able to store the application data, so time and task completion are not lost after the web is closed.
 - As a user, I want to be able to visualize a summary of the time spent using a variety of charts, so that I can have a better picture of the time spent for my own records or for management reporting.
 
 #### Could haves
@@ -75,40 +78,52 @@ State Machine for Task Status
 
 ## Features
 
-In this section, you should go over the different parts of your project, and describe each in a sentence or so.
-
 ### Existing Features
 
-- Feature 1 - allows users X to achieve Y, by having them fill out Z
-- ...
-
-For some/all of your features, you may choose to reference the specific project files that implement them, although this is entirely optional.
-
-In addition, you may also use this section to discuss plans for additional features to be implemented in the future:
+- Task Manager: Allows the user to track the status of his workload by creating, updating and progressing the tasks assigned to him
+- Timer: Allows the user to start and stop a timer to check the time spent on a certain task. This timer can later be added to a task to keep track of how long each tasks takes.
+- Settings: Allows the user to configure the settings of his application.
+- Reports: Gives you a bit of insight in how you're doing in terms of productivity and efficiency.
 
 ### Features Left to Implement
 
-- Another feature idea
+- Possibility to switch between different forms of storage i.e. LocalStorage, Filesystem, Azure Blobs, Firebase, etc... The data layer interface can be used for these implementations into angular services, and then, the user could choose to inject one service or another.
+- Import and Export the data from/to CSV or tabulated format to be reused on other applications like Excel.
+- Connectivity to other apps to provide notifications, statistics or any other form of app integration.
 
 ## Technologies Used
 
-In this section, you should mention all of the languages, frameworks, libraries, and any other tools that you have used to construct this project. For each, provide its name, a link to its official site and a short sentence of why it was used.
+### Libraries
 
-- [Angular](https://angular.io/)
+#### Frontend
 
-  - The project structure was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.0.
-  - This includes several libraries adopted by the Angular framework to ease the programming experience, code quality and end to end deployment of the product such as Typescript, Karma for testing, SASS stylesheets, Webpack bundling and minifying, etc...
+- This project's frontend was scaffolded by [Angular CLI](https://github.com/angular/angular-cli) version 8.0.2 which installs the following technologies (among others):
+  - [rxjs](https://github.com/ReactiveX/rxjs): Introduces the concept of reactive programming and observables with the ReactiveX library.
+  - [Typescript](https://www.npmjs.com/package/typescript): Adds typing and additional constructs not present on the JavaScript language but common to other languages to increase resilience to your code.
+  - [Jasmine](https://jasmine.github.io/) and [Karma](https://www.npmjs.com/package/karma) for testing
+  - The angular cli tooling itself which provides compilation, bundling and minification of the JavaScript code, as well as support to older browsers via Polyfills.
+  - [Angular Material](https://material.angular.io/) was used for styling and providing page structure and responsiveness as well as a common theme.
+- [Highcharts](https://www.highcharts.com/) library for generating graphs and plotting data.
 
-- [Angular Material](https://material.angular.io/)
+#### Backend
 
-  - The project uses Material design components from the Angular official repository, as well as the themes provided by this library. This ensures that the site follows a mobile first approach, with focus on the UX dictated by the **Material design** principles and guidelines from [Google](https://material.io/design/).
+**\*New\*** No backend was designed at the start of the project as it used to be an optional requirement
 
-- [Travis CI](https://travis-ci.com/)
+- Python [Flask](https://palletsprojects.com/p/flask/) and [PyMongo](https://api.mongodb.com/python/current/) libraries have been used to provide a suitable backend in the form of a RESTful API.
+- Python [Unittest](https://docs.python.org/3/library/unittest.html) was used for testing purposes on the python code.
 
-  - I'm using Travis to automate Continuous Integration in the project, making sure that all tests are properly executed before deploying and facilitating a future implementation of Continuous Deployment to either Heroku or Github Pages.
+### Other tools
 
-- [Highcharts](https://www.highcharts.com/)
-  - I'm using this charting library as opposed to D3 as it will be benefitial to my day to day job to gain more exposure with it. Although Highcharts normally requires a license, it is free to use for non-comercial purposes. An option to disable charting feature will be given for those who want to use this project for their own company. Future releases will include a D3 version if time permits.
+- This project has been created using [Visual Studio Code](https://code.visualstudio.com/) IDE in a [Node v.10.13](https://nodejs.org/en/) environment
+- Project organization and task management provided by [GitHub and GitHub Projects](https://github.com).
+  - All feature branchs within a sprint are squashed and merged into their respective sprint. Each sprint is Squashed and Merged into the master branch. Each Github issue and pull request still retain the history of commits against the branch or feature. Non-sprint branches are deleted after merge.
+- Continuous Integration/Development automation provided by [Travis CI](http://travis-ci.com) and [Github Actions](https://github.com/features/actions).
+- [Heroku](https://www.heroku.com/) is used to host the data layer in form of a RESTful API and provide Continuous Delivery **\*New\***.
+- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) is our database provider **\*New\***.
+- Code quality and analysis provided by [SonarQube](https://www.sonarqube.org/) via its cloud service [SonarCloud](https://sonarcloud.io/)
+- [Snyk](https://snyk.io/) is used to analyze vulnerabilities within dependencies.
+
+Click on the badges at the top of this file to check the build status and quality metrics.
 
 ## Testing
 
@@ -130,41 +145,60 @@ You should also mention in this section any interesting bugs or problems you dis
 
 If this section grows too long, you may want to split it off into a separate file and link to it from here.
 
-### Running unit tests
+### Browser Compatibility
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+TODO -- The application should be compatible with the latest versions in all browsers thanks to the use of polyfills. Due to memory limitations, the Benchmark runner may block the UI in Internet Explorer or mobile browsers.
 
-### Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+| Vendor            | Version      | Compatibility status |
+| ----------------- | ------------ | -------------------- |
+| Google Chrome     | xxxx.100     | --                   |
+| Mozilla Firefox   | xxxx.0       | --                   |
+| Microsoft Edge    | xxxx4.1.0    | --                   |
+| Opera             | xxxx         | --                   |
+| Internet Explorer | xxxx85.17134 | --                   |
 
 ## Deployment
 
-This section should describe the process you went through to deploy the project to a hosting platform (e.g. GitHub Pages or Heroku).
+This project was created using the Angular CLI which implements webpack under the hood to bundle all the files and create several JS files that contain the whole project structure.
 
-In particular, you should provide all details of the differences between the deployed version and the development version, if any, including:
+I used TravisCI to automate the deployment process. On each push and pull request, Travis will create a container where it will do a fresh deployment of my app, run all the tests, create a production build and deploy it to the gh-pages branch. This is all configured on the file `.travis.yml`.
 
-- Different values for environment variables (Heroku Config Vars)?
-- Different configuration files?
-- Separate git branch?
+**\*New\*** The backend is provided by Heroku. I have a different [github repository](https://github.com/Narshe1412/Code-Institute-Data-Centric-Backend) where all the backend is implemented connected to Heroku. On each push, Github will analyze my tests and if they pass Heroku will pick up the build and deploy it as a separate server. Heroku has internally configured a set of environment variables where all the secrets are stored (i.e. the database user, password and connection string).
+This repository has been included as Git submodule so it's also present as reference on this project.
 
-In addition, if it is not obvious, you should also describe how to run your code locally.
+### Local Deployment
 
-### Build
+#### Frontend deployment
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+_Requirements_: Node 10.6 and NPM
+
+In order to run your project locally just do:
+
+`npm install`
+
+`npm start`
+
+This will run the project in **development mode**. To get a production build after `npm install` run:
+
+`npm run build`
+
+Further configuration can be done in terms of building and deploying. See the [Angular Documentation](https://angular.io/) for more details.
+
+#### Backend deployment
+
+**\*New\*** No backend was designed at the start of the project as it used to be an optional requirement
+
+_Requirements_: Python 3.6 or higher. Python 2.7
+
+_Before start_: As this code is included by using submodules, it requires to be pulled via command `git submodule update --init --recursive`. The code shall be available in the folder _Code-Institute-Data-Centric-Backend_
+
+To setup the backend first of all a MONGO_URI string must be provided, either as a Environment Variable (recommended) or by updating the line `app.config["MONGO_URI"] = os.environ.get("MONGO_URI")` with the required string. A database named `data_driven` must be present to work.
+
+Then navigate to the folder and execute `python app.py`
 
 ## Credits
 
-### Content
-
-- The text for section Y was copied from the [Wikipedia article Z](https://en.wikipedia.org/wiki/Z)
-
-### Media
-
-- The photos used in this site were obtained from ...
-
 ### Acknowledgements
 
-- I received inspiration for this project from X
-- Favicon provided by <a href="https://icons8.com/icon/25717/task">Icons8 - Task icon</a>
+- The CORS implementation provided by the backend was suggested by Zhangqy in this [Stackoverflow post](https://stackoverflow.com/a/45818284/5866637)
+- To implement the testing on the backend I followed this [tutorial by kenya-tech](https://kenya-tech.com/2019/01/18/writing-tests-for-a-restful-api-flask-app/)
