@@ -3,7 +3,7 @@ import { TimerService } from '../services/timer.service';
 
 class MockTimerService extends TimerService {
   constructor() {
-    super(null);
+    super(null, null);
   }
   getDisplayTimeInHHMMSS() {
     return 'Mocked';
