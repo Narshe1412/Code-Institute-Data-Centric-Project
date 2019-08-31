@@ -37,7 +37,7 @@ export class TaskComponent implements OnInit {
   public statusType: TaskStatus[];
   public isAnimated;
   public expanded = false;
-  displayedColumns: string[] = ['time', 'timestamp'];
+  displayedColumns: string[] = ['amount', 'timestamp'];
   dataSource = new MatTableDataSource<TimeRecord[]>();
   constructor(private taskService: TasksService) {}
 
@@ -50,7 +50,6 @@ export class TaskComponent implements OnInit {
   }
 
   public onSelectStatus(event) {
-    console.log(event.target.value);
     this.taskService.updateTaskStatus(this.task.id, event.target.value);
   }
 

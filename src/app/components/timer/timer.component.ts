@@ -1,8 +1,16 @@
 import { TimerService, TimerStatus } from './../../services/timer.service';
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+  ElementRef,
+  OnDestroy
+} from '@angular/core';
 import { fromEvent, merge, empty, timer, EMPTY, of, Subject } from 'rxjs';
 import { mapTo, tap, startWith, switchMap, takeUntil } from 'rxjs/operators';
-import { SettingsService, CountingType } from 'src/app/services/settings.service';
+import { SettingsService } from 'src/app/services/settings.service';
+import { TasksService } from 'src/app/services/tasks.service';
 
 @Component({
   selector: 'app-timer',
@@ -14,7 +22,8 @@ export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('pause', { read: ElementRef, static: false }) pauseBtn: ElementRef;
   // read: ElementRef makes sure we can read the element reference after applying the mat-icon directive
   @ViewChild('start', { read: ElementRef, static: false }) startBtn: ElementRef;
-  @ViewChild('resume', { read: ElementRef, static: false }) resumeBtn: ElementRef;
+  @ViewChild('resume', { read: ElementRef, static: false })
+  resumeBtn: ElementRef;
   @ViewChild('stop', { read: ElementRef, static: false }) stopBtn: ElementRef;
   @ViewChild('countdown', { static: false }) countdownRd: ElementRef;
   @ViewChild('stopwatch', { static: false }) stopwatchRd: ElementRef;
@@ -34,10 +43,23 @@ export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   public isNaN = (x: any) => isNaN(x);
 
-  constructor(private timerService: TimerService, private settings: SettingsService) {
-    this.timerService.timerStatus$.pipe(takeUntil(this.onDestroy$)).subscribe(status => {
-      this.timerStatus = status;
-    });
+  public get isAddTimeButtonAvailable() {
+    return (
+      this.timerService.elapsedTime > 0 &&
+      this.timerStatus !== TimerStatus.running
+    );
+  }
+
+  constructor(
+    private timerService: TimerService,
+    private settings: SettingsService,
+    private tasksService: TasksService
+  ) {
+    this.timerService.timerStatus$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(status => {
+        this.timerStatus = status;
+      });
   }
 
   /**
@@ -71,7 +93,10 @@ export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
       mapTo(false)
     );
 
-    const resumeBtnClick$ = fromEvent(this.resumeBtn.nativeElement, 'click').pipe(
+    const resumeBtnClick$ = fromEvent(
+      this.resumeBtn.nativeElement,
+      'click'
+    ).pipe(
       tap(_ => (this.timerService.timerStatus = TimerStatus.running)),
       mapTo(true)
     );
@@ -83,7 +108,12 @@ export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
       mapTo(false)
     );
 
-    this.isInterested$ = merge(startBtnClick$, pauseBtnClick$, resumeBtnClick$, stopBtnClick$).pipe(startWith(false));
+    this.isInterested$ = merge(
+      startBtnClick$,
+      pauseBtnClick$,
+      resumeBtnClick$,
+      stopBtnClick$
+    ).pipe(startWith(false));
 
     const myTimer$ = this.isInterested$.pipe(
       takeUntil(this.onDestroy$),
@@ -91,7 +121,7 @@ export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     myTimer$.subscribe(() => {
-      this.timerService.currentTime = this.timerService.changeTimeByAmount(-1);
+      this.timerService.currentTime = this.timerService.changeTimeByAmount();
     });
   }
 
@@ -106,5 +136,9 @@ export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
       this.settings.timerStartAmount = this.customtime * 60;
     }
     this.timerService.resetTimer();
+  }
+
+  public addTimeToTask() {
+    this.timerService.addTimeToTask();
   }
 }

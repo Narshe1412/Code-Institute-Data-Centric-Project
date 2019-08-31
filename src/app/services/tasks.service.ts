@@ -104,11 +104,6 @@ export class TasksService {
   }
 
   public deleteTask(task?: Task, id?: string) {
-    console.log(
-      'TCL: TasksService -> deleteTask -> task?: Task, id?: string',
-      task,
-      id
-    );
     const foundtaskIndex = this.taskList.findIndex((t: Task) => {
       if (id) {
         return t.id === id;
@@ -122,14 +117,6 @@ export class TasksService {
         );
       }
     });
-    console.log(
-      'TCL: TasksService -> deleteTask -> foundtaskIndex',
-      foundtaskIndex
-    );
-    console.log(
-      'TCL: TasksService -> deleteTask -> this.taskList',
-      this.taskList
-    );
     if (this.taskList[foundtaskIndex]) {
       this.dal
         .deleteTask(this.taskList[foundtaskIndex])
@@ -168,7 +155,7 @@ export class TasksService {
       (task: Task) => task.id === id
     );
     if (foundtaskIndex >= 0) {
-      this.dal
+      return this.dal
         .updateTask({
           ...this.taskList[foundtaskIndex],
           ...contents
@@ -179,7 +166,6 @@ export class TasksService {
           this.taskList$.next(this.taskList);
         });
     }
-    return this.taskList;
   }
 
   public advanceTaskStatus(
@@ -203,7 +189,7 @@ export class TasksService {
         newStatus >= statusList.length - 1 ? newStatus : newStatus + 1;
       tasklist[taskIndex].status = statusList[newStatus];
     }
-    this.dal
+    return this.dal
       .updateTask(this.taskList[taskIndex])
       .toPromise()
       .then(res => {
@@ -239,7 +225,7 @@ export class TasksService {
     const taskIndex = tasklist.findIndex(x => x.id === id);
     if (taskIndex >= 0) {
       const record: TimeRecord = { timestamp: Date.now(), amount: time };
-      this.dal
+      return this.dal
         .addTimeToTask(id, record)
         .toPromise()
         .then(res => {

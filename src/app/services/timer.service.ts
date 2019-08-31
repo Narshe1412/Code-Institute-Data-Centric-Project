@@ -1,3 +1,4 @@
+import { TasksService } from 'src/app/services/tasks.service';
 import { SettingsService } from './settings.service';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, timer } from 'rxjs';
@@ -15,6 +16,10 @@ export class TimerService {
   // private _timerStatus: TimerStatus;
   private _timerStatus$: BehaviorSubject<TimerStatus>;
   private _currentTime: number;
+
+  public get elapsedTime() {
+    return Math.abs(this.settings.timerStartAmount - this._currentTime);
+  }
 
   public get timer$() {
     return this._timer$;
@@ -72,10 +77,15 @@ export class TimerService {
   }
 
   public getDisplayHours(time = this.currentTime): string {
-    return this.getHours(time) < 10 ? `0${this.getHours(time)}` : this.getHours(time).toString();
+    return this.getHours(time) < 10
+      ? `0${this.getHours(time)}`
+      : this.getHours(time).toString();
   }
 
-  constructor(private settings: SettingsService) {
+  constructor(
+    private settings: SettingsService,
+    private tasksService: TasksService
+  ) {
     this.currentTime = 0;
     this.timerStatus$ = new BehaviorSubject<TimerStatus>(TimerStatus.stopped);
   }
@@ -90,8 +100,15 @@ export class TimerService {
   }
 
   public getDisplayTimeInHHMMSS(time = this.currentTime): string {
-    return `${this.getDisplayHours(time)}:${this.getDisplayMinutes(time)}:${this.getDisplaySeconds(
+    return `${this.getDisplayHours(time)}:${this.getDisplayMinutes(
       time
-    )}`;
+    )}:${this.getDisplaySeconds(time)}`;
+  }
+
+  public addTimeToTask() {
+    this.timerStatus$.next(TimerStatus.stopped);
+    this.tasksService
+      .addTimeToTask(this.tasksService.activeTask.id, this.elapsedTime)
+      .then(res => this.resetTimer());
   }
 }

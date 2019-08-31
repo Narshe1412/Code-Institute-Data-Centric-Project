@@ -1,28 +1,50 @@
-import { TasksService } from 'src/app/services/tasks.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  Input,
+  AfterViewInit,
+  ChangeDetectorRef
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { TaskTimerListDataSource } from './task-timer-list-datasource';
+import {
+  TaskTimerListDataSource,
+  TaskTimerListItem
+} from './task-timer-list-datasource';
+import { TimeRecord } from 'src/app/model/ITimeRecord';
 
 @Component({
   selector: 'app-task-timer-list',
   templateUrl: './task-timer-list.component.html',
   styleUrls: ['./task-timer-list.component.scss']
 })
-export class TaskTimerListComponent implements OnInit {
+export class TaskTimerListComponent implements OnInit, AfterViewInit {
+  @Input() timeWorkedList: TimeRecord[];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  dataSource: TaskTimerListDataSource;
+  public dataSource: TaskTimerListDataSource;
 
-  displayedColumns = ['time', 'timestamp'];
+  displayedColumns = ['amount', 'timestamp'];
 
-  constructor(private taskService: TasksService) {}
+  constructor(private changeDetectorRefs: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.dataSource = new TaskTimerListDataSource(this.paginator, this.sort);
+    this.refresh();
+  }
+
+  ngAfterViewInit() {}
+
+  refresh() {
+    this.dataSource = new TaskTimerListDataSource(
+      this.paginator,
+      this.sort,
+      this.timeWorkedList as TaskTimerListItem[]
+    );
+    this.changeDetectorRefs.detectChanges();
   }
 
   public getTotalTime() {
-    //return this.taskService.getTotalTimeFromTask(this.task.id);
+    return this.timeWorkedList.reduce((acc, item) => acc + item.amount, 0);
   }
 }
