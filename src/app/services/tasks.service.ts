@@ -1,3 +1,5 @@
+import { TimeRecord } from './../model/ITimeRecord';
+import { DataLayerService } from './data-layer.service';
 import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Task } from '../model/ITask';
@@ -5,6 +7,8 @@ import { TaskStatus } from '../model/ITaskStatus';
 
 // These properties are read only or can only be changed by calling their respective methods
 const immutableProps = ['id', 'timeWorked', 'visible'];
+
+const ACTIVE_TASK_KEY = 'Taskman-active-task';
 
 @Injectable({
   providedIn: 'root'
@@ -42,19 +46,41 @@ export class TasksService {
     this.taskList$.next(value);
   }
 
-  constructor() {
+  constructor(private dal: DataLayerService) {
     this.taskList$ = new BehaviorSubject<Task[]>([]);
     this.activeTask$ = new BehaviorSubject<Task>(null);
+    this.loadAllTasksInSystem();
   }
 
   public getNextId() {
     return this.currentId++;
   }
 
-  public addTask(title: string, reference: any, description = ''): Task {
+  public loadAllTasksInSystem() {
+    this.dal.getAllTasks().subscribe(tasks => {
+      this.taskList$.next(tasks);
+      const activeTask = this.getActiveTaskInLocalStorage();
+      if (activeTask) {
+        const isTaskInDB = this.taskList.find(
+          task => task.id.toString() === activeTask
+        );
+        if (isTaskInDB) {
+          this.activeTask$.next(isTaskInDB);
+        } else {
+          this.removeActiveTaskFromLocalStorage();
+        }
+      }
+    });
+  }
+
+  public addTask(
+    title: string,
+    reference: any,
+    description = ''
+  ): Promise<Task> {
     if (title && reference) {
       const newTask: Task = {
-        id: this.getNextId(),
+        id: null,
         title,
         reference,
         description,
@@ -62,24 +88,33 @@ export class TasksService {
         status: TaskStatus.Todo,
         visible: true
       };
-      this.taskList.push(newTask);
-      this.taskList$.next(this.taskList);
-      return newTask;
+      return this.dal
+        .insertTask(newTask)
+        .toPromise()
+        .then(res => {
+          this.taskList.push(res);
+          this.taskList$.next(this.taskList);
+          return res;
+        });
     }
   }
 
-  public getTaskById(id: number) {
-    return this.taskList.find((task: Task) => task.id === id);
+  public getTaskById(id: string) {
+    return this.dal.getTaskById(id).toPromise();
   }
 
-  public deleteTask(task?: Task, id?: number) {
-    if (this.taskList.length === 0) {
-      return [];
-    }
+  public deleteTask(task?: Task, id?: string) {
+    console.log(
+      'TCL: TasksService -> deleteTask -> task?: Task, id?: string',
+      task,
+      id
+    );
     const foundtaskIndex = this.taskList.findIndex((t: Task) => {
       if (id) {
         return t.id === id;
-      } else if (task) {
+      } else if (task && task.id) {
+        return t.id === task.id;
+      } else if (task && task.id && task.id.length === 0) {
         return (
           t.reference === task.reference &&
           t.description === task.description &&
@@ -87,22 +122,36 @@ export class TasksService {
         );
       }
     });
-    if (foundtaskIndex >= 0) {
-      this.taskList.splice(foundtaskIndex, 1);
-      this.taskList$.next(this.taskList);
+    console.log(
+      'TCL: TasksService -> deleteTask -> foundtaskIndex',
+      foundtaskIndex
+    );
+    console.log(
+      'TCL: TasksService -> deleteTask -> this.taskList',
+      this.taskList
+    );
+    if (this.taskList[foundtaskIndex]) {
+      this.dal
+        .deleteTask(this.taskList[foundtaskIndex])
+        .toPromise()
+        .then(res => {
+          if (res === true) {
+            this.taskList.splice(foundtaskIndex, 1);
+            this.taskList$.next(this.taskList);
+          }
+        });
     }
-    return this.taskList;
   }
 
-  public deleteTaskById(id: number) {
+  public deleteTaskById(id: string) {
     if (id) {
       this.deleteTask(null, id);
     }
   }
 
-  public updateTaskById(id: number, contents: {}) {
+  public updateTaskById(id: string, contents: {}) {
     const emptyTask: Task = {
-      id: 0,
+      id: '',
       title: '',
       reference: '',
       description: '',
@@ -119,17 +168,22 @@ export class TasksService {
       (task: Task) => task.id === id
     );
     if (foundtaskIndex >= 0) {
-      this.taskList[foundtaskIndex] = {
-        ...this.taskList[foundtaskIndex],
-        ...contents
-      };
-      this.taskList$.next(this.taskList);
+      this.dal
+        .updateTask({
+          ...this.taskList[foundtaskIndex],
+          ...contents
+        })
+        .toPromise()
+        .then(res => {
+          this.taskList[foundtaskIndex] = res;
+          this.taskList$.next(this.taskList);
+        });
     }
     return this.taskList;
   }
 
   public advanceTaskStatus(
-    id: number,
+    id: string,
     tasklist = this.taskList,
     status?: string
   ) {
@@ -149,11 +203,16 @@ export class TasksService {
         newStatus >= statusList.length - 1 ? newStatus : newStatus + 1;
       tasklist[taskIndex].status = statusList[newStatus];
     }
-    this.taskList$.next(tasklist);
+    this.dal
+      .updateTask(this.taskList[taskIndex])
+      .toPromise()
+      .then(res => {
+        this.taskList$.next(tasklist);
+      });
   }
 
   public updateTaskStatus(
-    id: number,
+    id: string,
     newStatus: TaskStatus,
     tasklist = this.taskList
   ) {
@@ -164,25 +223,35 @@ export class TasksService {
       if (taskIndex >= 0) {
         // Only update if task exists
         tasklist[taskIndex].status = newStatus;
-        // Force update the observable
-        this.taskList$.next(tasklist);
+        this.dal
+          .updateTask(tasklist[taskIndex])
+          .toPromise()
+          .then(res => {
+            // Force update the observable
+            this.taskList$.next(tasklist);
+          });
       }
     }
   }
 
-  public addTimeToTask(id: number, time: number, tasklist = this.taskList) {
+  public addTimeToTask(id: string, time: number, tasklist = this.taskList) {
     time = Math.abs(time);
     const taskIndex = tasklist.findIndex(x => x.id === id);
     if (taskIndex >= 0) {
-      tasklist[taskIndex].timeWorked.push({
-        amount: time,
-        timestamp: Date.now()
-      });
-      this.taskList$.next(tasklist);
+      const record: TimeRecord = { timestamp: Date.now(), amount: time };
+      this.dal
+        .addTimeToTask(id, record)
+        .toPromise()
+        .then(res => {
+          if (res) {
+            tasklist[taskIndex].timeWorked.push(record);
+            this.taskList$.next(tasklist);
+          }
+        });
     }
   }
 
-  public getTotalTimeFromTask(id: number, tasklist = this.taskList): number {
+  public getTotalTimeFromTask(id: string, tasklist = this.taskList): number {
     let totalTime = -1;
     const taskIndex = tasklist.findIndex(x => x.id === id);
     if (taskIndex >= 0) {
@@ -194,10 +263,11 @@ export class TasksService {
     return totalTime;
   }
 
-  public setActiveTaskById(id: number, tasklist = this.taskList) {
+  public setActiveTaskById(id: string, tasklist = this.taskList) {
     let success = false;
     const foundTask = tasklist.find((task: Task) => task.id === id);
     if (foundTask) {
+      this.setActiveTaskInLocalStorage(foundTask.id);
       this.activeTask = foundTask;
       success = true;
     }
@@ -207,9 +277,22 @@ export class TasksService {
   public removeActiveTask() {
     let success = false;
     if (this.activeTask) {
+      this.removeActiveTaskFromLocalStorage();
       this.activeTask = null;
       success = true;
     }
     return success;
+  }
+
+  private setActiveTaskInLocalStorage(taskId) {
+    localStorage.setItem(ACTIVE_TASK_KEY, taskId);
+  }
+
+  private getActiveTaskInLocalStorage() {
+    return localStorage.getItem(ACTIVE_TASK_KEY);
+  }
+
+  private removeActiveTaskFromLocalStorage() {
+    localStorage.removeItem(ACTIVE_TASK_KEY);
   }
 }

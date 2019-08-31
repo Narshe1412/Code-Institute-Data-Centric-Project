@@ -7,7 +7,7 @@ import { MatTableModule } from '@angular/material/table';
 import { AppModule } from 'src/app/app.module';
 
 const mock: Task = {
-  id: 0,
+  id: '0',
   status: null,
   title: 'This is a title',
   reference: '1111',

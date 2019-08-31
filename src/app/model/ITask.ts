@@ -1,12 +1,18 @@
 import { TaskStatus } from './ITaskStatus';
-import { TaskTime } from './ITaskTime';
+import { TimeRecord } from './ITimeRecord';
 
 export interface Task {
-  id: number;
+  id: string;
   title: string;
   reference: string;
   description: string;
-  timeWorked: TaskTime[];
+  timeWorked: TimeRecord[];
   status: TaskStatus;
   visible?: boolean;
+}
+
+export interface TaskFromDB extends Task {
+  _id: {
+    $oid: string;
+  };
 }

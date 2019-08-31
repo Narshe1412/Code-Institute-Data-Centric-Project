@@ -1,6 +1,6 @@
+import { TimeRecord } from './../../../model/ITimeRecord';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { TasksService } from 'src/app/services/tasks.service';
-import { TaskTime } from 'src/app/model/ITaskTime';
 import { TaskStatus } from 'src/app/model/ITaskStatus';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -38,13 +38,15 @@ export class TaskComponent implements OnInit {
   public isAnimated;
   public expanded = false;
   displayedColumns: string[] = ['time', 'timestamp'];
-  dataSource = new MatTableDataSource<TaskTime[]>();
+  dataSource = new MatTableDataSource<TimeRecord[]>();
   constructor(private taskService: TasksService) {}
 
   ngOnInit() {
     this.statusType = Object.values(TaskStatus);
     this.dataSource.paginator = this.paginator;
-    this.dataSource = new MatTableDataSource<TaskTime[]>(this.task.timeWorked);
+    this.dataSource = new MatTableDataSource<TimeRecord[]>(
+      this.task.timeWorked
+    );
   }
 
   public onSelectStatus(event) {
@@ -61,6 +63,7 @@ export class TaskComponent implements OnInit {
   }
 
   public deleteTask() {
+    console.log('clicked delete');
     this.taskService.deleteTask(this.task);
   }
 

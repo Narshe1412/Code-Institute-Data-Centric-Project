@@ -1,4 +1,4 @@
 export interface TimeRecord {
-  timestamp: Date;
-  duration: number;
+  timestamp: number;
+  amount: number;
 }

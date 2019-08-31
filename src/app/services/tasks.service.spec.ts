@@ -1,61 +1,14 @@
-import {
-  TestBed,
-  tick,
-  ComponentFixture,
-  fakeAsync
-} from '@angular/core/testing';
-import { skip } from 'rxjs/operators';
+import { TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { TasksService } from './tasks.service';
 import { TaskStatus } from '../model/ITaskStatus';
 import { Task } from '../model/ITask';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 let service: TasksService;
-const mockTaskList = [
-  {
-    id: 0,
-    title: 'This is a title',
-    reference: '1111',
-    description: 'This is a description',
-    timeWorked: [
-      { amount: 1312000, timestamp: 2321313131 },
-      { amount: 1312000, timestamp: 2321313131 },
-      { amount: 1312000, timestamp: 2321313131 }
-    ]
-  },
-  {
-    id: 1,
-    title: 'This is the second title',
-    reference: '22ND',
-    description: 'This is a new description',
-    timeWorked: []
-  },
-  {
-    id: 2,
-    title: 'This is the third title',
-    reference: '33AF',
-    description: 'This is a description',
-    timeWorked: [
-      { amount: 33, timestamp: 2321313131 },
-      { amount: 99, timestamp: 2321313131 },
-      { amount: 1113231312, timestamp: 2321313131 }
-    ]
-  },
-  {
-    id: 4,
-    title: 'This is a new task',
-    reference: '33AF',
-    description: 'This is a description',
-    timeWorked: [
-      { amount: 99999, timestamp: Date.now() },
-      { amount: 1312000, timestamp: Date.now() },
-      { amount: 1312000, timestamp: Date.now() }
-    ]
-  }
-];
 
 describe('TasksService', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ imports: [HttpClientTestingModule] });
     service = TestBed.get(TasksService);
     jasmine.clock().install();
   });
@@ -113,22 +66,23 @@ describe('TasksService', () => {
       expect(service.taskList.length).toBe(1);
     });
 
-    it('should contain the task, after the add process is completed', () => {
+    it('should contain the task, after the add process is completed', done => {
       const testTitle = 'Test title';
       const testDesc = 'Test description';
       const testRef = 'AFFG2333';
-      service.addTask(testTitle, testRef, testDesc);
-
-      const expected: Task = {
-        id: 1,
-        title: testTitle,
-        reference: testRef,
-        description: testDesc,
-        timeWorked: [],
-        status: TaskStatus.Todo,
-        visible: true
-      };
-      expect(expected).toEqual(service.taskList[0]);
+      service.addTask(testTitle, testRef, testDesc).then(newTask => {
+        const expected: Task = {
+          id: 'id from db',
+          title: testTitle,
+          reference: testRef,
+          description: testDesc,
+          timeWorked: [],
+          status: TaskStatus.Todo,
+          visible: true
+        };
+        expect(expected).toEqual(service.taskList[0]);
+        done();
+      });
     });
 
     it('should not create a task that is not valid', () => {
@@ -142,7 +96,7 @@ describe('TasksService', () => {
       const testDesc = 'Test description';
       const testRef = 'AFFG2333';
       const expected: Task = {
-        id: 1,
+        id: 'id from db',
         title: testTitle,
         reference: testRef,
         description: testDesc,
@@ -155,7 +109,7 @@ describe('TasksService', () => {
       const testDesc2 = 'Test description 2';
       const testRef2 = 'AFFG2333 2';
       const expected2: Task = {
-        id: 2,
+        id: 'id2 from db',
         title: testTitle2,
         reference: testRef2,
         description: testDesc2,
@@ -185,30 +139,6 @@ describe('TasksService', () => {
       expect(service.taskList.length).toBe(2);
     });
 
-    it('should trigger the observable after a new task is added', fakeAsync(() => {
-      const testTitle = 'Test title';
-      const testDesc = 'Test description';
-      const testRef = 'AFFG2333';
-      const expected: Task = {
-        id: 1,
-        title: testTitle,
-        reference: testRef,
-        description: testDesc,
-        timeWorked: [],
-        status: TaskStatus.Todo,
-        visible: true
-      };
-      let result;
-
-      service.taskList$
-        .pipe(skip(1))
-        .subscribe((res: Task[]) => (result = res));
-
-      service.addTask(testTitle, testRef, testDesc);
-      tick();
-      expect(expected).toEqual(result[0]);
-    }));
-
     describe('getID', () => {
       it('should return 1 on initial load', () => {
         const startid = service.getNextId();
@@ -234,25 +164,27 @@ describe('TasksService', () => {
       service.addTask('test', 'ref', 'desc');
       service.addTask('test2', 'ref2', 'desc2');
 
-      service.updateTaskById(2, { reference: 'NEWREF' });
+      service.updateTaskById('2', { reference: 'NEWREF' });
 
       expect(service.taskList[1].reference).toBe('NEWREF');
     });
 
-    it('should not update any other task except the one we requested', () => {
-      service.addTask('test', 'ref', 'desc');
-      service.addTask('test2', 'ref2', 'desc2');
+    it('should not update any other task except the one we requested', fakeAsync(() => {
+      Promise.all([
+        service.addTask('test', 'ref', 'desc'),
+        service.addTask('test2', 'ref2', 'desc2')
+      ]).then(res => {
+        service.updateTaskById(res[1].id, { reference: 'NEWREF' });
 
-      service.updateTaskById(2, { reference: 'NEWREF' });
-
-      expect(service.taskList[1].reference).toBe('NEWREF');
-      expect(service.taskList[0].reference).toBe('ref');
-    });
+        expect(service.taskList[1].reference).toBe('NEWREF');
+        expect(service.taskList[0].reference).toBe('ref');
+      });
+    }));
 
     it('should only update the fields we passed as parameter, but no others', () => {
       service.addTask('test', 'ref', 'desc');
 
-      service.updateTaskById(1, { reference: 'NEWREF' });
+      service.updateTaskById('1', { reference: 'NEWREF' });
 
       expect(service.taskList[0].reference).toBe('NEWREF');
       expect(service.taskList[0].description).toBe('desc');
@@ -262,13 +194,13 @@ describe('TasksService', () => {
     it('should not update a task that does not exists', () => {
       service.addTask('test', 'ref', 'desc');
 
-      service.updateTaskById(2, { reference: 'NEWREF' });
+      service.updateTaskById('2', { reference: 'NEWREF' });
 
       expect(service.taskList[0].reference).toBe('ref');
     });
 
     it('should not update a task if there are no tasks on the system', () => {
-      service.updateTaskById(2, { reference: 'NEWREF' });
+      service.updateTaskById('2', { reference: 'NEWREF' });
 
       expect(service.taskList.length).toBe(0);
     });
@@ -276,9 +208,9 @@ describe('TasksService', () => {
     it('should ignore properties that cannot be updated', () => {
       service.addTask('test', 'ref', 'desc');
 
-      service.updateTaskById(1, { id: 5, visible: false, timeWorked: 4 });
+      service.updateTaskById('1', { id: 5, visible: false, timeWorked: 4 });
 
-      expect(service.taskList[0].id).toBe(1);
+      expect(service.taskList[0].id).toBe('1');
       expect(service.taskList[0].visible).toBe(true);
       expect(service.taskList[0].timeWorked).toEqual([]);
     });
@@ -286,7 +218,7 @@ describe('TasksService', () => {
     it('should not allow the creation of new properties', () => {
       service.addTask('test', 'ref', 'desc');
 
-      service.updateTaskById(1, { strangeProp: 'NEWREF' });
+      service.updateTaskById('1', { strangeProp: 'NEWREF' });
 
       // expect(service.taskList[0]).not.toEqual(jasmine.objectContaining({ strangeProp: 'NEWREF' }));
       expect(service.taskList[0].hasOwnProperty('strangeProp')).toBeFalsy();
@@ -299,7 +231,7 @@ describe('TasksService', () => {
       const testDesc = 'Test description';
       const testRef = 'AFFG2333';
       const expected: Task = {
-        id: 1,
+        id: 'id from db',
         title: testTitle,
         reference: testRef,
         description: testDesc,
@@ -316,7 +248,7 @@ describe('TasksService', () => {
     });
 
     it('should properly delete the task by id', () => {
-      const id = 1;
+      const id = '1';
       service.addTask('test', 'ref', 'desc');
       service.addTask('test', 'ref', 'desc');
       service.addTask('test', 'ref', 'desc');
@@ -335,13 +267,13 @@ describe('TasksService', () => {
       service.addTask('test', 'ref', 'desc');
       expect(service.taskList.length).toBe(3);
 
-      service.deleteTaskById(1);
+      service.deleteTaskById('1');
 
       expect(service.taskList.length).toBe(2);
     });
 
     it('should not cause an error if trying to delete an empty collection', () => {
-      expect(() => service.deleteTaskById(0)).not.toThrow();
+      expect(() => service.deleteTaskById('0')).not.toThrow();
     });
 
     it('should ONLY delete the task we pass by parameter, the other remains intact', () => {
@@ -350,7 +282,7 @@ describe('TasksService', () => {
       const testDesc = 'Test description';
       const testRef = 'AFFG2333';
       const toDelete: Task = {
-        id: 1,
+        id: 'id from db',
         title: testTitle,
         reference: testRef,
         description: testDesc,
@@ -389,7 +321,7 @@ describe('TasksService', () => {
       const testDesc = 'Test description';
       const testRef = 'AFFG2333';
       const toDelete: Task = {
-        id: 1,
+        id: 'id from db',
         title: testTitle,
         reference: testRef,
         description: testDesc,
@@ -404,24 +336,12 @@ describe('TasksService', () => {
       expect(service.taskList.length).toBe(2);
     });
 
-    it('should trigger the observable after the task is deleted', fakeAsync(() => {
-      const { id } = service.addTask('1', '2', '3');
-      let result;
-      service.taskList$.pipe().subscribe((res: Task[]) => {
-        result = res;
-      });
-
-      service.deleteTaskById(id);
-      tick();
-      expect(result.length).toEqual(0);
-    }));
-
-    it('should allow iteration over the collection after a task is deleted i.e. no "holes"', () => {
+    it('should allow iteration over the collection after a task is deleted i.e. no "holes"', fakeAsync(() => {
       service.addTask('1', '1', '1');
       service.addTask('2', '2', '2');
       service.addTask('3', '3', '3');
 
-      service.deleteTaskById(1);
+      service.deleteTaskById('1');
 
       function arrayRunner(el) {
         expect(el).toBeTruthy();
@@ -429,62 +349,63 @@ describe('TasksService', () => {
       for (const task of service.taskList) {
         arrayRunner(task);
       }
-    });
+    }));
   });
 
   describe('advance task status', () => {
     it('should move task from todo to inprogress', () => {
       service.addTask('test', 'test', 'test');
-      service.advanceTaskStatus(1);
+      service.advanceTaskStatus('1');
       expect(service.taskList[0].status).toBe(TaskStatus.InProgress);
     });
 
     it('should move task from inprogress to done', () => {
       service.addTask('test', 'test', 'test');
-      service.advanceTaskStatus(1);
-      service.advanceTaskStatus(1);
+      service.advanceTaskStatus('1');
+      service.advanceTaskStatus('1');
       expect(service.taskList[0].status).toBe(TaskStatus.Done);
     });
 
     it('should move task from done to archived', () => {
       service.addTask('test', 'test', 'test');
-      service.advanceTaskStatus(1);
-      service.advanceTaskStatus(1);
-      service.advanceTaskStatus(1);
+      service.advanceTaskStatus('1');
+      service.advanceTaskStatus('1');
+      service.advanceTaskStatus('1');
       expect(service.taskList[0].status).toBe(TaskStatus.Archived);
     });
 
     it('should not move a task from archived to a bogus state', () => {
       service.addTask('test', 'test', 'test');
-      service.advanceTaskStatus(1);
-      service.advanceTaskStatus(1);
-      service.advanceTaskStatus(1);
-      service.advanceTaskStatus(1);
+      service.advanceTaskStatus('1');
+      service.advanceTaskStatus('1');
+      service.advanceTaskStatus('1');
+      service.advanceTaskStatus('1');
       expect(service.taskList[0].status).toBe(TaskStatus.Archived);
     });
 
     it('should allow to manually pass a task status to update', () => {
       service.addTask('test', 'test', 'test');
-      service.advanceTaskStatus(1, undefined, TaskStatus.Done);
+      service.advanceTaskStatus('1', undefined, TaskStatus.Done);
       expect(service.taskList[0].status).toBe(TaskStatus.Done);
     });
 
     it('should allow to manually pass a string for a task status to update', () => {
       service.addTask('test', 'test', 'test');
-      service.advanceTaskStatus(1, undefined, 'Done');
+      service.advanceTaskStatus('1', undefined, 'Done');
       expect(service.taskList[0].status).toBe(TaskStatus.Done);
     });
-    it('should not allow to manually pass a random string for a task status to update', () => {
-      service.addTask('test', 'test', 'test');
-      service.advanceTaskStatus(1, undefined, 'dummy');
-      expect(service.taskList[0].status).toBe(TaskStatus.Todo);
-    });
+    it('should not allow to manually pass a random string for a task status to update', fakeAsync(() => {
+      service.addTask('test', 'test', 'test').then(newTask => {
+        service.advanceTaskStatus(newTask.id, undefined, 'dummy');
+        expect(service.taskList[0].status).toBe(TaskStatus.Todo);
+      });
+    }));
   });
 
   describe('update task status', () => {
     it('should update a task status to the new status provided', () => {
       service.addTask('test', 'test', 'test');
-      service.updateTaskStatus(1, TaskStatus.Archived);
+      service.updateTaskStatus('1', TaskStatus.Archived);
       expect(service.taskList[0].status).toBe(TaskStatus.Archived);
     });
 
@@ -492,55 +413,60 @@ describe('TasksService', () => {
       service.addTask('test', 'test', 'test');
       service.addTask('test', 'test', 'test');
       service.addTask('test', 'test', 'test');
-      service.updateTaskStatus(2, TaskStatus.Archived);
+      service.updateTaskStatus('2', TaskStatus.Archived);
       expect(service.taskList[1].status).toBe(TaskStatus.Archived);
       expect(service.taskList[0].status).toBe(TaskStatus.Todo);
       expect(service.taskList[2].status).toBe(TaskStatus.Todo);
     });
 
-    it('should not update a task to an incorrect state', () => {
-      service.addTask('test', 'test', 'test');
-      service.updateTaskStatus(1, null);
-      expect(service.taskList[0].status).toBe(TaskStatus.Todo);
-    });
+    it('should not update a task to an incorrect state', fakeAsync(() => {
+      service.addTask('test', 'test', 'test').then(newTask => {
+        console.log(newTask);
+        service.updateTaskStatus('1', null);
+        console.log(service.taskList);
+        expect(service.taskList[0].status).toBe(TaskStatus.Todo);
+      });
+    }));
 
-    it('should not update a non existent task', () => {
-      service.addTask('test', 'test', 'test');
-      service.updateTaskStatus(2, TaskStatus.Archived);
-      expect(service.taskList[0].status).toBe(TaskStatus.Todo);
-      expect(service.taskList.length).toBe(1);
-    });
+    it('should not update a non existent task', fakeAsync(() => {
+      service.addTask('test', 'test', 'test').then(newTask => {
+        service.updateTaskStatus(newTask.id, TaskStatus.Archived);
+        expect(service.taskList[0].status).toBe(TaskStatus.Todo);
+        expect(service.taskList.length).toBe(1);
+      });
+    }));
   });
 
   describe('active task status', () => {
-    it('should record an active task when called', () => {
-      const newTask = service.addTask('new', 'newref', 'newdesc');
-      service.activeTask = newTask;
-      expect(service.activeTask).toEqual(newTask);
-    });
+    it('should record an active task when called', fakeAsync(() => {
+      service.addTask('new', 'newref', 'newdesc').then(newTask => {
+        service.activeTask = newTask;
+        expect(service.activeTask).toEqual(newTask);
+      });
+    }));
 
     it('should update the observable when task is updated', fakeAsync(() => {
-      const newTask = service.addTask('new', 'newref', 'newdesc');
-      let result;
+      service.addTask('new', 'newref', 'newdesc').then(newTask => {
+        let result;
 
-      service.activeTask$.subscribe((res: Task) => (result = res));
-      service.activeTask = newTask;
-      tick();
-      expect(newTask).toEqual(result);
+        service.activeTask$.subscribe((res: Task) => (result = res));
+        service.activeTask = newTask;
+        tick();
+        expect(newTask).toEqual(result);
+      });
     }));
   });
 
   describe('setActiveTaskById', () => {
     it('should update the active task when a valid id is passed', () => {
       const newTask = service.addTask('new', 'newref', 'newdesc');
-      const result = service.setActiveTaskById(1);
+      const result = service.setActiveTaskById('1');
       expect(result).toBeTruthy();
       expect(service.activeTask).toEqual(newTask);
     });
 
     it('should return false when the id does not exists', () => {
-      const newTask = service.addTask('new', 'newref', 'newdesc');
-      const result = service.setActiveTaskById(3);
+      const result = service.setActiveTaskById('3');
       expect(result).toBeFalsy();
       expect(service.activeTask).toEqual(null);
     });
@@ -549,20 +475,22 @@ describe('TasksService', () => {
   describe('clear active task', () => {
     it('should remove the active task when called', () => {
       service.addTask('new', 'ref', 'desc');
-      service.setActiveTaskById(1);
+      service.setActiveTaskById('1');
 
       expect(service.activeTask).toBeTruthy();
       service.removeActiveTask();
       expect(service.activeTask).toBeNull();
     });
-    it('should return true if the active task was removed', () => {
-      service.addTask('new', 'ref', 'desc');
-      service.setActiveTaskById(1);
+    it('should return true if the active task was removed', fakeAsync(() => {
+      service.addTask('new', 'ref', 'desc').then(newTask => {
+        service.setActiveTaskById(newTask.id);
 
-      expect(service.activeTask).toBeTruthy();
-      const result = service.removeActiveTask();
-      expect(result).toBe(true);
-    });
+        expect(service.activeTask).toBeTruthy();
+        const result = service.removeActiveTask();
+        expect(result).toBe(true);
+      });
+    }));
+
     it('should return false if the active task was not removed', () => {
       service.addTask('new', 'ref', 'desc');
       const result = service.removeActiveTask();
@@ -575,7 +503,7 @@ describe('TasksService', () => {
       it('should add the time to the task', () => {
         service.addTask('test', 'test', 'test');
         spyOn(Date, 'now').and.returnValue(111111);
-        service.addTimeToTask(1, 222);
+        service.addTimeToTask('1', 222);
         expect(service.taskList[0].timeWorked[0]).toEqual({
           amount: 222,
           timestamp: 111111
@@ -583,14 +511,14 @@ describe('TasksService', () => {
       });
 
       it('should not error when adding the time to a non-existent task', () => {
-        service.addTimeToTask(9, 3333);
+        service.addTimeToTask('9', 3333);
         expect(service.taskList.length).toBe(0);
       });
 
       it('should convert negative times to positive before adding them', () => {
         service.addTask('test', 'test', 'test');
         spyOn(Date, 'now').and.returnValue(111111);
-        service.addTimeToTask(1, -3333);
+        service.addTimeToTask('1', -3333);
         expect(service.taskList[0].timeWorked[0]).toEqual({
           amount: 3333,
           timestamp: 111111
@@ -600,9 +528,9 @@ describe('TasksService', () => {
       it('should allow to add multiple times to a task', () => {
         service.addTask('test', 'test', 'test');
         spyOn(Date, 'now').and.returnValue(111111);
-        service.addTimeToTask(1, -3333);
-        service.addTimeToTask(1, 3333);
-        service.addTimeToTask(1, 0);
+        service.addTimeToTask('1', -3333);
+        service.addTimeToTask('1', 3333);
+        service.addTimeToTask('1', 0);
         expect(service.taskList[0].timeWorked.length).toEqual(3);
       });
     });
@@ -611,24 +539,24 @@ describe('TasksService', () => {
       it('should always display positive time or zero', () => {
         service.addTask('test', 'test', 'test');
         spyOn(Date, 'now').and.returnValue(111111);
-        service.addTimeToTask(1, -3333);
-        service.addTimeToTask(1, -333);
+        service.addTimeToTask('1', -3333);
+        service.addTimeToTask('1', -333);
 
-        expect(service.getTotalTimeFromTask(1)).toBeGreaterThanOrEqual(0);
+        expect(service.getTotalTimeFromTask('1')).toBeGreaterThanOrEqual(0);
       });
 
       it('should return the sum of times recorded for a particular task', () => {
         service.addTask('test', 'test', 'test');
         spyOn(Date, 'now').and.returnValue(111111);
-        service.addTimeToTask(1, -3333);
-        service.addTimeToTask(1, -1111);
+        service.addTimeToTask('1', -3333);
+        service.addTimeToTask('1', -1111);
         const total = Math.abs(-3333 - 1111);
-        expect(service.getTotalTimeFromTask(1)).toEqual(total);
+        expect(service.getTotalTimeFromTask('1')).toEqual(total);
       });
 
       it('should display zero for tasks that have no recorded time', () => {
         service.addTask('test', 'test', 'test');
-        expect(service.getTotalTimeFromTask(1)).toEqual(0);
+        expect(service.getTotalTimeFromTask('1')).toEqual(0);
       });
     });
 
@@ -636,8 +564,8 @@ describe('TasksService', () => {
       it('should return an array of times and timestamps', () => {
         service.addTask('test', 'test', 'test');
         spyOn(Date, 'now').and.returnValue(111111);
-        service.addTimeToTask(1, -3333);
-        service.addTimeToTask(1, -1111);
+        service.addTimeToTask('1', -3333);
+        service.addTimeToTask('1', -1111);
 
         expect(service.taskList[0].timeWorked.length).toEqual(2);
         expect(service.taskList[0].timeWorked[0]).toEqual({
