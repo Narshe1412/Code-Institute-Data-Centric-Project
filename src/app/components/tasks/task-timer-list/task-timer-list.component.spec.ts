@@ -14,14 +14,19 @@ describe('TaskTimerListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TaskTimerListComponent, TimePipe],
-      imports: [NoopAnimationsModule, MatPaginatorModule, MatSortModule, MatTableModule]
+      imports: [
+        NoopAnimationsModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatTableModule
+      ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TaskTimerListComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    // fixture.detectChanges();
   });
 
   it('should compile', () => {

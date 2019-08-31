@@ -32,7 +32,13 @@ describe('TaskComponent', () => {
       declarations: [
         // TaskComponent, TimePipe
       ],
-      imports: [BrowserAnimationsModule, MatTableModule, MatPaginatorModule, FormsModule, AppModule]
+      imports: [
+        BrowserAnimationsModule,
+        MatTableModule,
+        MatPaginatorModule,
+        FormsModule,
+        AppModule
+      ]
     }).compileComponents();
   }));
 
@@ -40,7 +46,7 @@ describe('TaskComponent', () => {
     fixture = TestBed.createComponent(TaskComponent);
     component = fixture.componentInstance;
     component.task = mock;
-    fixture.detectChanges();
+    // fixture.detectChanges();
   });
 
   it('should create', () => {

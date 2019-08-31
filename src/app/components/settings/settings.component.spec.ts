@@ -32,7 +32,7 @@ describe('SettingsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SettingsComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    // fixture.detectChanges();
   });
 
   it('should compile', () => {
