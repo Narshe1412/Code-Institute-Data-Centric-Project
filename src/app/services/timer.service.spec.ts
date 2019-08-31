@@ -2,12 +2,16 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { TimerService } from './timer.service';
 import { SettingsService } from './settings.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('TimerService', () => {
   let timer;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [TimerService] });
+    TestBed.configureTestingModule({
+      providers: [TimerService],
+      imports: [HttpClientTestingModule]
+    });
     timer = TestBed.get(TimerService);
   });
 

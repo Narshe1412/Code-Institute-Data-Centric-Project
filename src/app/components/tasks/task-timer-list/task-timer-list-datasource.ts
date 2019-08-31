@@ -4,35 +4,10 @@ import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
 
-// TODO: Replace this with your own data model type
 export interface TaskTimerListItem {
-  name: string;
-  id: number;
+  timestamp: number;
+  amount: number;
 }
-
-// TODO: replace this with real data from your application
-const EXAMPLE_DATA: TaskTimerListItem[] = [
-  {id: 1, name: 'Hydrogen'},
-  {id: 2, name: 'Helium'},
-  {id: 3, name: 'Lithium'},
-  {id: 4, name: 'Beryllium'},
-  {id: 5, name: 'Boron'},
-  {id: 6, name: 'Carbon'},
-  {id: 7, name: 'Nitrogen'},
-  {id: 8, name: 'Oxygen'},
-  {id: 9, name: 'Fluorine'},
-  {id: 10, name: 'Neon'},
-  {id: 11, name: 'Sodium'},
-  {id: 12, name: 'Magnesium'},
-  {id: 13, name: 'Aluminum'},
-  {id: 14, name: 'Silicon'},
-  {id: 15, name: 'Phosphorus'},
-  {id: 16, name: 'Sulfur'},
-  {id: 17, name: 'Chlorine'},
-  {id: 18, name: 'Argon'},
-  {id: 19, name: 'Potassium'},
-  {id: 20, name: 'Calcium'},
-];
 
 /**
  * Data source for the TaskTimerList view. This class should
@@ -40,10 +15,15 @@ const EXAMPLE_DATA: TaskTimerListItem[] = [
  * (including sorting, pagination, and filtering).
  */
 export class TaskTimerListDataSource extends DataSource<TaskTimerListItem> {
-  data: TaskTimerListItem[] = EXAMPLE_DATA;
+  data: TaskTimerListItem[];
 
-  constructor(private paginator: MatPaginator, private sort: MatSort) {
+  constructor(
+    private paginator: MatPaginator,
+    private sort: MatSort,
+    private sourceData: TaskTimerListItem[]
+  ) {
     super();
+    this.data = this.sourceData;
   }
 
   /**
@@ -63,9 +43,11 @@ export class TaskTimerListDataSource extends DataSource<TaskTimerListItem> {
     // Set the paginator's length
     this.paginator.length = this.data.length;
 
-    return merge(...dataMutations).pipe(map(() => {
-      return this.getPagedData(this.getSortedData([...this.data]));
-    }));
+    return merge(...dataMutations).pipe(
+      map(() => {
+        return this.getPagedData(this.getSortedData([...this.data]));
+      })
+    );
   }
 
   /**
@@ -95,9 +77,12 @@ export class TaskTimerListDataSource extends DataSource<TaskTimerListItem> {
     return data.sort((a, b) => {
       const isAsc = this.sort.direction === 'asc';
       switch (this.sort.active) {
-        case 'name': return compare(a.name, b.name, isAsc);
-        case 'id': return compare(+a.id, +b.id, isAsc);
-        default: return 0;
+        case 'timestamp':
+          return compare(new Date(a.timestamp), new Date(b.timestamp), isAsc);
+        case 'amount':
+          return compare(+a.amount, +b.amount, isAsc);
+        default:
+          return 0;
       }
     });
   }

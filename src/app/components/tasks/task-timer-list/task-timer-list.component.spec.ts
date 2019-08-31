@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -18,7 +19,8 @@ describe('TaskTimerListComponent', () => {
         NoopAnimationsModule,
         MatPaginatorModule,
         MatSortModule,
-        MatTableModule
+        MatTableModule,
+        HttpClientTestingModule
       ]
     }).compileComponents();
   }));

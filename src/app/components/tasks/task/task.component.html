@@ -6,29 +6,21 @@
           <fa-icon *ngIf="!isCurrentActiveTask()" [icon]="faClock" (click)="setAsActiveTask()"></fa-icon>
         </div>
         <div id="task-actual-status">
-          <fa-icon
-            *ngIf="task.status === 'Todo'"
-            [icon]="faPlayCircle"
-            (click)="setTaskStatusTo('InProgress')"
-          ></fa-icon>
+          <fa-icon *ngIf="task.status === 'Todo'" [icon]="faPlayCircle" (click)="setTaskStatusTo('InProgress')">
+          </fa-icon>
           <fa-icon *ngIf="task.status === 'InProgress'" [icon]="faSquare" (click)="setTaskStatusTo('Done')"></fa-icon>
           <fa-icon *ngIf="task.status === 'Done'" [icon]="faCheckSquare"></fa-icon>
           <fa-icon *ngIf="task.status === 'Archived'" [icon]="faLock"></fa-icon>
         </div>
         <div id="task-delete-archive">
           <fa-icon *ngIf="task.status === 'Done'" [icon]="faLockOpen" (click)="setTaskStatusTo('Archived')"></fa-icon>
-          <fa-icon
-            *ngIf="task.status !== 'Done' && task.status !== 'Archived'"
-            [icon]="faTrashAlt"
-            (click)="deleteTask()"
-          ></fa-icon>
+          <fa-icon *ngIf="task.status !== 'Done' && task.status !== 'Archived'" [icon]="faTrashAlt"
+            (click)="deleteTask()"></fa-icon>
         </div>
       </div>
     </div>
-    <div
-      id="title-bar"
-      matTooltip="{{ task.description?.length >= 50 ? task.description.substring(0, 50) + '...' : task.description }}"
-    >
+    <div id="title-bar"
+      matTooltip="{{ task.description?.length >= 50 ? task.description.substring(0, 50) + '...' : task.description }}">
       <div class="task-ref fixed-sized-font">{{ task.reference }}</div>
       <div class="task-title bold">{{ task.title }}</div>
       <div class="task-expand-details-btn">
@@ -50,6 +42,6 @@
     </div>
   </div>
   <div class="time-list" *ngIf="expanded">
-    <app-task-timer-list></app-task-timer-list>
+    <app-task-timer-list [timeWorkedList]="task.timeWorked"></app-task-timer-list>
   </div>
 </div>

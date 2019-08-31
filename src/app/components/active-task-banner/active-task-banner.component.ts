@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Task, TasksService } from 'src/app/services/tasks.service';
+import { TasksService } from 'src/app/services/tasks.service';
+import { Task } from 'src/app/model/ITask';
 
 @Component({
   selector: 'app-active-task-banner',

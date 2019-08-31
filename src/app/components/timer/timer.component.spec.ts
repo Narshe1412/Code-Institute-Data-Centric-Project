@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimerComponent } from './timer.component';
@@ -9,7 +10,7 @@ describe('TimerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule],
+      imports: [FormsModule, HttpClientTestingModule],
       declarations: [TimerComponent]
     }).compileComponents();
   }));
