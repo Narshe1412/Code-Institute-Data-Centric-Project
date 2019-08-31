@@ -1,3 +1,5 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HighchartsChartModule } from 'highcharts-angular';
 import { LayoutModule } from '@angular/cdk/layout';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -23,7 +25,9 @@ describe('GridComponent', () => {
         MatCardModule,
         MatGridListModule,
         MatIconModule,
-        MatMenuModule
+        MatMenuModule,
+        HighchartsChartModule,
+        HttpClientTestingModule
       ]
     }).compileComponents();
   }));

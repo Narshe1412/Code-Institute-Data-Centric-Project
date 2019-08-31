@@ -21,6 +21,7 @@ import { GridComponent } from './components/reports/grid/grid.component';
 import { TaskTimerListComponent } from './components/tasks/task-timer-list/task-timer-list.component';
 import { MaterialModule } from './material.module';
 import { HttpClientModule } from '@angular/common/http';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { HttpClientModule } from '@angular/common/http';
     FlexLayoutModule,
     LayoutModule,
     ReactiveFormsModule,
+    HighchartsChartModule,
     // Angular Material
     MaterialModule
   ],

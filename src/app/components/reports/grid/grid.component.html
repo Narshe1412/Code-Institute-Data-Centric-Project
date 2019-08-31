@@ -1,16 +1,11 @@
 <div class="grid-container">
   <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="center" class="charts-container">
     <div class="card-wrapper" *ngFor="let card of cards">
-      <mat-card class="dashboard-card" *ngIf="card.visible">
+      <mat-card class="dashboard-card" *ngIf="card.visible" [style.minHeight]="'100%'" [style.minWidth]="'100%'">
         <mat-card-header>
           <mat-card-title>
             {{ card.title }}
-            <button
-              mat-icon-button
-              class="more-button"
-              [matMenuTriggerFor]="menu"
-              aria-label="Toggle menu"
-            >
+            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu" xPosition="before">
@@ -20,7 +15,12 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content class="dashboard-card-content">
-          <div>Card Content Here {{ card | json }}</div>
+          <div class="chart-display">
+            <highcharts-chart class="highchart-element" [Highcharts]="Highcharts" [constructorType]="chartConstructor"
+              [options]="card.chartOptions" [callbackFunction]="chartCallback" [(update)]="updateFlag"
+              (eToOne)="oneToOneFlag" [runOutsideAngular]="runOutsideAngularFlag">
+            </highcharts-chart>
+          </div>
         </mat-card-content>
       </mat-card>
     </div>

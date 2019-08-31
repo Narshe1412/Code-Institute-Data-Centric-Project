@@ -1,3 +1,5 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HighchartsChartModule } from 'highcharts-angular';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportsComponent } from './reports.component';
@@ -13,7 +15,12 @@ describe('ReportsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ReportsComponent, GridComponent],
-      imports: [MatButtonModule, MatMenuModule],
+      imports: [
+        MatButtonModule,
+        MatMenuModule,
+        HighchartsChartModule,
+        HttpClientTestingModule
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
