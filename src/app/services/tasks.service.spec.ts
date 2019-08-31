@@ -1,6 +1,13 @@
-import { TestBed, tick, ComponentFixture, fakeAsync } from '@angular/core/testing';
+import {
+  TestBed,
+  tick,
+  ComponentFixture,
+  fakeAsync
+} from '@angular/core/testing';
 import { skip } from 'rxjs/operators';
-import { TasksService, Task, TaskStatus } from './tasks.service';
+import { TasksService } from './tasks.service';
+import { TaskStatus } from '../model/ITaskStatus';
+import { Task } from '../model/ITask';
 
 let service: TasksService;
 const mockTaskList = [
@@ -193,7 +200,9 @@ describe('TasksService', () => {
       };
       let result;
 
-      service.taskList$.pipe(skip(1)).subscribe((res: Task[]) => (result = res));
+      service.taskList$
+        .pipe(skip(1))
+        .subscribe((res: Task[]) => (result = res));
 
       service.addTask(testTitle, testRef, testDesc);
       tick();
@@ -354,9 +363,13 @@ describe('TasksService', () => {
 
       service.deleteTask(toDelete);
 
-      const emptyResult = service.taskList.find((x: Task) => x.reference === testRef);
+      const emptyResult = service.taskList.find(
+        (x: Task) => x.reference === testRef
+      );
       expect(emptyResult).toBeFalsy();
-      const anyResult = service.taskList.find((x: Task) => x.reference !== testRef);
+      const anyResult = service.taskList.find(
+        (x: Task) => x.reference !== testRef
+      );
       expect(anyResult).toBeTruthy();
       expect(service.taskList.length).toBe(2);
     });
@@ -563,7 +576,10 @@ describe('TasksService', () => {
         service.addTask('test', 'test', 'test');
         spyOn(Date, 'now').and.returnValue(111111);
         service.addTimeToTask(1, 222);
-        expect(service.taskList[0].timeWorked[0]).toEqual({ amount: 222, timestamp: 111111 });
+        expect(service.taskList[0].timeWorked[0]).toEqual({
+          amount: 222,
+          timestamp: 111111
+        });
       });
 
       it('should not error when adding the time to a non-existent task', () => {
@@ -575,7 +591,10 @@ describe('TasksService', () => {
         service.addTask('test', 'test', 'test');
         spyOn(Date, 'now').and.returnValue(111111);
         service.addTimeToTask(1, -3333);
-        expect(service.taskList[0].timeWorked[0]).toEqual({ amount: 3333, timestamp: 111111 });
+        expect(service.taskList[0].timeWorked[0]).toEqual({
+          amount: 3333,
+          timestamp: 111111
+        });
       });
 
       it('should allow to add multiple times to a task', () => {
@@ -621,8 +640,14 @@ describe('TasksService', () => {
         service.addTimeToTask(1, -1111);
 
         expect(service.taskList[0].timeWorked.length).toEqual(2);
-        expect(service.taskList[0].timeWorked[0]).toEqual({ amount: 3333, timestamp: 111111 });
-        expect(service.taskList[0].timeWorked[1]).toEqual({ amount: 1111, timestamp: 111111 });
+        expect(service.taskList[0].timeWorked[0]).toEqual({
+          amount: 3333,
+          timestamp: 111111
+        });
+        expect(service.taskList[0].timeWorked[1]).toEqual({
+          amount: 1111,
+          timestamp: 111111
+        });
       });
 
       it('should return an empty array if task has no recorded times', () => {

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TasksService, Task, TaskStatus } from 'src/app/services/tasks.service';
+import { TasksService } from 'src/app/services/tasks.service';
+import { TaskStatus } from 'src/app/model/ITaskStatus';
+import { Task } from 'src/app/model/ITask';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { DataLayerService } from 'src/app/services/data-layer.service';
 
@@ -16,7 +18,10 @@ export class TaskManagerComponent implements OnInit {
   public submitted = false;
   public statusType: TaskStatus[];
   public formVisible = false;
-  constructor(private taskService: TasksService, private dal: DataLayerService) {}
+  constructor(
+    private taskService: TasksService,
+    private dal: DataLayerService
+  ) {}
 
   ngOnInit() {
     this.task = {};
@@ -45,7 +50,11 @@ export class TaskManagerComponent implements OnInit {
   }
 
   newTask() {
-    this.taskService.addTask(this.task.title, this.task.reference, this.task.description);
+    this.taskService.addTask(
+      this.task.title,
+      this.task.reference,
+      this.task.description
+    );
   }
 
   onSubmit() {

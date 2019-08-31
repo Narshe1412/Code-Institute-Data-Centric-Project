@@ -1,14 +1,12 @@
-import { AppModule } from './../../../app.module';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TaskComponent } from './task.component';
-import { Task } from 'src/app/services/tasks.service';
+import { Task } from 'src/app/model/ITask';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TimePipe } from 'src/app/pipes/time.pipe';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AppModule } from 'src/app/app.module';
 
 const mock: Task = {
   id: 0,
@@ -32,7 +30,13 @@ describe('TaskComponent', () => {
       declarations: [
         // TaskComponent, TimePipe
       ],
-      imports: [BrowserAnimationsModule, MatTableModule, MatPaginatorModule, FormsModule, AppModule]
+      imports: [
+        BrowserAnimationsModule,
+        MatTableModule,
+        MatPaginatorModule,
+        FormsModule,
+        AppModule
+      ]
     }).compileComponents();
   }));
 

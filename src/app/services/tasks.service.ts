@@ -1,30 +1,10 @@
 import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
-
-export interface Task {
-  id: number;
-  title: string;
-  reference: string;
-  description: string;
-  timeWorked: TaskTime[];
-  status: TaskStatus;
-  visible?: boolean;
-}
-
-export enum TaskStatus {
-  Todo = 'Todo',
-  InProgress = 'InProgress',
-  Done = 'Done',
-  Archived = 'Archived'
-}
+import { Task } from '../model/ITask';
+import { TaskStatus } from '../model/ITaskStatus';
 
 // These properties are read only or can only be changed by calling their respective methods
 const immutableProps = ['id', 'timeWorked', 'visible'];
-
-export interface TaskTime {
-  amount: number;
-  timestamp: number;
-}
 
 @Injectable({
   providedIn: 'root'
@@ -100,7 +80,11 @@ export class TasksService {
       if (id) {
         return t.id === id;
       } else if (task) {
-        return t.reference === task.reference && t.description === task.description && t.title === task.title;
+        return (
+          t.reference === task.reference &&
+          t.description === task.description &&
+          t.title === task.title
+        );
       }
     });
     if (foundtaskIndex >= 0) {
@@ -131,29 +115,48 @@ export class TasksService {
         delete contents[prop];
       }
     });
-    const foundtaskIndex = this.taskList.findIndex((task: Task) => task.id === id);
+    const foundtaskIndex = this.taskList.findIndex(
+      (task: Task) => task.id === id
+    );
     if (foundtaskIndex >= 0) {
-      this.taskList[foundtaskIndex] = { ...this.taskList[foundtaskIndex], ...contents };
+      this.taskList[foundtaskIndex] = {
+        ...this.taskList[foundtaskIndex],
+        ...contents
+      };
       this.taskList$.next(this.taskList);
     }
     return this.taskList;
   }
 
-  public advanceTaskStatus(id: number, tasklist = this.taskList, status?: string) {
-    const statusList: TaskStatus[] = [TaskStatus.Todo, TaskStatus.InProgress, TaskStatus.Done, TaskStatus.Archived];
+  public advanceTaskStatus(
+    id: number,
+    tasklist = this.taskList,
+    status?: string
+  ) {
+    const statusList: TaskStatus[] = [
+      TaskStatus.Todo,
+      TaskStatus.InProgress,
+      TaskStatus.Done,
+      TaskStatus.Archived
+    ];
     const taskIndex = tasklist.findIndex(task => task.id === id);
     if (status && TaskStatus[status]) {
       tasklist[taskIndex].status = status as TaskStatus;
     } else if (!status) {
       const taskstatus = tasklist[taskIndex].status;
       let newStatus = statusList.indexOf(taskstatus);
-      newStatus = newStatus >= statusList.length - 1 ? newStatus : newStatus + 1;
+      newStatus =
+        newStatus >= statusList.length - 1 ? newStatus : newStatus + 1;
       tasklist[taskIndex].status = statusList[newStatus];
     }
     this.taskList$.next(tasklist);
   }
 
-  public updateTaskStatus(id: number, newStatus: TaskStatus, tasklist = this.taskList) {
+  public updateTaskStatus(
+    id: number,
+    newStatus: TaskStatus,
+    tasklist = this.taskList
+  ) {
     // Test if newStatus is a value from the TaskStatus enum.
     if (Object.values(TaskStatus).includes(newStatus)) {
       // Find the matching task using the id
@@ -171,7 +174,10 @@ export class TasksService {
     time = Math.abs(time);
     const taskIndex = tasklist.findIndex(x => x.id === id);
     if (taskIndex >= 0) {
-      tasklist[taskIndex].timeWorked.push({ amount: time, timestamp: Date.now() });
+      tasklist[taskIndex].timeWorked.push({
+        amount: time,
+        timestamp: Date.now()
+      });
       this.taskList$.next(tasklist);
     }
   }
@@ -180,7 +186,10 @@ export class TasksService {
     let totalTime = -1;
     const taskIndex = tasklist.findIndex(x => x.id === id);
     if (taskIndex >= 0) {
-      totalTime = tasklist[taskIndex].timeWorked.reduce((total, current) => (total += current.amount), 0);
+      totalTime = tasklist[taskIndex].timeWorked.reduce(
+        (total, current) => (total += current.amount),
+        0
+      );
     }
     return totalTime;
   }

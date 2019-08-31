@@ -1,7 +1,8 @@
+import { TimeRecord } from './../model/ITimeRecord';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment as env } from '../../environments/environment';
-import { Task } from './tasks.service';
+import { Task } from '../model/ITask';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 
@@ -31,11 +32,41 @@ export class DataLayerService {
       deleted_count: number;
     }
     const url = `${env.apiUrl}/tasks/${task.id}`;
-    return this.http.delete(url).pipe(map((result: DeleteTaskResponse) => result.deleted_count === 1));
+    return this.http
+      .delete(url)
+      .pipe(map((result: DeleteTaskResponse) => result.deleted_count === 1));
   }
 
   public updateTask(updatedTask: Task): Observable<Task> {
     const url = `${env.apiUrl}/tasks/${updatedTask.id}`;
     return this.http.put<Task>(url, updatedTask);
+  }
+
+  public addTimeToTask(taskId: number, time: TimeRecord): Observable<boolean> {
+    interface AddTimeResponse {
+      added: number;
+    }
+    const url = `${env.apiUrl}/times/${taskId}`;
+    return this.http
+      .post(url, time)
+      .pipe(map((result: AddTimeResponse) => result.added >= 1));
+  }
+
+  public deleteTimeFromTask(
+    taskId: number,
+    time: TimeRecord
+  ): Observable<boolean> {
+    interface DeleteTimeResponse {
+      removed: number;
+    }
+    const url = `${env.apiUrl}/times/${taskId}`;
+    return this.http
+      .post(url, time)
+      .pipe(map((result: DeleteTimeResponse) => result.removed >= 1));
+  }
+
+  public getAllTimesFromTask(taskId): Observable<TimeRecord[]> {
+    const url = `${env.apiUrl}/times/${taskId}`;
+    return this.http.get<TimeRecord[]>(url);
   }
 }

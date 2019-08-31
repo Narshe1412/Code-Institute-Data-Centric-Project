@@ -1,10 +1,22 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { TaskStatus, TasksService, Task, TaskTime } from 'src/app/services/tasks.service';
+import { TasksService } from 'src/app/services/tasks.service';
+import { TaskTime } from 'src/app/model/ITaskTime';
+import { TaskStatus } from 'src/app/model/ITaskStatus';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { faLock, faHourglassHalf, faLockOpen } from '@fortawesome/free-solid-svg-icons';
-import { faCheckSquare, faSquare, faTrashAlt, faPlayCircle, faClock } from '@fortawesome/free-regular-svg-icons';
+import {
+  faLock,
+  faHourglassHalf,
+  faLockOpen
+} from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheckSquare,
+  faSquare,
+  faTrashAlt,
+  faPlayCircle,
+  faClock
+} from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-task',
@@ -53,7 +65,10 @@ export class TaskComponent implements OnInit {
   }
 
   public isCurrentActiveTask(): boolean {
-    return this.task.id === (this.taskService.activeTask && this.taskService.activeTask.id);
+    return (
+      this.task.id ===
+      (this.taskService.activeTask && this.taskService.activeTask.id)
+    );
   }
 
   public setAsActiveTask() {

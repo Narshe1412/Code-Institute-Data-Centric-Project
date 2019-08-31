@@ -1,14 +1,10 @@
-import { AppModule } from './../../../app.module';
 import { FormsModule } from '@angular/forms';
-import { TaskComponent } from './../task/task.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { TaskListComponent } from './task-list.component';
-import { Task } from 'src/app/services/tasks.service';
+import { Task } from 'src/app/model/ITask';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
-import { TimePipe } from 'src/app/pipes/time.pipe';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AppModule } from 'src/app/app.module';
 
 const mock: Task = {
   id: 0,
