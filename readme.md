@@ -104,6 +104,7 @@ State Machine for Task Status
   - The angular cli tooling itself which provides compilation, bundling and minification of the JavaScript code, as well as support to older browsers via Polyfills.
   - [Angular Material](https://material.angular.io/) was used for styling and providing page structure and responsiveness as well as a common theme.
 - [Highcharts](https://www.highcharts.com/) library for generating graphs and plotting data.
+- [FontAwesome](https://fontawesome.com/) library to get scalable svg icons to be used throughout the app.
 
 #### Backend
 
@@ -111,6 +112,7 @@ State Machine for Task Status
 
 - Python [Flask](https://palletsprojects.com/p/flask/) and [PyMongo](https://api.mongodb.com/python/current/) libraries have been used to provide a suitable backend in the form of a RESTful API.
 - Python [Unittest](https://docs.python.org/3/library/unittest.html) was used for testing purposes on the python code.
+- [Postman](https://www.getpostman.com/) and [Postmanerator by Aurélien Baumann](https://github.com/aubm/postmanerator) to test and generate the API documentation
 
 ### Other tools
 
@@ -127,35 +129,41 @@ Click on the badges at the top of this file to check the build status and qualit
 
 ## Testing
 
-In this section, you need to convince the assessor that you have conducted enough testing to legitimately believe that the site works well. Essentially, in this part you will want to go over all of your user stories from the UX section and ensure that they all work as intended, with the project providing an easy and straightforward way for the users to achieve their goals.
+Most of the services have been automated although due to the complexity nature of the application getting a high code coverage proved to be out of scope and will leave it for a future learning experience. The UI interaction is not automated, please follow the Test Cases described in the appropriate section.
 
-Whenever it is feasible, prefer to automate your tests, and if you've done so, provide a brief explanation of your approach, link to the test file(s) and explain how to run them.
+### Running automated unit tests
 
-For any scenarios that have not been automated, test the user stories manually and provide as much detail as is relevant. A particularly useful form for describing your testing process is via scenarios, such as:
+#### Frontend automated tests
 
-1. Contact form:
-   1. Go to the "Contact Us" page
-   2. Try to submit the empty form and verify that an error message about the required fields appears
-   3. Try to submit the form with an invalid email address and verify that a relevant error message appears
-   4. Try to submit the form with all inputs valid and verify that a success message appears.
+Run `npm run test` to obtain a report of the tests with the no-watch option enabled.
 
-In addition, you should mention in this section how your project looks and works on different browsers and screen sizes.
+The command `ng test` is also available just to execute the unit tests via [Karma](https://karma-runner.github.io) with the watch option enabled, useful for development purposes.
 
-You should also mention in this section any interesting bugs or problems you discovered during your testing, even if you haven't addressed them yet.
+A Code Coverage report is also available in [SonarCloud](https://sonarcloud.io/component_measures?id=Narshe1412_Code-Institute-Data-Centric-Project&metric=coverage&view=list)
 
-If this section grows too long, you may want to split it off into a separate file and link to it from here.
+##### Backend automated tests
+
+The file `test_app.py` can be run with any test runners for Python. If none is available, executing the command with `python test_app.py` will also run the tests, however, some of the test data will be committed to the database as a result.
+
+### Manual Testing
+
+A [detailed Test Plan](docs/test-cases.md) can be found in the following [link](docs/test-cases.md)
+
+### Challenges while testing
+
+A strange bug surfaced while testing using the Angular TestBed suites. In this case, while running the tests in Travis, I will often get `compile FAILED Uncaught [object Object] thrown` error which never happens in local and does not cause any issues with the application.
+I spent several days debugging it and was unable to find the source. In the end, as this is something that only affects the testing suite I've decided to leave it in the backlog. Rerunning the CI script will often autorecover from this bug.
 
 ### Browser Compatibility
 
-TODO -- The application should be compatible with the latest versions in all browsers thanks to the use of polyfills. Due to memory limitations, the Benchmark runner may block the UI in Internet Explorer or mobile browsers.
+The application should be compatible with the latest versions in all browsers thanks to the use of polyfills. There are some fields that behave erratically in Internet Explorer but the application is functional despite these graphic issues
 
-| Vendor            | Version      | Compatibility status |
-| ----------------- | ------------ | -------------------- |
-| Google Chrome     | xxxx.100     | --                   |
-| Mozilla Firefox   | xxxx.0       | --                   |
-| Microsoft Edge    | xxxx4.1.0    | --                   |
-| Opera             | xxxx         | --                   |
-| Internet Explorer | xxxx85.17134 | --                   |
+| Vendor            | Version       | Compatibility status                           |
+| ----------------- | ------------- | ---------------------------------------------- |
+| Google Chrome     | 76.0.3809.132 | Fully Compatible                               |
+| Mozilla Firefox   | 68.0.1        | Fully Compatible                               |
+| Microsoft Edge    | 42.17134.1.0  | Fully Compatible                               |
+| Internet Explorer | 11.950.17134  | Functional, with some visual errors due to CSS |
 
 ## Deployment
 
