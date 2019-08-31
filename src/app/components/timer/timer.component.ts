@@ -46,7 +46,8 @@ export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
   public get isAddTimeButtonAvailable() {
     return (
       this.timerService.elapsedTime > 0 &&
-      this.timerStatus !== TimerStatus.running
+      this.timerStatus !== TimerStatus.running &&
+      this.tasksService.activeTask
     );
   }
 
