@@ -8,15 +8,14 @@ describe('ActiveTaskBannerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ActiveTaskBannerComponent ]
-    })
-    .compileComponents();
+      declarations: [ActiveTaskBannerComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ActiveTaskBannerComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    // fixture.detectChanges();
   });
 
   it('should create', () => {

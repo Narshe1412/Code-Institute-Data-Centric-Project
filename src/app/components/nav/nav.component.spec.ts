@@ -48,7 +48,7 @@ describe('NavComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NavComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    // fixture.detectChanges();
   });
 
   it('should compile', () => {

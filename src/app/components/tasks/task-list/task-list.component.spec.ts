@@ -38,7 +38,7 @@ describe('TaskListComponent', () => {
     fixture = TestBed.createComponent(TaskListComponent);
     component = fixture.componentInstance;
     component.taskCollection = [mock];
-    fixture.detectChanges();
+    // fixture.detectChanges();
   });
 
   it('should create', () => {
