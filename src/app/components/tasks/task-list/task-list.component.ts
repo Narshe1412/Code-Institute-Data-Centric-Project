@@ -15,8 +15,4 @@ export class TaskListComponent implements OnInit {
   ngOnInit() {
     this.taskCollection = this.tasksService.taskList$;
   }
-
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.taskCollection, event.previousIndex, event.currentIndex);
-  }
 }

@@ -14,19 +14,6 @@ import { TaskTimerListComponent } from '../task-timer-list/task-timer-list.compo
 import { TimePipe } from 'src/app/pipes/time.pipe';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-const mock: Task = {
-  id: '0',
-  status: null,
-  title: 'This is a title',
-  reference: '1111',
-  description: 'This is a description',
-  timeWorked: [
-    { amount: 1000, timestamp: Date.now() },
-    { amount: 1000, timestamp: Date.now() },
-    { amount: 1000, timestamp: Date.now() }
-  ]
-};
-
 describe('TaskListComponent', () => {
   let component: TaskListComponent;
   let fixture: ComponentFixture<TaskListComponent>;
@@ -38,7 +25,6 @@ describe('TaskListComponent', () => {
         TaskManagerComponent,
         TaskComponent,
         TaskTimerListComponent,
-
         TimePipe
       ],
       imports: [
@@ -53,8 +39,6 @@ describe('TaskListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TaskListComponent);
     component = fixture.componentInstance;
-    component.taskCollection = [mock];
-    // fixture.detectChanges();
   });
 
   it('should create', () => {
