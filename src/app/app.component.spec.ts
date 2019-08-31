@@ -29,21 +29,21 @@ describe('AppComponent', () => {
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
+    // fixture.detectChanges();
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   });
 
   it('should have the timer component', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
+    // fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('app-timer')).not.toBe(null);
   }));
 
   it('should have the task-list component', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
+    // fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('app-task-list')).not.toBe(null);
   }));
