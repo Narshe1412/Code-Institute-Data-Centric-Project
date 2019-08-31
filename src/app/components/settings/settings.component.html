@@ -7,12 +7,10 @@
     </mat-card-header>
     <mat-card-content>
       <mat-radio-group (change)="changeCountingType($event)">
-        <mat-radio-button value="stopwatch" checked="{{ settings.countingType === 'stopwatch' }}"
-          >Stopwatch</mat-radio-button
-        >
-        <mat-radio-button value="countdown" checked="{{ settings.countingType === 'countdown' }}"
-          >Countdown</mat-radio-button
-        >
+        <mat-radio-button value="stopwatch" checked="{{ settings.countingType === 'stopwatch' }}">Stopwatch
+        </mat-radio-button>
+        <mat-radio-button value="countdown" checked="{{ settings.countingType === 'countdown' }}">Countdown
+        </mat-radio-button>
       </mat-radio-group>
     </mat-card-content>
   </mat-card>
@@ -22,12 +20,10 @@
     </mat-card-header>
     <mat-card-content>
       <mat-radio-group (change)="changeCountingAmount($event)">
-        <mat-radio-button value="pomodoro" checked="{{ settings.timerType === 'pomodoro' }}"
-          >Pomodoro Clock</mat-radio-button
-        >
-        <mat-radio-button value="standard" checked="{{ settings.timerType === 'standard' }}"
-          >Standard (60 min.)</mat-radio-button
-        >
+        <mat-radio-button value="pomodoro" checked="{{ settings.timerType === 'pomodoro' }}">Pomodoro Clock
+        </mat-radio-button>
+        <mat-radio-button value="standard" checked="{{ settings.timerType === 'standard' }}">Standard (60 min.)
+        </mat-radio-button>
         <mat-radio-button value="custom" checked="{{ settings.timerType === 'custom' }}">{{
           settings.countingType === 'stopwatch' ? 'Infinite' : 'Custom'
         }}</mat-radio-button>
@@ -40,10 +36,9 @@
     </mat-card-header>
     <mat-card-content>
       <mat-radio-group (change)="changeSaveLocation($event)" disabled>
-        <mat-radio-button value="localstorage" checked>Local Storage</mat-radio-button>
-        <mat-radio-button value="firebase">Firebase</mat-radio-button>
-        <mat-radio-button value="other"
-          >Other
+        <mat-radio-button value="localstorage">Local Storage</mat-radio-button>
+        <mat-radio-button value="firebase" checked>Heroku API + MongoDB</mat-radio-button>
+        <mat-radio-button value="other">Other
           <span class="radio-hint">(provide connection string)</span>
         </mat-radio-button>
       </mat-radio-group>
@@ -53,7 +48,7 @@
         <button mat-stroked-button color="primary" disabled>Import</button>
         <button mat-stroked-button color="primary" disabled>Export</button>
         <button mat-stroked-button color="warn" disabled>Clear Data</button>
-      </div></mat-card-actions
-    >
+      </div>
+    </mat-card-actions>
   </mat-card>
 </div>
