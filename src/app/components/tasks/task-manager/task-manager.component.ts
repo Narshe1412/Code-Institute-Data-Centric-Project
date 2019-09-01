@@ -31,9 +31,11 @@ export class TaskManagerComponent implements OnInit {
       this.task.reference,
       this.task.description
     );
+    this.formVisible = false;
   }
 
   onSubmit() {
     this.submitted = true;
+    this.formVisible = false;
   }
 }

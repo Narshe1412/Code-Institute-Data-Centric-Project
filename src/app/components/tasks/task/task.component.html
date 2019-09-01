@@ -1,33 +1,49 @@
 <div>
-  <div class="task-bar">
-    <div id="task-bar-{{ task.id }}">
-      <div id="status-icons">
-        <div id="task-action-icons">
-          <fa-icon *ngIf="!isCurrentActiveTask()" [icon]="faClock" (click)="setAsActiveTask()"></fa-icon>
-        </div>
-        <div id="task-actual-status">
-          <fa-icon *ngIf="task.status === 'Todo'" [icon]="faPlayCircle" (click)="setTaskStatusTo('InProgress')">
-          </fa-icon>
-          <fa-icon *ngIf="task.status === 'InProgress'" [icon]="faSquare" (click)="setTaskStatusTo('Done')"></fa-icon>
-          <fa-icon *ngIf="task.status === 'Done'" [icon]="faCheckSquare"></fa-icon>
-          <fa-icon *ngIf="task.status === 'Archived'" [icon]="faLock"></fa-icon>
-        </div>
-        <div id="task-delete-archive">
-          <fa-icon *ngIf="task.status === 'Done'" [icon]="faLockOpen" (click)="setTaskStatusTo('Archived')"></fa-icon>
-          <fa-icon *ngIf="task.status !== 'Done' && task.status !== 'Archived'" [icon]="faTrashAlt"
-            (click)="deleteTask()"></fa-icon>
-        </div>
-      </div>
+  <div class="task-bar" id="task-bar-{{ task.id }}" gdAreas="tAction tStatus tDelete tRef tTitle tMore" gdGap="16px"
+    gdColumns="30px 30px 30px auto auto 30px" gdRows="40px">
+    <div id="task-action-icons" class="grid-element" gdArea="tAction">
+      <button mat-icon-button aria-label="Select current task as active" (click)="setAsActiveTask()"
+        *ngIf="!isCurrentActiveTask()" matTooltip="Add task as active">
+        <fa-icon [icon]="faDoubleUp"></fa-icon>
+      </button>
     </div>
-    <div id="title-bar"
+    <div id="task-actual-status" class="grid-element" gdArea="tStatus">
+      <button *ngIf="task.status === 'Todo'" mat-icon-button aria-label="Mark task as in progress"
+        (click)="setTaskStatusTo('InProgress')" matTooltip="Start Task">
+        <fa-icon [icon]="faPlayCircle">
+        </fa-icon>
+      </button>
+      <button *ngIf="task.status === 'InProgress'" mat-icon-button aria-label="Mark task as completed"
+        (click)="setTaskStatusTo('Done')" matTooltip="Mark as Done">
+        <fa-icon [icon]="faSquare"></fa-icon>
+      </button>
+      <fa-icon *ngIf="task.status === 'Done'" mat-icon-button class="grid-centered"
+        aria-label="Task is flagged as Completed or Done" matTooltip="Done" [icon]="faCheckSquare"></fa-icon>
+      <fa-icon [icon]="faLock" *ngIf="task.status === 'Archived'" mat-icon-button class="grid-centered"
+        aria-label="Task is marked as archived" matTooltip="Archived"></fa-icon>
+    </div>
+    <div id="task-delete-archive" class="grid-element" gdArea="tDelete">
+      <button *ngIf="task.status === 'Done'" mat-icon-button aria-label="Mark a task as archived"
+        (click)="setTaskStatusTo('Archived')" matTooltip="Archive Task">
+        <fa-icon [icon]="faLockOpen"></fa-icon>
+      </button>
+      <button *ngIf="task.status !== 'Done' && task.status !== 'Archived'" mat-icon-button aria-label="Delete a task"
+        (click)="deleteTask()" matTooltip="Delete">
+        <fa-icon [icon]="faTrashAlt"></fa-icon>
+      </button>
+    </div>
+
+    <div class="task-ref fixed-sized-font grid-element grid-centered" gdArea="tRef">{{ task.reference }}</div>
+    <div id="title-bar" class="grid-element grid-centered" gdArea="tTitle"
       matTooltip="{{ task.description?.length >= 50 ? task.description.substring(0, 50) + '...' : task.description }}">
-      <div class="task-ref fixed-sized-font">{{ task.reference }}</div>
-      <div class="task-title bold">{{ task.title }}</div>
-      <div class="task-expand-details-btn">
-        <button class="form-control" id="show-time-details" (click)="expanded = !expanded">
-          ...
-        </button>
-      </div>
+      <div class="task-title bold ">{{ task.title }}</div>
+    </div>
+    <div class="task-expand-details-btn grid-element" gdArea="tMore">
+      <button mat-icon-button aria-label="Example icon-button with a heart icon" class="form-control"
+        id="show-time-details" (click)="expanded = !expanded">
+        <fa-icon [icon]="faDotsV" matTooltip="View time details"></fa-icon>
+      </button>
+
     </div>
   </div>
   <div>
