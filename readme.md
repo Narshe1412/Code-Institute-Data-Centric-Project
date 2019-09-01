@@ -114,6 +114,8 @@ State Machine for Task Status
 - Python [Unittest](https://docs.python.org/3/library/unittest.html) was used for testing purposes on the python code.
 - [Postman](https://www.getpostman.com/) and [Postmanerator by Aurélien Baumann](https://github.com/aubm/postmanerator) to test and generate the API documentation
 
+The full API documentation can be found in the [Postman public repository](https://documenter.getpostman.com/view/441248/SVfRuTtc?version=latest).
+
 ### Other tools
 
 - This project has been created using [Visual Studio Code](https://code.visualstudio.com/) IDE in a [Node v.10.13](https://nodejs.org/en/) environment
