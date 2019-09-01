@@ -51,7 +51,7 @@
   </div>
 
   <!-- Manually updates the task status and display the times associated with the task -->
-  <div>
+  <div class="task-status-container">
     <div class="form-group" *ngIf="expanded">
       <label for="status">Task Status</label>
       <select class="form-control" id="status" required (change)="onSelectStatus($event)">

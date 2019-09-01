@@ -17,13 +17,8 @@ table {
 .task-ref {
   font-family: "Roboto mono", monospace, "Courier New", Courier, monospace;
 }
-// .task-bar {
-//   width: 100%;
-//   display: inline-grid;
-//   grid-gap: 5px;
-//   grid-template-rows: 2rem;
-//   grid-template-columns: 30px 30px 30px max-content max-content max-content;
-// }
 
-// .grid-element {
-// }
+.task-status-container {
+  font-family: "Roboto mono", monospace, "Courier New", Courier, monospace;
+  padding: 10px 0 20px 0;
+}
