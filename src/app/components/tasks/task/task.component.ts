@@ -8,7 +8,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import {
   faLock,
   faHourglassHalf,
-  faLockOpen
+  faLockOpen,
+  faAngleDoubleUp,
+  faEllipsisV
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faCheckSquare,
@@ -32,6 +34,8 @@ export class TaskComponent implements OnInit {
   faSquare = faSquare;
   faTrashAlt = faTrashAlt;
   faPlayCircle = faPlayCircle;
+  faDoubleUp = faAngleDoubleUp;
+  faDotsV = faEllipsisV;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @Input() task;
   public statusType: TaskStatus[];

@@ -2,7 +2,28 @@ table {
   width: 100%;
 }
 
-.task-bar * {
-  display: inline;
-  padding: 0.2rem;
+.grid-centered {
+  height: 40px;
+  vertical-align: baseline;
+  display: inline-block;
+  text-align: center;
+  line-height: 40px;
 }
+
+.task-title {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.task-ref {
+  font-family: "Roboto mono", monospace, "Courier New", Courier, monospace;
+}
+// .task-bar {
+//   width: 100%;
+//   display: inline-grid;
+//   grid-gap: 5px;
+//   grid-template-rows: 2rem;
+//   grid-template-columns: 30px 30px 30px max-content max-content max-content;
+// }
+
+// .grid-element {
+// }

@@ -1,14 +1,28 @@
 <div *ngIf="activeTask">
-  <h1>
-    Current active task:
-  </h1>
-  <h4>{{ activeTask?.title }}</h4>
-  <h4>
-    <p>{{ activeTask?.reference }}</p>
-  </h4>
-  <button matButton (click)="deactivateTask()">Close Task</button>
+  <mat-card>
+    <mat-card-header class="active-title">
+      <mat-card-title>
+        Current active task:
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <h1>{{ activeTask?.reference }} - {{ activeTask?.title }}</h1>
+      <p>{{activeTask?.description}}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="deactivateTask()">Close Task</button>
+    </mat-card-actions>
+  </mat-card>
 </div>
 <div *ngIf="!activeTask">
-  <h3>You're done for today!</h3>
-  <p>Please select any remaining task to start working on them.</p>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h3>You're done for now!</h3>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Please select any remaining task to start working on them.</p>
+    </mat-card-content>
+  </mat-card>
 </div>
