@@ -20,7 +20,6 @@ describe('TaskManagerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TaskManagerComponent);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
   });
 
   it('should create', () => {

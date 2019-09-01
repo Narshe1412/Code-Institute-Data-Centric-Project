@@ -1,8 +1,10 @@
 <div class="timer-container">
+  <!-- Timer digital display -->
   <div id="timerDisplay" role="timer">{{ time }}</div>
   <div *ngIf="isAddTimeButtonAvailable">
     <button class="add-time-btn" mat-raised-button color="primary" (click)="addTimeToTask()">Add Time to Task</button>
   </div>
+  <!-- Timer controls -->
   <div>
     <button class="timer-btn" mat-raised-button color="primary" #start [disabled]="timerStatus === 'running'"
       [hidden]="timerStatus === 'running'">

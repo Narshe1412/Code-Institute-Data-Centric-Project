@@ -1,12 +1,14 @@
 <div>
   <div class="task-bar" id="task-bar-{{ task.id }}" gdAreas="tAction tStatus tDelete tRef tTitle tMore" gdGap="16px"
     gdColumns="30px 30px 30px auto auto 30px" gdRows="40px">
+    <!-- Actions for the task -->
     <div id="task-action-icons" class="grid-element" gdArea="tAction">
       <button mat-icon-button aria-label="Select current task as active" (click)="setAsActiveTask()"
         *ngIf="!isCurrentActiveTask()" matTooltip="Add task as active">
         <fa-icon [icon]="faDoubleUp"></fa-icon>
       </button>
     </div>
+    <!-- Status of the task -->
     <div id="task-actual-status" class="grid-element" gdArea="tStatus">
       <button *ngIf="task.status === 'Todo'" mat-icon-button aria-label="Mark task as in progress"
         (click)="setTaskStatusTo('InProgress')" matTooltip="Start Task">
@@ -22,6 +24,7 @@
       <fa-icon [icon]="faLock" *ngIf="task.status === 'Archived'" mat-icon-button class="grid-centered"
         aria-label="Task is marked as archived" matTooltip="Archived"></fa-icon>
     </div>
+    <!-- Delete / Archive task -->
     <div id="task-delete-archive" class="grid-element" gdArea="tDelete">
       <button *ngIf="task.status === 'Done'" mat-icon-button aria-label="Mark a task as archived"
         (click)="setTaskStatusTo('Archived')" matTooltip="Archive Task">
@@ -32,7 +35,7 @@
         <fa-icon [icon]="faTrashAlt"></fa-icon>
       </button>
     </div>
-
+    <!-- Task name, reference and description -->
     <div class="task-ref fixed-sized-font grid-element grid-centered" gdArea="tRef">{{ task.reference }}</div>
     <div id="title-bar" class="grid-element grid-centered" gdArea="tTitle"
       matTooltip="{{ task.description?.length >= 50 ? task.description.substring(0, 50) + '...' : task.description }}">
@@ -46,6 +49,8 @@
 
     </div>
   </div>
+
+  <!-- Manually updates the task status and display the times associated with the task -->
   <div>
     <div class="form-group" *ngIf="expanded">
       <label for="status">Task Status</label>

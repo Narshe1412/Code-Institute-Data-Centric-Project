@@ -5,6 +5,9 @@ import * as Highcharts from 'highcharts';
 import { TasksService } from 'src/app/services/tasks.service';
 import { Task } from 'src/app/model/ITask';
 
+/**
+ * Creates a default chart template for all charts on the page
+ */
 const DEFAULT_CHART_OPTIONS: Highcharts.Options = {
   title: {
     text: ''
@@ -50,17 +53,10 @@ const DEFAULT_CHART_OPTIONS: Highcharts.Options = {
 })
 export class GridComponent implements AfterViewInit {
   private sourceData: Task[] = [];
-  constructor(
-    private breakpointObserver: BreakpointObserver,
-    private tasksService: TasksService
-  ) {}
-  Highcharts: typeof Highcharts = Highcharts; // required
-  chartConstructor = 'chart'; // optional string, defaults to 'chart'
-  chartOptions: Highcharts.Options = {}; // required
-  updateFlag = false; // optional boolean
-  oneToOneFlag = true; // optional boolean, defaults to false
-  runOutsideAngularFlag = false; // optional boolean, defaults to false
 
+  /**
+   * Initial value for the grid elements
+   */
   public cards = [
     {
       title: 'Amount of time per task',
@@ -92,7 +88,28 @@ export class GridComponent implements AfterViewInit {
     }
   ];
 
+  /**
+   * Highcharts configuration
+   */
+  Highcharts: typeof Highcharts = Highcharts; // required
+  chartConstructor = 'chart'; // optional string, defaults to 'chart'
+  chartOptions: Highcharts.Options = {}; // required
+  updateFlag = false; // optional boolean
+  oneToOneFlag = true; // optional boolean, defaults to false
+  runOutsideAngularFlag = false; // optional boolean, defaults to false
+
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private tasksService: TasksService
+  ) {}
+
+  /**
+   * Generates the specific configuration for the Pie chart that holds the data for task status
+   * @param data The array of tasks from the application store
+   */
   private getPieStatus(data: Task[]) {
+    // Transforms the array of tasks in an object of the format
+    // { task status name : no. of tasks with this status }
     const dataSeries = data.reduce((acc, cur) => {
       if (!acc[cur.status]) {
         acc[cur.status] = 1;
@@ -101,6 +118,8 @@ export class GridComponent implements AfterViewInit {
       }
       return acc;
     }, {});
+
+    // And transforms this object into a Highcharst data series
     const mappedSeries = [];
     for (const status in dataSeries) {
       if (dataSeries.hasOwnProperty(status)) {
@@ -110,7 +129,12 @@ export class GridComponent implements AfterViewInit {
     return mappedSeries;
   }
 
+  /**
+   * Generates the specific configuration for the Pie chart that holds the data for task duration
+   * @param data The array of tasks from the application store
+   */
   private getPieValues(data: Task[]) {
+    // Accumulates the total times for all tasks and maps it to a highcharts series object
     const dataSeries = data.map(task => ({
       name: task.reference,
       y:
@@ -118,22 +142,16 @@ export class GridComponent implements AfterViewInit {
           ? task.timeWorked.reduce((acc, cur) => acc + cur.amount, 0)
           : 0) / 1000
     }));
-
-    // Projection to percentage no longer needed
-    // const totalTimeForAllSeries = dataSeries.reduce(
-    //   (acc, cur) => acc + cur.y,
-    //   0
-    // );
-    // const result = dataSeries.map(dataPoint => ({
-    //   name: dataPoint.name,
-    //   y: this.roundNoFloating((dataPoint.y * 100) / totalTimeForAllSeries)
-    // }));
-    // return result;
     return dataSeries;
   }
-
+  /**
+   * Generates the specific configuration for the line chart that holds the data for task details over a year
+   * @param data The array of tasks from the application store
+   */
   private getMonthlyValues(data: Task[]) {
+    // Array that will hold all monthly data
     const monthlyData = new Array(12).fill(0);
+    // Maps the total duration of each task to its corresponding month
     data.forEach(task =>
       task.timeWorked.forEach(time => {
         const month = new Date(time.timestamp).getMonth();
@@ -143,10 +161,15 @@ export class GridComponent implements AfterViewInit {
     return monthlyData;
   }
 
+  /**
+   * Generates the specific configuration for the line chart that holds the data for task details over the last 7 days
+   * @param data The array of tasks from the application store
+   */
   private getLast7DaysValues(data: Task[]) {
     const last7Days = this.getLast7Days();
     const weeklyData = new Array(7).fill(0);
 
+    // Iterates over all the tasks and map those who have happened in the last 7 days to its corresponding day
     data.forEach(task =>
       task.timeWorked.forEach(timeObj => {
         const dayOfTimestamp = new Date(timeObj.timestamp);
@@ -164,6 +187,10 @@ export class GridComponent implements AfterViewInit {
     return weeklyData;
   }
 
+  /**
+   * Generates an array that holds the dates of the last 7 days
+   * Should cover leap years, end of the months and end of the years seemlessly
+   */
   private getLast7Days() {
     const today = Date.now();
     const arr = new Array(7);
@@ -174,6 +201,10 @@ export class GridComponent implements AfterViewInit {
     return arr;
   }
 
+  /**
+   * On each change of the data store, execute this function to map the cards to a new updated object
+   * triggering Angular change detection
+   */
   createCards() {
     this.cards = [
       {
@@ -320,10 +351,17 @@ export class GridComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+    // After data changes
     this.tasksService.taskList$.subscribe(list => {
+      // Updates local data store
       this.sourceData = list;
+      // Update the cards info
       this.createCards();
       setTimeout(() => {
+        // Trigger the update of the charts.
+        // This is wrapped in a timeout of zero to execute this code outside the Javascript event loop
+        // This guarantees it will be the last execution of the current stack, after all angular change detection
+        // code has been executed.
         this.updateFlag = true;
       });
     });

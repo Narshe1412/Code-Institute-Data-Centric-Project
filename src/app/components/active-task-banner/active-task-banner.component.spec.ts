@@ -17,7 +17,6 @@ describe('ActiveTaskBannerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ActiveTaskBannerComponent);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
   });
 
   it('should create', () => {

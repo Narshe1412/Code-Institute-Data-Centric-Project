@@ -44,7 +44,6 @@ describe('TaskComponent', () => {
     fixture = TestBed.createComponent(TaskComponent);
     component = fixture.componentInstance;
     component.task = mock;
-    // fixture.detectChanges();
   });
 
   it('should create', () => {

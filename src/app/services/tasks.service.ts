@@ -18,6 +18,7 @@ export class TasksService {
   private _taskList$: BehaviorSubject<Task[]>;
   private _activeTask$: BehaviorSubject<Task>;
 
+  // Accessors and Mutators
   public get activeTask(): Task {
     return this.activeTask$.getValue();
   }
@@ -52,10 +53,9 @@ export class TasksService {
     this.loadAllTasksInSystem();
   }
 
-  public getNextId() {
-    return this.currentId++;
-  }
-
+  /**
+   * Calls the data access layer service to load all the tasks in the frontend
+   */
   public loadAllTasksInSystem() {
     this.dal.getAllTasks().subscribe(tasks => {
       this.taskList$.next(tasks);
@@ -73,6 +73,10 @@ export class TasksService {
     });
   }
 
+  /**
+   * Obtains task values from the form and calls the data access to post it to the database
+   * On success, add the task to the system
+   */
   public addTask(
     title: string,
     reference: any,
@@ -99,10 +103,17 @@ export class TasksService {
     }
   }
 
+  /**
+   * Obtain a single task by its id
+   */
   public getTaskById(id: string) {
     return this.dal.getTaskById(id).toPromise();
   }
 
+  /**
+   * Deletes a task from the system by calling the data access to perform a delete request to the database
+   * On success, removes the task to the system
+   */
   public deleteTask(task?: Task, id?: string) {
     const foundtaskIndex = this.taskList.findIndex((t: Task) => {
       if (id) {
@@ -130,12 +141,19 @@ export class TasksService {
     }
   }
 
+  /**
+   * Facade for DeleteTask using its id
+   */
   public deleteTaskById(id: string) {
     if (id) {
       this.deleteTask(null, id);
     }
   }
 
+  /**
+   * Obtains task values from the form and calls the data access to post it to the database
+   * On success, updates the task on the system
+   */
   public updateTaskById(id: string, contents: {}) {
     const emptyTask: Task = {
       id: '',
@@ -168,6 +186,9 @@ export class TasksService {
     }
   }
 
+  /**
+   * Advances the status of a single task and post it to the database
+   */
   public advanceTaskStatus(
     id: string,
     tasklist = this.taskList,
@@ -197,6 +218,9 @@ export class TasksService {
       });
   }
 
+  /**
+   * Manually updates the task status and post it to the database
+   */
   public updateTaskStatus(
     id: string,
     newStatus: TaskStatus,
@@ -220,6 +244,9 @@ export class TasksService {
     }
   }
 
+  /**
+   * Add the current time stored in the timer to the current active task and then post it to the database
+   */
   public addTimeToTask(id: string, time: number, tasklist = this.taskList) {
     time = Math.abs(time);
     const taskIndex = tasklist.findIndex(x => x.id === id);
@@ -237,6 +264,9 @@ export class TasksService {
     }
   }
 
+  /**
+   * Iterates over the collection of times for a task and returns the numeric value
+   */
   public getTotalTimeFromTask(id: string, tasklist = this.taskList): number {
     let totalTime = -1;
     const taskIndex = tasklist.findIndex(x => x.id === id);
@@ -249,6 +279,9 @@ export class TasksService {
     return totalTime;
   }
 
+  /**
+   * Sets the selected task as active in the system. Records the task into local storage so it's not lost on refresh
+   */
   public setActiveTaskById(id: string, tasklist = this.taskList) {
     let success = false;
     const foundTask = tasklist.find((task: Task) => task.id === id);
@@ -260,6 +293,9 @@ export class TasksService {
     return success;
   }
 
+  /**
+   * Removes the current active task from the system and local storage
+   */
   public removeActiveTask() {
     let success = false;
     if (this.activeTask) {
@@ -270,6 +306,7 @@ export class TasksService {
     return success;
   }
 
+  // Getters and setters for active task and local storage
   private setActiveTaskInLocalStorage(taskId) {
     localStorage.setItem(ACTIVE_TASK_KEY, taskId);
   }

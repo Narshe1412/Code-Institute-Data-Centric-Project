@@ -1,6 +1,6 @@
 <h2 class="settings-title">Settings</h2>
 <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="center" class="settings-container">
-  <!-- fxLayoutGap="15px" -->
+  <!-- Settings for counting type -->
   <mat-card class="settings-card" id="counting-type">
     <mat-card-header>
       <mat-card-title>Counting Type</mat-card-title>
@@ -14,6 +14,7 @@
       </mat-radio-group>
     </mat-card-content>
   </mat-card>
+  <!-- Settings for timer type -->
   <mat-card class="settings-card" id="timer-type">
     <mat-card-header>
       <mat-card-title>Timer Type</mat-card-title>
@@ -30,6 +31,7 @@
       </mat-radio-group>
     </mat-card-content>
   </mat-card>
+  <!-- Settings for Data Storage (NYI) -->
   <mat-card class="settings-card" id="data-storage">
     <mat-card-header>
       <mat-card-title>Data Storage</mat-card-title>
@@ -39,10 +41,11 @@
         <mat-radio-button value="localstorage">Local Storage</mat-radio-button>
         <mat-radio-button value="firebase" checked>Heroku API + MongoDB</mat-radio-button>
         <mat-radio-button value="other">Other
-          <span class="radio-hint">(provide connection string)</span>
+          <span class="radio-hint" role="doc-example">(provide connection string)</span>
         </mat-radio-button>
       </mat-radio-group>
     </mat-card-content>
+    <!-- Import / Export section (NYI) -->
     <mat-card-actions>
       <div id="clear-data-btn">
         <button mat-stroked-button color="primary" disabled>Import</button>

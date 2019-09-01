@@ -1,39 +1,20 @@
+<!-- Add task button: toggles the form on click -->
 <div class="add-button-wrapper">
-  <button
-    mat-mini-fab
-    type="button"
-    color="accent"
-    (click)="formVisible = !formVisible"
-    id="launch-add-task-btn"
-  >
+  <button mat-mini-fab type="button" color="accent" (click)="formVisible = !formVisible" id="launch-add-task-btn">
     <fa-icon [icon]="formVisible ? faMinus : faPlus"></fa-icon>
   </button>
 </div>
+
+<!-- Add task form -->
 <mat-card class="new-task-section" *ngIf="formVisible">
   <mat-card-title>New Task</mat-card-title>
   <mat-card-content>
-    <form
-      #taskForm="ngForm"
-      (ngSubmit)="onSubmit()"
-      class="container"
-      fxLayout="row wrap"
-      fxLayout.xs="column"
-      fxLayoutAlign="center center"
-      fxLayoutGap="10px"
-    >
+    <form #taskForm="ngForm" (ngSubmit)="onSubmit()" class="container" fxLayout="row wrap" fxLayout.xs="column"
+      fxLayoutAlign="center center" fxLayoutGap="10px">
       <div class="add-task-form-group" fxFlex="1 1 30%" fxFlex.xs="1 1 100%">
         <mat-form-field class="add-task-element" id="form-title-mat">
-          <input
-            matInput
-            type="text"
-            class="form-control"
-            id="title"
-            required
-            #title="ngModel"
-            [(ngModel)]="task.title"
-            name="title"
-            placeholder="Title"
-          />
+          <input matInput type="text" class="form-control" id="title" required #title="ngModel" [(ngModel)]="task.title"
+            name="title" placeholder="Title" />
         </mat-form-field>
       </div>
       <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
@@ -42,17 +23,8 @@
 
       <div class="add-task-form-group" fxFlex="1 1 10%" fxFlex.xs="1 1 100%">
         <mat-form-field class="add-task-element" id="form-ref-mat">
-          <input
-            matInput
-            type="text"
-            class="form-control"
-            id="reference"
-            #reference="ngModel"
-            [(ngModel)]="task.reference"
-            name="reference"
-            required
-            placeholder="Reference"
-          />
+          <input matInput type="text" class="form-control" id="reference" #reference="ngModel"
+            [(ngModel)]="task.reference" name="reference" required placeholder="Reference" />
         </mat-form-field>
       </div>
       <div [hidden]="reference.valid || reference.pristine" class="alert alert-danger">
@@ -60,27 +32,13 @@
       </div>
       <div class="add-task-form-group" fxFlex="1 3 40%" fxFlex.xs="1 1 100%">
         <mat-form-field class="add-task-element" id="form-desc-mat">
-          <input
-            matInput
-            type="text"
-            class="form-control"
-            id="desc"
-            [(ngModel)]="task.description"
-            #description="ngModel"
-            name="description"
-            placeholder="Description"
-          />
+          <input matInput type="text" class="form-control" id="desc" [(ngModel)]="task.description"
+            #description="ngModel" name="description" placeholder="Description" />
         </mat-form-field>
       </div>
       <div class="add-task-form-group" fxFlex="1 1 5%" fxFlex.xs="1 1 50%">
-        <button
-          mat-raised-button
-          id="btn-add-mat"
-          type="button"
-          color="primary"
-          (click)="newTask(); taskForm.reset()"
-          [disabled]="!taskForm.form.valid"
-        >
+        <button mat-raised-button id="btn-add-mat" type="button" color="primary" (click)="newTask(); taskForm.reset()"
+          [disabled]="!taskForm.form.valid">
           ADD
         </button>
       </div>

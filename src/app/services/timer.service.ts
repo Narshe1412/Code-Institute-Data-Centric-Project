@@ -13,10 +13,10 @@ export enum TimerStatus {
 })
 export class TimerService {
   private _timer$;
-  // private _timerStatus: TimerStatus;
   private _timerStatus$: BehaviorSubject<TimerStatus>;
   private _currentTime: number;
 
+  // Accessors and mutators
   public get elapsedTime() {
     return Math.abs(this.settings.timerStartAmount - this._currentTime);
   }
@@ -49,6 +49,7 @@ export class TimerService {
     this._currentTime = value;
   }
 
+  // Getters to parse a specific part of the time (hours, mins, secs) from the current time in milliseconds
   public getSeconds(time = this.currentTime): number {
     if (time < 0) {
       return 0;
@@ -90,21 +91,33 @@ export class TimerService {
     this.timerStatus$ = new BehaviorSubject<TimerStatus>(TimerStatus.stopped);
   }
 
+  /**
+   * Updates the current time by the specified amount
+   */
   public changeTimeByAmount(amount = this.settings.countingAmount): number {
     amount *= 1000;
     return (this.currentTime += amount);
   }
 
+  /**
+   * Resets the timer
+   */
   public resetTimer() {
     this.currentTime = this.settings.timerStartAmount;
   }
 
+  /**
+   * Gets the display of the timer in HHMMSS format
+   */
   public getDisplayTimeInHHMMSS(time = this.currentTime): string {
     return `${this.getDisplayHours(time)}:${this.getDisplayMinutes(
       time
     )}:${this.getDisplaySeconds(time)}`;
   }
 
+  /**
+   * Sends the current elapsed time to the task service to store the timer
+   */
   public addTimeToTask() {
     this.timerStatus$.next(TimerStatus.stopped);
     this.tasksService
