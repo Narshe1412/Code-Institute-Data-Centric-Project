@@ -14,7 +14,8 @@
 .add-button-wrapper {
   height: 0;
   width: 100%;
-  max-width: 720px;
+  min-width: 260px;
+  max-width: 85%;
   position: absolute;
   text-align: right;
 
