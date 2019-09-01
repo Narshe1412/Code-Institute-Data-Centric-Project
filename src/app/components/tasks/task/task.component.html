@@ -42,8 +42,8 @@
       <div class="task-title bold ">{{ task.title }}</div>
     </div>
     <div class="task-expand-details-btn grid-element" gdArea="tMore">
-      <button mat-icon-button aria-label="Example icon-button with a heart icon" class="form-control"
-        id="show-time-details" (click)="expanded = !expanded">
+      <button mat-icon-button aria-label="Show more details for the task" class="form-control" id="show-time-details"
+        (click)="expanded = !expanded">
         <fa-icon [icon]="faDotsV" matTooltip="View time details"></fa-icon>
       </button>
 
@@ -59,7 +59,10 @@
           status
         }}</option>
       </select>
-      <button class="form-control" id="adv-status" (click)="advanceStatus()">> > ></button>
+      <button mat-icon-button aria-label="Advance task status" class="form-control" id="adv-status"
+        (click)="advanceStatus()">
+        <fa-icon [icon]="faDoubleRight" matTooltip="Advance task to next status"></fa-icon>
+      </button>
     </div>
   </div>
   <div class="time-list" *ngIf="expanded">

@@ -10,6 +10,7 @@ import {
   faHourglassHalf,
   faLockOpen,
   faAngleDoubleUp,
+  faAngleDoubleRight,
   faEllipsisV
 } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -36,6 +37,7 @@ export class TaskComponent implements OnInit {
   faTrashAlt = faTrashAlt;
   faPlayCircle = faPlayCircle;
   faDoubleUp = faAngleDoubleUp;
+  faDoubleRight = faAngleDoubleRight;
   faDotsV = faEllipsisV;
 
   // Paginator for times
