@@ -1,19 +1,23 @@
+<!-- Grid that holds all charts in the application -->
 <div class="grid-container">
   <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutAlign="center" class="charts-container">
+    <!-- Iterates over the card object to display the grid -->
     <div class="card-wrapper" *ngFor="let card of cards">
       <mat-card class="dashboard-card" *ngIf="card.visible" [style.minHeight]="'100%'" [style.minWidth]="'100%'">
+        <!-- Chart title -->
         <mat-card-header>
           <mat-card-title>
             {{ card.title }}
             <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
               <mat-icon>more_vert</mat-icon>
             </button>
+            <!-- Button that removes the chart -->
             <mat-menu #menu="matMenu" xPosition="before">
-              <!-- <button mat-menu-item>Expand</button> -->
               <button mat-menu-item (click)="card.visible = false">Remove</button>
             </mat-menu>
           </mat-card-title>
         </mat-card-header>
+        <!-- Chart -->
         <mat-card-content class="dashboard-card-content">
           <div class="chart-display">
             <highcharts-chart class="highchart-element" [Highcharts]="Highcharts" [constructorType]="chartConstructor"

@@ -3,7 +3,6 @@ import {
   OnInit,
   ViewChild,
   Input,
-  AfterViewInit,
   ChangeDetectorRef
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
@@ -19,7 +18,7 @@ import { TimeRecord } from 'src/app/model/ITimeRecord';
   templateUrl: './task-timer-list.component.html',
   styleUrls: ['./task-timer-list.component.scss']
 })
-export class TaskTimerListComponent implements OnInit, AfterViewInit {
+export class TaskTimerListComponent implements OnInit {
   @Input() timeWorkedList: TimeRecord[];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -33,8 +32,9 @@ export class TaskTimerListComponent implements OnInit, AfterViewInit {
     this.refresh();
   }
 
-  ngAfterViewInit() {}
-
+  /**
+   * On information updated through angular change detection, force a refresh of the table
+   */
   refresh() {
     this.dataSource = new TaskTimerListDataSource(
       this.paginator,
@@ -44,6 +44,9 @@ export class TaskTimerListComponent implements OnInit, AfterViewInit {
     this.changeDetectorRefs.detectChanges();
   }
 
+  /**
+   * Helper function to display total time in the table
+   */
   public getTotalTime() {
     return this.timeWorkedList.reduce((acc, item) => acc + item.amount, 0);
   }

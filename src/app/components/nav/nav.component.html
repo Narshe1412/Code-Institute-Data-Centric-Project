@@ -1,3 +1,4 @@
+<!-- Menu bar -->
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
@@ -17,6 +18,7 @@
       </button>
       <span>Task Manager</span>
     </mat-toolbar>
+    <!-- Application sections -->
     <div id="main-content">
       <section id="active-task-banner">
         <app-active-task-banner></app-active-task-banner>

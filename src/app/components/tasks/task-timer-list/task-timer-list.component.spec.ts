@@ -28,7 +28,6 @@ describe('TaskTimerListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TaskTimerListComponent);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
   });
 
   it('should compile', () => {

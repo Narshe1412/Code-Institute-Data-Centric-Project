@@ -71,16 +71,19 @@ export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+    // Starts the timer observable
     this.timer$ = timer(1000, 1000);
     this.customtime = '';
   }
 
   ngOnDestroy() {
+    // Destroys all observables when component closes down
     this.onDestroy$.next();
     this.onDestroy$.complete();
   }
 
   ngAfterViewInit() {
+    // Initiates button listeners
     const startBtnClick$ = fromEvent(this.startBtn.nativeElement, 'click').pipe(
       tap(_ => {
         this.timerService.resetTimer();
@@ -109,6 +112,7 @@ export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
       mapTo(false)
     );
 
+    // Creates source observable that indicates if we should listen for the timer or not
     this.isInterested$ = merge(
       startBtnClick$,
       pauseBtnClick$,
@@ -116,6 +120,7 @@ export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
       stopBtnClick$
     ).pipe(startWith(false));
 
+    // Merges isInterested$ observable to the timer observable to obtain values when we're interested in obtaining them
     const myTimer$ = this.isInterested$.pipe(
       takeUntil(this.onDestroy$),
       switchMap(isInterested => (isInterested ? this.timer$ : EMPTY))
@@ -126,19 +131,9 @@ export class TimerComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  public changeCountdownType(type) {
-    this.settings.countingType = type;
-    this.timerService.resetTimer();
-  }
-
-  public handleSelectTimerType() {
-    this.settings.timerType = this.timertypeselector;
-    if (this.timertypeselector === 'custom' && this.customtime) {
-      this.settings.timerStartAmount = this.customtime * 60;
-    }
-    this.timerService.resetTimer();
-  }
-
+  /**
+   * Add the current timer on the clock to the current active task
+   */
   public addTimeToTask() {
     this.timerService.addTimeToTask();
   }

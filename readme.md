@@ -171,7 +171,7 @@ This project was created using the Angular CLI which implements webpack under th
 
 I used TravisCI to automate the deployment process. On each push and pull request, Travis will create a container where it will do a fresh deployment of my app, run all the tests, create a production build and deploy it to the gh-pages branch. This is all configured on the file `.travis.yml`.
 
-**\*New\*** The backend is provided by Heroku. I have a different [github repository](https://github.com/Narshe1412/Code-Institute-Data-Centric-Backend) where all the backend is implemented connected to Heroku. On each push, Github will analyze my tests and if they pass Heroku will pick up the build and deploy it as a separate server. Heroku has internally configured a set of environment variables where all the secrets are stored (i.e. the database user, password and connection string).
+**\*New\*** The backend is provided by Heroku. I have a different [github repository](https://github.com/Narshe1412/Code-Institute-Data-Centric-Backend) where all the backend is implemented connected to Heroku. On each push, Github will analyze my tests and if they pass Heroku will pick up the build and deploy it as a separate server. Heroku has internally configured a set of environment variables where all the secrets are stored (i.e. the database user, password and connection string). The YML script to automate this can be found in the `.github\workflows\` folder in that repository.
 This repository has been included as Git submodule so it's also present as reference on this project.
 
 ### Local Deployment
@@ -210,3 +210,4 @@ Then navigate to the folder and execute `python app.py`
 
 - The CORS implementation provided by the backend was suggested by Zhangqy in this [Stackoverflow post](https://stackoverflow.com/a/45818284/5866637)
 - To implement the testing on the backend I followed this [tutorial by kenya-tech](https://kenya-tech.com/2019/01/18/writing-tests-for-a-restful-api-flask-app/)
+- The timer implementation with observables was done following a [tutorial by Wojciech Trawiński in his Medium blog](https://medium.com/js-in-action/rxjs-pause-and-resume-mighty-switchmap-41d0d1fe1113) and adapted to the current needs of the application.

@@ -25,6 +25,9 @@ export class TaskManagerComponent implements OnInit {
     this.taskList = this.taskService.taskList;
   }
 
+  /**
+   * Add a new task to the system. Hides the form
+   */
   newTask() {
     this.taskService.addTask(
       this.task.title,
@@ -34,6 +37,9 @@ export class TaskManagerComponent implements OnInit {
     this.formVisible = false;
   }
 
+  /**
+   * Forces hiding the form when the submit button is clicked
+   */
   onSubmit() {
     this.submitted = true;
     this.formVisible = false;

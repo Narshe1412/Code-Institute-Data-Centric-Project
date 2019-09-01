@@ -35,7 +35,6 @@ describe('GridComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GridComponent);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
   });
 
   it('should compile', () => {

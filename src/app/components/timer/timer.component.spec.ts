@@ -18,7 +18,6 @@ describe('TimerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TimerComponent);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
   });
 
   it('should create', () => {
