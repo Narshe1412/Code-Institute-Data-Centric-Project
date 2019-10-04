@@ -52,3 +52,16 @@ patch:
         patched: '2019-07-03T21:37:27.360Z'
     - karma-coverage-istanbul-reporter > istanbul-api > istanbul-lib-instrument > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash:
         patched: '2019-07-03T21:37:27.360Z'
+  SNYK-JS-HTTPSPROXYAGENT-469131:
+    - protractor > browserstack > https-proxy-agent:
+        patched: '2019-10-03T21:37:04.087Z'
+    - protractor > saucelabs > https-proxy-agent:
+        patched: '2019-10-03T21:37:04.087Z'
+    - '@angular/cli > pacote > make-fetch-happen > https-proxy-agent':
+        patched: '2019-10-03T21:37:04.087Z'
+    - '@angular/cli > pacote > npm-registry-fetch > make-fetch-happen > https-proxy-agent':
+        patched: '2019-10-03T21:37:04.087Z'
+    - '@angular/cli > @schematics/update > pacote > make-fetch-happen > https-proxy-agent':
+        patched: '2019-10-03T21:37:04.087Z'
+    - '@angular/cli > @schematics/update > pacote > npm-registry-fetch > make-fetch-happen > https-proxy-agent':
+        patched: '2019-10-03T21:37:04.087Z'
