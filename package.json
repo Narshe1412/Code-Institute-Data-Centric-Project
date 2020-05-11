@@ -36,7 +36,7 @@
     "highcharts-angular": "^2.4.0",
     "material-icons": "^0.3.1",
     "rxjs": "~6.5.2",
-    "source-map-support": "^0.5.13",
+    "source-map-support": "^0.5.17",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1",
     "snyk": "^1.305.0"
