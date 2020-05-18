@@ -36,19 +36,19 @@
     "highcharts-angular": "^2.4.0",
     "material-icons": "^0.3.1",
     "rxjs": "~6.5.5",
-    "source-map-support": "^0.5.13",
+    "source-map-support": "^0.5.19",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1",
-    "snyk": "^1.305.0"
+    "snyk": "^1.311.0"
   },
   "devDependencies": {
-    "@angular/cli": "~8.3.19",
+    "@angular/cli": "~8.3.26",
     "@angular-devkit/build-angular": "~0.901.0",
     "@angular/language-service": "~8.2.14",
     "@angular/compiler-cli": "^8.2.14",
     "@types/jasmine": "^3.5.10",
     "@types/jasminewd2": "^2.0.6",
-    "@types/node": "~12.12.32",
+    "@types/node": "~12.12.37",
     "angular-cli-ghpages": "^0.6.0",
     "codelyzer": "^5.0.1",
     "jasmine-core": "~3.4.0",
@@ -60,7 +60,7 @@
     "karma-jasmine-html-reporter": "^1.5.2",
     "karma-spec-reporter": "latest",
     "protractor": "~6.0.0",
-    "ts-node": "~8.6.2",
+    "ts-node": "~8.9.1",
     "tslint": "~5.19.0",
     "typescript": "~3.8.3"
   },
