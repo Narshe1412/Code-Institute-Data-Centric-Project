@@ -38,8 +38,8 @@
     "rxjs": "~6.5.5",
     "source-map-support": "^0.5.19",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.3",
-    "snyk": "^1.311.0"
+    "snyk": "^1.321.0"
+    "zone.js": "~0.10.3"
   },
   "devDependencies": {
     "@angular/cli": "~8.3.26",
